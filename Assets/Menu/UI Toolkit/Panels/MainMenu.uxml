@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/labels.uss?fileID=7433441132597879392&amp;guid=1f1a84e29fbaf4120891e7f3cffaa641&amp;type=3#labels" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/buttons.uss?fileID=7433441132597879392&amp;guid=601804b7587794b7fb76c4cbce28fc61&amp;type=3#buttons" />
+    <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Menu/Screenshot_10.0.jpg?fileID=2800000&amp;guid=a78904bd5a7f4414bbfe6b070726edf9&amp;type=3#Screenshot_10.0&apos;);">
+        <ui:VisualElement name="SideBar" style="flex-grow: 1; background-color: rgba(56, 56, 56, 0.32); background-image: none; flex-direction: column; width: 30%; -unity-background-image-tint-color: rgb(102, 187, 239); align-self: stretch; justify-content: center; border-left-color: rgba(174, 174, 174, 0); border-right-color: rgba(174, 174, 174, 0); border-top-color: rgba(174, 174, 174, 0); border-bottom-color: rgba(174, 174, 174, 0); -unity-background-scale-mode: stretch-to-fill; align-items: stretch; left: 35%; right: 0; top: 0;">
+            <ui:Label tabindex="-1" text="Reverse City Builder" display-tooltip-when-elided="true" name="Label" class="label-main-title" style="text-overflow: clip; white-space: nowrap; -unity-text-align: lower-center; font-size: 32px; padding-bottom: 28px; background-color: rgba(56, 56, 56, 0); color: rgb(255, 255, 255); -unity-font-style: bold;" />
+            <ui:Button text="Start" display-tooltip-when-elided="true" name="Start" class="button-main-title" />
+            <ui:Button text="Settings" display-tooltip-when-elided="true" name="Settings" class="button-main-title" />
+            <ui:Button text="Quit" display-tooltip-when-elided="true" name="Quit" class="button-main-title" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
