@@ -6,17 +6,16 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
-public class PlaceableObject : MonoBehaviour
+public class Terrain : MonoBehaviour
 {
     [SerializeField]
     List<GameObject> objects = new List<GameObject>();
 
-    public GameObject main;
-
-    public Addterain addterain;
+    public GameObject tile_prefab;
 
     public int width = 8;
     public int height = 7;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -25,11 +24,13 @@ public class PlaceableObject : MonoBehaviour
         {
             for(int j = 0;j < height; j++)
             {
-                GameObject game =  Instantiate(main, position, main.transform.rotation);
-                Addterain terrain = game.AddComponent<Addterain>();
+                GameObject game =  Instantiate(tile_prefab, position, tile_prefab.transform.rotation);
+                Tile terrain = game.GetComponent<Tile>();
                 terrain.flags = 0;
+                
                 PlayerInput pi = game.GetComponent<PlayerInput>();
                 pi.camera = Camera.main;
+                
                 objects.Add(game);
                 position.x += 2;
             }
