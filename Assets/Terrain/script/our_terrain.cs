@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
-public class Terrain : MonoBehaviour
+public class Our_Terrain : MonoBehaviour
 {
     [SerializeField]
     List<GameObject> objects = new List<GameObject>();
