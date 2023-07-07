@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Game%20Demo/UI/Styles/BtnEnv.uss?fileID=7433441132597879392&amp;guid=d736e6ece144b490d90ddcf88c23fb4c&amp;type=3#BtnEnv" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row-reverse; align-items: center; justify-content: center; align-self: center; bottom: -475px; width: 1922px;">
+        <ui:Button text="LAND" display-tooltip-when-elided="true" name="land" class="btn" />
+        <ui:Button text="AIR" display-tooltip-when-elided="true" name="air" class="btn" />
+        <ui:Button text="WATTER" display-tooltip-when-elided="true" name="watter" class="btn" style="white-space: nowrap;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,14 @@
+.btn {
+    justify-content: flex-start;
+    align-self: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 45px;
+    margin-right: 45px;
+    margin-top: 45px;
+    margin-bottom: 45px;
+    position: relative;
+    width: 12%;
+}
