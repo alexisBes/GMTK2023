@@ -1,0 +1,34 @@
+{
+    "name": "PlayerInputAction",
+    "maps": [
+        {
+            "name": "addTerrain",
+            "id": "b62bf997-c44d-46cf-826a-7332364a8422",
+            "actions": [
+                {
+                    "name": "ClickedTerrain",
+                    "type": "Button",
+                    "id": "e5face29-091f-4d98-b8e8-141f6bedb6ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "85721e44-732e-42d7-9f90-558db626f335",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClickedTerrain",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
