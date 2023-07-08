@@ -31,9 +31,9 @@ public class Our_Terrain : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 int newFlags = 0x00;
-                if ((y >= centreW - 1 && y <= centreW + 1) && (x <= centreH + 1 && x >= centreH - 1))
-                    newFlags = Random.Range(1, 0x05);
-                if (y == centreW && x == centreH) { newFlags = State.SPAWN_TOWN; }
+                if ((x >= centreW - 1 && x <= centreW + 1) && (y <= centreH + 1 && y >= centreH - 1))
+                    newFlags = Random.Range(1, 0x04);
+                if (y == centreH && x == centreW) { newFlags = State.SPAWN_TOWN; }
                 GameObject tile = Instantiate(tile_prefab, position, tile_prefab.transform.rotation);
                 Tile terrain = tile.GetComponent<Tile>();
                 terrain.flags = newFlags;

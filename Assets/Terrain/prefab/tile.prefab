@@ -149,3 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flags: 0
+  materials:
+  - {fileID: 2100000, guid: ba88400f840f26146be19d2180074b5c, type: 2}
+  - {fileID: 2100000, guid: bf48e5ebc3369c848838acceb434f556, type: 2}
+  - {fileID: 2100000, guid: 4fba18ce10d448c4193e8de7dd7da702, type: 2}
+  - {fileID: 2100000, guid: e4b9c390742fb304ebad17e5c3066924, type: 2}
+  - {fileID: 2100000, guid: 0dd6d711adc9b074683d0bd1dc2c4a17, type: 2}
