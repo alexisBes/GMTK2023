@@ -8,9 +8,6 @@ using UnityEngine.InputSystem;
 
 public class Our_Terrain : MonoBehaviour
 {
-    [SerializeField]
-    List<GameObject> objects = new List<GameObject>();
-
     public GameObject tile_prefab;
 
     public Material material;
@@ -53,6 +50,18 @@ public class Our_Terrain : MonoBehaviour
             position.z += 1;
             position.x = 0;
         }
+        
+        // Set the camera so that the whole terrain is in view. START
+        Vector3 top_left_corner    = new Vector3(-TILE_STEP * 0.5f, -TILE_STEP * 0.5f, 0);
+        Vector3 bottom_left_corner = new Vector3(top_left_corner.x + (float)width * TILE_STEP, top_left_corner.y + (float)height * TILE_STEP, 0);
+        
+        Transform camera_transform = Camera.main.GetComponent<Transform>();
+        camera_transform.position = new Vector3(
+            top_left_corner.x + (bottom_left_corner.x - top_left_corner.x) * 0.5f,
+            top_left_corner.y + (bottom_left_corner.y - top_left_corner.y) * 0.5f,
+            camera_transform.position.z
+        );
+        // Set the camera so that the whole terrain is in view. END
     }
 
     // Update is called once per frame

@@ -11,4 +11,5 @@
     margin-bottom: 45px;
     position: relative;
     width: 12%;
+    bottom: 0;
 }

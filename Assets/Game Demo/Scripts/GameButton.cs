@@ -5,27 +5,42 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 public class GameButton : MonoBehaviour
 {
-    private void Awake() {
+    private void Awake()
+    {
+        EnableButtons();
+    }
+
+    public void EnableButtons()
+    {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 
-        root.Q<Button>("watter").clicked += WatterButtonClicked;
-        root.Q<Button>("air").clicked += AirButtonClicked;
-        root.Q<Button>("land").clicked += LandButtonClicked;
+        root.Q<Button>("Watter").clicked += WaterButtonClicked;
+        root.Q<Button>("Air").clicked += AirButtonClicked;
+        root.Q<Button>("Land").clicked += LandButtonClicked;
     }
 
-
-    public void WatterButtonClicked()
+    public void DisableButtons()
     {
-        Debug.Log("Watter Clicked");
+        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+
+        root.Q<Button>("Watter").clicked -= WaterButtonClicked;
+        root.Q<Button>("Air").clicked -= AirButtonClicked;
+        root.Q<Button>("Land").clicked -= LandButtonClicked;
     }
 
-    void AirButtonClicked()
+    public void WaterButtonClicked()
+    {
+        Debug.Log("Water Clicked");
+    }
+
+    public void AirButtonClicked()
     {
         Debug.Log("Air Clicked");
     }
 
-    void LandButtonClicked()
+    public void LandButtonClicked()
     {
         Debug.Log("Land Clicked");
     }
 }
+
