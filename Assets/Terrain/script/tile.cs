@@ -208,7 +208,7 @@ public class Tile : MonoBehaviour
     {
         Debug.Log("FULL PAWAR");
         Vector3 vector = State.originTile.gameObject.transform.position;
-        vector.z += 6;
+        vector.z += 0;
         GameObject saracePrefab = Instantiate(tempestPrefab, vector, Quaternion.Euler(90f, 0f, 0f));
         Tempest tempest = saracePrefab.GetComponentInChildren<Tempest>();
         tempest.target = gameObject.transform;
