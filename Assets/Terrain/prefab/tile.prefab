@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 5b88c892ace20474f82d3317db771887, type: 3}
   m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -149,9 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flags: 0
-  materials:
-  - {fileID: 2100000, guid: ba88400f840f26146be19d2180074b5c, type: 2}
-  - {fileID: 2100000, guid: bf48e5ebc3369c848838acceb434f556, type: 2}
-  - {fileID: 2100000, guid: 4fba18ce10d448c4193e8de7dd7da702, type: 2}
-  - {fileID: 2100000, guid: e4b9c390742fb304ebad17e5c3066924, type: 2}
-  - {fileID: 2100000, guid: 0dd6d711adc9b074683d0bd1dc2c4a17, type: 2}
+  prefabs:
+  - {fileID: 1520068213326888, guid: d8deb0d5cca03814e8f5cd71fb9e7a1e, type: 3}
+  - {fileID: 1712155488500880, guid: faf4b4ec0cbbb3840a5ba44685c18d99, type: 3}
+  - {fileID: 1591559679761318, guid: 6aa6d57464e3a7742b51561c98bf11c8, type: 3}
+  - {fileID: 1048076980211604, guid: acf51e39f8505084796481991b891ff9, type: 3}

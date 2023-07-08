@@ -6,11 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    VisualElement root;
+    
     private void Awake() {
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
 
         root.Q<Button>("Start").clicked += StartButtonClicked;
-        root.Q<Button>("Settings").clicked += () => Debug.Log("Settings Clicked");
         root.Q<Button>("Quit").clicked += QuitButtonClicked;
     }
 
