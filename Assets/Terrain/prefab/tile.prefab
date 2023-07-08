@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8275458035456053773}
   - component: {fileID: -7619178685622776337}
-  - component: {fileID: -4697054436881915257}
-  - component: {fileID: -3630885140077194813}
   - component: {fileID: -4671542007777387766}
   - component: {fileID: 2187330991637952937}
   m_Layer: 0
@@ -50,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 5b88c892ace20474f82d3317db771887, type: 3}
   m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -65,56 +64,6 @@ MonoBehaviour:
   m_DefaultActionMap: addTerrain
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!23 &-4697054436881915257
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2582282415645502144}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: ba88400f840f26146be19d2180074b5c, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &-3630885140077194813
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2582282415645502144}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!65 &-4671542007777387766
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -134,8 +83,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10, y: 0.33056825, z: 10.000001}
-  m_Center: {x: -0, y: -0.16028418, z: -6.5226026e-16}
+  m_Size: {x: 6.021086, y: 1.3400048, z: 1.4287279}
+  m_Center: {x: 0.89708596, y: -0.11224735, z: 0.3737942}
 --- !u!114 &2187330991637952937
 MonoBehaviour:
   m_ObjectHideFlags: 0

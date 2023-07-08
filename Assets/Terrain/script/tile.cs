@@ -49,7 +49,7 @@ public class Tile : MonoBehaviour
     {
         Destroy(currentPrefab);
 
-        currentPrefab = Instantiate(prefabs[position], transform.position, Quaternion.Euler(90f, 0f, 0f));
+        currentPrefab = Instantiate(prefabs[position], transform.position, Quaternion.Euler(75f, 0f, 0f));
         currentPrefab.transform.parent = transform;
     }
 
