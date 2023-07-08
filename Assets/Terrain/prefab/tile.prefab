@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 5042776211676458897}
+  earthquake_audio_clip: {fileID: 8300000, guid: 6990736b6659b4142a7910bcc730c029, type: 3}
   flags_from_last_time_we_set_the_prefab: -1
   flags: 0
   mix_flags: 0

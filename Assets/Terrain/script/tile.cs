@@ -22,6 +22,8 @@ public class Tile : MonoBehaviour
     public const int SUBURB_TILE = 0x80;
 
     public AudioSource audioSource;
+    [NonSerialized] public AudioSource earthquake_audio_source;
+    public AudioClip earthquake_audio_clip;
     
     public int flags_from_last_time_we_set_the_prefab = -1;
     public int flags = 0;
@@ -37,6 +39,8 @@ public class Tile : MonoBehaviour
     public GameObject ui_disk;
 
     private GameObject currentPrefab;
+    
+    Vector3 camp_target_position;
 
 
     // Start is called before the first frame update
@@ -55,6 +59,9 @@ public class Tile : MonoBehaviour
         
         Renderer renderer = ui_disk.GetComponent<Renderer>();
         renderer.enabled = false;
+        
+        earthquake_audio_source = gameObject.AddComponent(typeof(AudioSource)) as AudioSource;
+        earthquake_audio_source.clip = earthquake_audio_clip;
     }
 
     // Update is called once per frame
@@ -63,10 +70,11 @@ public class Tile : MonoBehaviour
         Camera camera = Camera.main;
         Vector3 mouse_position = Input.mousePosition;
         
-        if((flags & TOWN_TILE) == 0)
+        // Update the mouse over highlight thing. START
+        Renderer renderer = ui_disk.GetComponent<Renderer>();
+        
+        if(TurnBasedSystem.check_if_enemy_turn_is_done() == true && (flags & TOWN_TILE) == 0)
         {
-            Renderer renderer = ui_disk.GetComponent<Renderer>();
-            
             Ray ray = camera.ScreenPointToRay(mouse_position);
             RaycastHit hit;
             if(Physics.Raycast(ray.origin, ray.direction, out hit, 500))
@@ -74,6 +82,18 @@ public class Tile : MonoBehaviour
                 if (hit.collider.GetInstanceID() == this.GetComponent<Collider>().GetInstanceID()) renderer.enabled = true;
                 else                                                                               renderer.enabled = false;
             }
+        }
+        else renderer.enabled = false;
+        // Update the mouse over highlight thing. END
+        
+        
+        if(camp_prefab)
+        {
+            // Update the camp. START
+            Transform t = camp_prefab.GetComponent<Transform>();
+            
+            t.position = Vector3.MoveTowards(t.position, camp_target_position, Time.deltaTime * 0.3f);
+            // Update the camp. END
         }
     }
 
@@ -102,8 +122,14 @@ public class Tile : MonoBehaviour
         {
             if(camp_prefab) Destroy(camp_prefab);
             
-            camp_prefab = Instantiate(camp_prefab_to_instantiate_from, transform.position, Quaternion.Euler(0, 0, 0));
+            
+            camp_target_position = transform.position;
+            Vector3 camp_start_position = camp_target_position - new Vector3(0, 1, 0);
+            
+            camp_prefab = Instantiate(camp_prefab_to_instantiate_from, camp_start_position, Quaternion.Euler(0, 0, 0));
             camp_prefab.transform.parent = transform;
+            
+            earthquake_audio_source.Play();
         }
         else if(camp_prefab) Destroy(camp_prefab);
         
