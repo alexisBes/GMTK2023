@@ -13,12 +13,15 @@ public class Tile : MonoBehaviour
     private const int TOWN_TILE  = 0x04;
 
     public int flags = 0;
+    public int x, y;
+    public Our_Terrain our_terrain;
 
     public List<Material> materials;
     
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Asset type :" + flags);
         this.GetComponent<Renderer>().material = materials[flags];
     }
 
@@ -32,9 +35,18 @@ public class Tile : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
-        {            
+        {
+
             if (hit.collider.GetInstanceID() != this.GetComponent<Collider>().GetInstanceID()) return;
-            
+
+            if (this.flags != 0)
+            {
+                return;
+            }
+
+            if (!this.our_terrain.isACaseValid(x, y))
+                return;
+
             Debug.Log("Oi!"); // @ DEBUG.
             
             int what_we_should_do_on_this_tile = State.state;
@@ -56,6 +68,7 @@ public class Tile : MonoBehaviour
                 flags = TOWN_TILE;
             }
             this.GetComponent<Renderer>().material = materials[flags];
+            State.state = 0x00;
         }
     }
 }

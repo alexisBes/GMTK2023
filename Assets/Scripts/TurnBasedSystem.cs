@@ -18,25 +18,38 @@ public class TurnBasedSystem : MonoBehaviour
         turnText.text = "Player's Turn";
 
         root = GetComponent<UIDocument>().rootVisualElement;
-        root.Q<Button>("Watter").clicked += PlayerButtonClicked;
-        root.Q<Button>("Air").clicked += PlayerButtonClicked;
-        root.Q<Button>("Land").clicked += PlayerButtonClicked;
+        root.Q<Button>("Watter").clicked += PlayerButtonWaterClicked;
+        root.Q<Button>("Air").clicked += PlayerButtonSandClicked;
+        root.Q<Button>("Land").clicked += PlayerButtonLandClicked;
     }
 
+    private void PlayerButtonWaterClicked()
+    {
+        PlayerButtonClicked(State.SPAWN_WATER);
+    }
+    private void PlayerButtonLandClicked()
+    {
+        PlayerButtonClicked(State.SPAWN_LAND);
+    }
+    private void PlayerButtonSandClicked()
+    {
+        PlayerButtonClicked(State.SPAWN_SAND);
+    }
 
-    private void PlayerButtonClicked()
+    private void PlayerButtonClicked(int type)
     {
         if (playerTurn)
         {
             DisableButtons();
-            PerformPlayerAction();
+            PerformPlayerAction(type);
             StartCoroutine(EnemyTurnDelay());
         }
     }
 
-    private void PerformPlayerAction()
+    private void PerformPlayerAction(int state)
     {
         Debug.Log("Player action performed");
+        State.state = state;
     }
 
     private System.Collections.IEnumerator EnemyTurnDelay()
