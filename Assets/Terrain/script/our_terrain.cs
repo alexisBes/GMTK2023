@@ -14,7 +14,7 @@ public class Our_Terrain : MonoBehaviour
 
     public static int width = 16;
     public static int height = 16;
-    const float TILE_STEP = 2;
+    const float TILE_STEP = 1;
 
     Tile[,] tiles = new Tile[width, height];
     // Start is called before the first frame update
