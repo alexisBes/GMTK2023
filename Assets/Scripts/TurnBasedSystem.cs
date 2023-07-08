@@ -21,6 +21,7 @@ public class TurnBasedSystem : MonoBehaviour
         root.Q<Button>("Watter").clicked += PlayerButtonWaterClicked;
         root.Q<Button>("Air").clicked += PlayerButtonSandClicked;
         root.Q<Button>("Land").clicked += PlayerButtonLandClicked;
+        root.Q<Button>("Tempest").clicked += PlayerButtonTempestClicked;
     }
 
     private void PlayerButtonWaterClicked()
@@ -34,6 +35,10 @@ public class TurnBasedSystem : MonoBehaviour
     private void PlayerButtonSandClicked()
     {
         PlayerButtonClicked(State.SPAWN_SAND);
+    }
+    private void PlayerButtonTempestClicked()
+    {
+        PlayerButtonClicked(State.SPAWN_TEMPEST);
     }
 
     private void PlayerButtonClicked(int type)

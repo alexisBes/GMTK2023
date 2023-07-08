@@ -6,6 +6,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class Tile : MonoBehaviour
 {
@@ -27,8 +28,10 @@ public class Tile : MonoBehaviour
     public Our_Terrain our_terrain;
 
     public List<GameObject> prefabs;
+    public GameObject tempestPrefab;
 
     private GameObject currentPrefab;
+
 
     // Start is called before the first frame update
     void Start()
@@ -60,8 +63,26 @@ public class Tile : MonoBehaviour
 
             if (this.flags != 0)
             {
-                MixTile(State.state);
-                return;
+                if (State.state != State.SPAWN_TEMPEST)
+                {
+                    MixTile(State.state);
+                    return;
+                }
+                else
+                {
+                    if (this.flags != 4)
+                    {
+                        Debug.Log("Setting target");
+                        State.originTile = this;
+                        return;
+                    }
+                    else
+                    {
+                        LaunchTempest();
+                        return;
+                    }
+                }
+                
             }
 
             if (!this.our_terrain.isACaseValid(x, y))
@@ -70,7 +91,7 @@ public class Tile : MonoBehaviour
             AddNewTile(State.state);
         }
     }
-    private void AddNewTile(int state)
+    public void AddNewTile(int state)
     {
         Debug.Log("Oi!"); // @ DEBUG.
 
@@ -99,19 +120,21 @@ public class Tile : MonoBehaviour
         Debug.Log("Mixing");
         if (mix_flags == NO_MIX_TILE)
         {
-            if(flags == WATER_TILE && state== State.SPAWN_LAND || flags == LAND_TITLE && state == State.SPAWN_WATER)
+            if (flags == WATER_TILE && state == State.SPAWN_LAND || flags == LAND_TITLE && state == State.SPAWN_WATER)
             {
                 mix_flags = SWAMP_TILE;
-            }else if(flags == WATER_TILE && state == State.SPAWN_SAND|| flags == SAND_TILE && state == State.SPAWN_WATER)
+            }
+            else if (flags == WATER_TILE && state == State.SPAWN_SAND || flags == SAND_TILE && state == State.SPAWN_WATER)
             {
                 mix_flags = QUICKSAND_TILE;
-            }else if(flags == LAND_TITLE && state == State.SPAWN_SAND || flags == SAND_TILE && state == State.SPAWN_LAND)
+            }
+            else if (flags == LAND_TITLE && state == State.SPAWN_SAND || flags == SAND_TILE && state == State.SPAWN_LAND)
             {
                 mix_flags = DUNE_TILE;
             }
-            else if(flags != 0x00 && state == State.SPAWN_TOWN)
+            else if (flags != 0x00 && state == State.SPAWN_TOWN)
             {
-                if(flags == TOWN_TILE)
+                if (flags == TOWN_TILE)
                 {
                     flags = TOWN_TILE;
                     SetPrefab(flags);
@@ -119,11 +142,22 @@ public class Tile : MonoBehaviour
                 }
                 else mix_flags = SUBURG_TILE;
             }
-            if(mix_flags != NO_MIX_TILE)
+            if (mix_flags != NO_MIX_TILE)
             {
                 SetPrefab(TOWN_TILE + mix_flags);
             }
         }
         return;
     }
+
+    private void LaunchTempest()
+    {
+        Debug.Log("FULL PAWAR");
+        Vector3 vector = State.originTile.gameObject.transform.position;
+        vector.z += 6;
+        currentPrefab = Instantiate(tempestPrefab, vector, Quaternion.Euler(90f, 0f, 0f));
+        Tempest tempest =  currentPrefab.GetComponentInChildren<Tempest>();
+        tempest.target = gameObject.transform;
+    }
+
 }

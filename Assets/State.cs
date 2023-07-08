@@ -10,7 +10,7 @@ public class State
     // action
     public static int SPAWN_TEMPEST  = 0x05;
 
-
+    public static Tile originTile;
     private State()
     { }
     public State getInsance { get; private set; }
