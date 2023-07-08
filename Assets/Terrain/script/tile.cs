@@ -9,14 +9,17 @@ public class Tile : MonoBehaviour
 {
     private const int WATER_TILE = 0x01;
     private const int LAND_TITLE = 0x02;
-    private const int SAND_TILE  = 0x04;
-    private const int TOWN_TILE  = 0x08;
+    private const int SAND_TILE  = 0x03;
+    private const int TOWN_TILE  = 0x04;
 
     public int flags = 0;
+
+    public List<Material> materials;
     
     // Start is called before the first frame update
     void Start()
     {
+        this.GetComponent<Renderer>().material = materials[flags];
     }
 
     // Update is called once per frame
@@ -52,6 +55,7 @@ public class Tile : MonoBehaviour
             {
                 flags = TOWN_TILE;
             }
+            this.GetComponent<Renderer>().material = materials[flags];
         }
     }
 }
