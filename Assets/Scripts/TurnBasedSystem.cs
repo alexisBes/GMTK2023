@@ -62,10 +62,8 @@ public class TurnBasedSystem : MonoBehaviour
             {
                 Debug.Assert((tile_we_are_colonising.flags & Tile.TOWN_TILE) == 0);
                 tile_we_are_colonising.MixTile(State.SPAWN_TOWN);
-                
                 Debug.Assert((tile_we_are_colonising.flags & Tile.TOWN_TILE) != 0);
             }
-            else Debug.LogError("qdfg");
             
             coords_of_the_tile_that_is_being_colonised.x = -1;
             coords_of_the_tile_that_is_being_colonised.y = -1;
@@ -120,8 +118,6 @@ public class TurnBasedSystem : MonoBehaviour
         // Choose a tile to colonise at random and start working on it. START
         if(colonisable_tiles.Count != 0)
         {
-            Debug.Log("COUNT: " + colonisable_tiles.Count);
-            
             int index_to_choose_from = Random.Range(0, colonisable_tiles.Count);
             
             Tile tile_to_colonise = colonisable_tiles[index_to_choose_from];
