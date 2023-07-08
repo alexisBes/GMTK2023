@@ -5,5 +5,6 @@
         <ui:Button text="WATTER" display-tooltip-when-elided="true" name="Watter" class="btn" />
         <ui:Button text="LAND" display-tooltip-when-elided="true" name="Land" class="btn" />
         <ui:Button text="AIR" display-tooltip-when-elided="true" name="Air" class="btn" />
+        <ui:Button text="TEMPEST" display-tooltip-when-elided="true" name="Tempest" class="btn" />
     </ui:VisualElement>
 </ui:UXML>

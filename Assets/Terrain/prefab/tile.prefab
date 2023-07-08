@@ -130,7 +130,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -163,3 +163,4 @@ MonoBehaviour:
   - {fileID: 1408386809328536, guid: 0c9cd282647074244950d07c3846fa0c, type: 3}
   - {fileID: 1558740971366590, guid: 1c1d07a4036f32e4db71385ea172b294, type: 3}
   - {fileID: 1743851423142728, guid: 845f30f44a7d6914c8bc17b0221ab5fd, type: 3}
+  tempestPrefab: {fileID: 5359887979148635358, guid: a535371cc7a7a9144b85d82a4cd8f5e1, type: 3}
