@@ -9,36 +9,46 @@ public class Tile : MonoBehaviour
 {
     private const int WATER_TILE = 0x01;
     private const int LAND_TITLE = 0x02;
-    private const int SAND_TILE  = 0x03;
-    private const int TOWN_TILE  = 0x04;
+    private const int SAND_TILE = 0x03;
+    private const int TOWN_TILE = 0x04;
 
     public int flags = 0;
 
-    public List<Material> materials;
-    
+    public List<GameObject> prefabs;
+
+    private GameObject currentPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
-        this.GetComponent<Renderer>().material = materials[flags];
+        SetPrefab();
     }
 
     // Update is called once per frame
     void Update()
     {
     }
-    
+
+    void SetPrefab()
+    {
+        Destroy(currentPrefab);
+
+        currentPrefab = Instantiate(prefabs[flags], transform.position, Quaternion.Euler(90f, 0f, 0f));
+        currentPrefab.transform.parent = transform;
+    }
+
     void OnClickedTerrain()
     {
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
-        {            
-            if (hit.collider.GetInstanceID() != this.GetComponent<Collider>().GetInstanceID()) return;
-            
+        {
+            if (hit.collider.GetInstanceID() != GetComponent<Collider>().GetInstanceID()) return;
+
             Debug.Log("Oi!"); // @ DEBUG.
-            
+
             int what_we_should_do_on_this_tile = State.state;
-            
+
             if (what_we_should_do_on_this_tile == State.SPAWN_WATER)
             {
                 flags = WATER_TILE;
@@ -55,7 +65,8 @@ public class Tile : MonoBehaviour
             {
                 flags = TOWN_TILE;
             }
-            this.GetComponent<Renderer>().material = materials[flags];
+            
+            SetPrefab();
         }
     }
 }
