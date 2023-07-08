@@ -1,4 +1,4 @@
-#define DO_THE_3D_THING
+//#define DO_THE_3D_THING
 
 using System;
 using System.Collections;
@@ -28,8 +28,8 @@ public class Our_Terrain : MonoBehaviour
         int centreH = (int)(UnityEngine.Random.value * height);
         if (centreW == 0) centreW++;
         if (centreH == 0) centreH++;
-        if (centreW == width) centreW--;
-        if (centreH == height) centreH--;
+        if (centreW == width -1 ) centreW--;
+        if (centreH == height -1 ) centreH--;
         Debug.Log("X : " + centreW + ", Y : " + centreH);
         
         for (int y = 0; y < height; y++)

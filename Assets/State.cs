@@ -1,6 +1,8 @@
 
 public class State
 {
+    // RAZ
+    public static int EMPTY = 0;
     // new tile
     public static int SPAWN_WATER = 1;
     public static int SPAWN_SAND  = 2;

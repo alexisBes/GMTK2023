@@ -17,26 +17,15 @@ public class Tempest : MonoBehaviour
     void Update()
     {
         transform.position = Vector3.MoveTowards(gameObject.transform.position, target.position, speed * Time.deltaTime);
+        // Check if the position of the cube and sphere are approximately equal.
+        if (Vector3.Distance(transform.position, target.position) < 0.001f)
+        {
+            // on casse tout
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Tile targetTile = other.gameObject.GetComponent<Tile>();
-        if (targetTile != null)
-        {
-            if ((targetTile.flags & Tile.SUBURB_TILE) != 0)
-            {
-                // Si c'est en cours de transformation.
-                Debug.Log("dead goblin");
-                targetTile.flags &= ~Tile.SUBURB_TILE;
-            }
-            else if ((targetTile.flags & Tile.TOWN_TILE) != 0)
-            {
-                Debug.Log("Dead catto");
-                // Si c'est une ville.
-                Destroy(gameObject);
-            }
-
-        }
     }
 }

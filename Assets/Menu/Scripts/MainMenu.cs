@@ -12,13 +12,19 @@ public class MainMenu : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
 
         root.Q<Button>("Start").clicked += StartButtonClicked;
+        root.Q<Button>("Tuto").clicked += TutoButtonClicked;
         root.Q<Button>("Quit").clicked += QuitButtonClicked;
     }
 
 
     public void StartButtonClicked()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("Annimation");
+    }
+    
+    public void TutoButtonClicked()
+    {
+        SceneManager.LoadScene("Tuto");
     }
 
     void QuitButtonClicked()
