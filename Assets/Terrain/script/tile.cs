@@ -58,7 +58,7 @@ public class Tile : MonoBehaviour
         else if ((prefab_flags & SAND_TILE) != 0) prefab_index = 3;
         else if ((prefab_flags & LAND_TILE) != 0) prefab_index = 2;
 
-        currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(75f, 0f, 0f));
+        currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(0f, 0f, 0f));
         currentPrefab.transform.parent = transform;
     }
 
