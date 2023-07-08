@@ -35,22 +35,18 @@ public class TurnBasedSystem : MonoBehaviour
     private void PlayerButtonWaterClicked()
     {
         State.state = State.SPAWN_WATER;
-        State.do_not_raytrace_this_frame = true;
     }
     private void PlayerButtonLandClicked()
     {
         State.state = State.SPAWN_LAND;
-        State.do_not_raytrace_this_frame = true;
     }
     private void PlayerButtonSandClicked()
     {
         State.state = State.SPAWN_SAND;
-        State.do_not_raytrace_this_frame = true;
     }
     private void PlayerButtonTempestClicked()
     {
         State.state = State.SPAWN_TEMPEST;
-        State.do_not_raytrace_this_frame = true;
     }
     
     

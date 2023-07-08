@@ -27,7 +27,6 @@ public class Tile : MonoBehaviour
     public int flags = 0;
     public int mix_flags = 0;
     public int x, y;
-    //public Our_Terrain our_terrain;
 
     public List<GameObject> prefabs;
     public GameObject tempestPrefab;
@@ -83,13 +82,6 @@ public class Tile : MonoBehaviour
 
     void OnClickedTerrain()
     {
-        if(State.do_not_raytrace_this_frame == true)
-        {
-            State.do_not_raytrace_this_frame = false;
-            return;
-        }
-        
-        
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
