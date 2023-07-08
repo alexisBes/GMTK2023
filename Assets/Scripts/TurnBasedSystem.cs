@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 
 public struct Map_Coords
 {
@@ -51,15 +52,17 @@ public class TurnBasedSystem : MonoBehaviour
 
     static public void PerformEnemyAction()
     {
-        turnText.text = "Ennemies Turn";
+        turnText.text = "Enemy's Turn";
         
         if(coords_of_the_tile_that_is_being_colonised.x >= 0 && coords_of_the_tile_that_is_being_colonised.y >= 0)
         {
             // Finish colonising a tile we started colonising during the previous turn. START
             Tile tile_we_are_colonising = Our_Terrain.get_tile(coords_of_the_tile_that_is_being_colonised.x, coords_of_the_tile_that_is_being_colonised.y);
-            if((tile_we_are_colonising.flags & Tile.SUBURG_TILE) != 0)
+            if((tile_we_are_colonising.flags & Tile.SUBURB_TILE) != 0)
             {
+                Debug.Assert((tile_we_are_colonising.flags & Tile.TOWN_TILE) == 0);
                 tile_we_are_colonising.MixTile(State.SPAWN_TOWN);
+                Debug.Assert((tile_we_are_colonising.flags & Tile.TOWN_TILE) != 0);
             }
             
             coords_of_the_tile_that_is_being_colonised.x = -1;
@@ -76,9 +79,37 @@ public class TurnBasedSystem : MonoBehaviour
             for(int x = 0; x < Our_Terrain.width; x++)
             {
                 Tile tile = Our_Terrain.get_tile(x, y);
-                if(tile.flags == 0 || (tile.flags & (Tile.SUBURG_TILE | Tile.TOWN_TILE)) != 0) continue;
                 
-                colonisable_tiles.Add(tile);
+                if((tile.flags & (Tile.TOWN_TILE | Tile.SUBURB_TILE)) == 0)
+                {
+                    int nearby_flags = 0;
+                    
+                    if(x > 0)
+                    {
+                        Tile adjacent = Our_Terrain.get_tile(x - 1, y);
+                        nearby_flags |= adjacent.flags;
+                    }
+                    if(x + 1 < Our_Terrain.width)
+                    {
+                        Tile adjacent = Our_Terrain.get_tile(x + 1, y);
+                        nearby_flags |= adjacent.flags;
+                    }
+                    if(y > 0)
+                    {
+                        Tile adjacent = Our_Terrain.get_tile(x, y - 1);
+                        nearby_flags |= adjacent.flags;
+                    }
+                    if(y + 1 < Our_Terrain.height)
+                    {
+                        Tile adjacent = Our_Terrain.get_tile(x, y + 1);
+                        nearby_flags |= adjacent.flags;
+                    }
+                    
+                    if((nearby_flags & Tile.TOWN_TILE) != 0)
+                    {
+                        colonisable_tiles.Add(tile);
+                    }
+                }
             }
         }
         // Retrieve all colonisable tiles. END
@@ -90,7 +121,9 @@ public class TurnBasedSystem : MonoBehaviour
             int index_to_choose_from = Random.Range(0, colonisable_tiles.Count);
             
             Tile tile_to_colonise = colonisable_tiles[index_to_choose_from];
-            tile_to_colonise.MixTile(State.SPAWN_TOWN);
+            
+            bool status = tile_to_colonise.MixTile(State.SPAWN_TOWN);
+            Debug.Assert(status);
             
             coords_of_the_tile_that_is_being_colonised.x = tile_to_colonise.x;
             coords_of_the_tile_that_is_being_colonised.y = tile_to_colonise.y;
