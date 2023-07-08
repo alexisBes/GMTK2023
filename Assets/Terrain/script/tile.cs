@@ -154,10 +154,9 @@ public class Tile : MonoBehaviour
 
         if (flags == 0)
         {
-            if (state == State.SPAWN_WATER) flags = WATER_TILE;
+            if (state == State.SPAWN_WATER)     flags = WATER_TILE;
             else if (state == State.SPAWN_SAND) flags = SAND_TILE;
             else if (state == State.SPAWN_LAND) flags = LAND_TILE;
-            //else if (state == State.SPAWN_TOWN) flags = TOWN_TILE;
             else if (state == State.SPAWN_TEMPEST) result = false;
             else Debug.LogError("INVALID STATE " + state);
         }
