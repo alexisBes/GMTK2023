@@ -267,26 +267,4 @@ public class Tile : MonoBehaviour
         SetPrefab();
         return result;
     }
-
-    public void LaunchTempest()
-    {
-        Debug.Log("FULL PAWAR");
-        Vector3 vector = State.originTile.gameObject.transform.position;
-        vector.z += 0;
-        GameObject saracePrefab = Instantiate(tempestPrefab, vector, Quaternion.Euler(90f, 0f, 0f));
-        Tempest tempest = saracePrefab.GetComponentInChildren<Tempest>();
-        tempest.target = gameObject.transform;
-        if ((this.flags & Tile.SUBURB_TILE) != 0)
-        {
-            // Si c'est en cours de transformation.
-            Debug.Log("dead goblin");
-            this.flags &= ~Tile.SUBURB_TILE;
-            this.SetPrefab(flags);
-        }
-        else if ((this.flags & Tile.TOWN_TILE) != 0)
-        {
-            Debug.Log("Dead catto");
-            // Si c'est une ville.
-        }
-    }
 }
