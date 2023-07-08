@@ -126,7 +126,12 @@ public class Our_Terrain : MonoBehaviour
         camera_zoom  = Mathf.Clamp(camera_zoom, closest_camera_zoom, furthest_camera_zoom);
         
         camera.orthographicSize = camera_zoom;
+        
+        // @ Zoom around the mouse position.
         // Handle camera zoom. END
+        
+        
+        // @ Handle camera rotation.
         
         
         // Handle camera panning. START
@@ -142,7 +147,7 @@ public class Our_Terrain : MonoBehaviour
         Vector3 camera_right   = Vector3.Cross(new Vector3(0, 1, 0), camera_look_at_direction).normalized;
         Vector3 camera_forward = Vector3.Cross(camera_right, new Vector3(0, 1, 0)).normalized;
         
-        // @ RIght now we are not preventing the camera from going too far!!!
+        // @ Right now we are not preventing the camera from going too far!!!
         camera.transform.position = camera.transform.position + (camera_right * horizontal_pan * horizontal_pan_speed + camera_forward * vertical_pan * vertical_pan_speed) * zoom_factor;
         // Handle camera panning. END
     }
