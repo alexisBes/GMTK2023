@@ -23,10 +23,13 @@ public class Our_Terrain : MonoBehaviour
     public static float closest_camera_zoom  = 2.0f;
     
     Vector3 camera_look_at_direction;
+    Vector3 map_centre;
+    float   camera_rotation_circle_radius = 100.0f;
+    float   camera_rotation_angle_degrees = 45.0f - 90.0f;
 
     static public List<Tile> tiles = new List<Tile>();
     
-    // Start is called before the first frame update
+    
     void Start()
     {
         Vector3 position = new Vector3(0, 0, 0);
@@ -88,22 +91,20 @@ public class Our_Terrain : MonoBehaviour
         Vector3 bottom_left_corner = new Vector3(top_left_corner.x + (float)width * TILE_STEP, 0, top_left_corner.z + (float)height * TILE_STEP);
         
         Transform camera_transform = Camera.main.GetComponent<Transform>();
-        camera_transform.position = new Vector3(
-            bottom_left_corner.x,
-            5,
-            bottom_left_corner.z
-        );
         
-        Vector3 where_to_look_at = new Vector3(
+        map_centre = new Vector3(
             top_left_corner.x + (bottom_left_corner.x - top_left_corner.x) * 0.5f,
             0,
             top_left_corner.z + (bottom_left_corner.z - top_left_corner.z) * 0.5f
         );
         
-        Vector3 direction_to_look_at = where_to_look_at - camera_transform.position;
-        camera_look_at_direction = direction_to_look_at.normalized;
+        float theta = Mathf.Deg2Rad * (camera_rotation_angle_degrees);
+        Vector3 camera_position_on_circle = new Vector3(Mathf.Cos(theta), 0, Mathf.Sin(theta)) * camera_rotation_circle_radius;
         
-        camera_transform.position = camera_transform.position - camera_look_at_direction * 100.0f;
+        camera_transform.position = map_centre + camera_position_on_circle + new Vector3(0, 100, 0);
+        
+        Vector3 direction_to_look_at = map_centre - camera_transform.position;
+        camera_look_at_direction = direction_to_look_at.normalized;
         
         Quaternion orientation = Quaternion.LookRotation(camera_look_at_direction, new Vector3(0, 1, 0));
         
@@ -126,6 +127,8 @@ public class Our_Terrain : MonoBehaviour
         camera_zoom  = Mathf.Clamp(camera_zoom, closest_camera_zoom, furthest_camera_zoom);
         
         camera.orthographicSize = camera_zoom;
+        
+        // @ Zoom around the mouse position.
         // Handle camera zoom. END
         
         
@@ -142,7 +145,7 @@ public class Our_Terrain : MonoBehaviour
         Vector3 camera_right   = Vector3.Cross(new Vector3(0, 1, 0), camera_look_at_direction).normalized;
         Vector3 camera_forward = Vector3.Cross(camera_right, new Vector3(0, 1, 0)).normalized;
         
-        // @ RIght now we are not preventing the camera from going too far!!!
+        // @ Right now we are not preventing the camera from going too far!!!
         camera.transform.position = camera.transform.position + (camera_right * horizontal_pan * horizontal_pan_speed + camera_forward * vertical_pan * vertical_pan_speed) * zoom_factor;
         // Handle camera panning. END
     }

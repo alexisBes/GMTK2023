@@ -15,9 +15,8 @@ public class TurnBasedSystem : MonoBehaviour
     static public VisualElement root;
     
     static Map_Coords coords_of_the_tile_that_is_being_colonised;
-
-
-
+    
+    
     private void Start()
     {
         coords_of_the_tile_that_is_being_colonised.x = -1;
@@ -32,24 +31,29 @@ public class TurnBasedSystem : MonoBehaviour
         root.Q<Button>("Land").clicked    += PlayerButtonLandClicked;
         root.Q<Button>("Tempest").clicked += PlayerButtonTempestClicked;
     }
-
+    
     private void PlayerButtonWaterClicked()
     {
         State.state = State.SPAWN_WATER;
+        State.do_not_raytrace_this_frame = true;
     }
     private void PlayerButtonLandClicked()
     {
         State.state = State.SPAWN_LAND;
+        State.do_not_raytrace_this_frame = true;
     }
     private void PlayerButtonSandClicked()
     {
         State.state = State.SPAWN_SAND;
+        State.do_not_raytrace_this_frame = true;
     }
     private void PlayerButtonTempestClicked()
     {
         State.state = State.SPAWN_TEMPEST;
+        State.do_not_raytrace_this_frame = true;
     }
-
+    
+    
     static public void PerformEnemyAction()
     {
         turnText.text = "Enemy's Turn";
@@ -79,6 +83,8 @@ public class TurnBasedSystem : MonoBehaviour
             for(int x = 0; x < Our_Terrain.width; x++)
             {
                 Tile tile = Our_Terrain.get_tile(x, y);
+                
+                if(tile.flags == 0) continue;
                 
                 if((tile.flags & (Tile.TOWN_TILE | Tile.SUBURB_TILE)) == 0)
                 {
@@ -122,8 +128,11 @@ public class TurnBasedSystem : MonoBehaviour
             
             Tile tile_to_colonise = colonisable_tiles[index_to_choose_from];
             
+            Debug.Assert((tile_to_colonise.flags & Tile.SUBURB_TILE) == 0);
+            Debug.Assert(tile_to_colonise.flags != 0);
             bool status = tile_to_colonise.MixTile(State.SPAWN_TOWN);
             Debug.Assert(status);
+            Debug.Assert((tile_to_colonise.flags & (Tile.SUBURB_TILE | Tile.TOWN_TILE)) == Tile.SUBURB_TILE);
             
             coords_of_the_tile_that_is_being_colonised.x = tile_to_colonise.x;
             coords_of_the_tile_that_is_being_colonised.y = tile_to_colonise.y;
