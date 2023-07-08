@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Terrain/script/terrain.cs.meta
+guid: bb69f5172b105714eb5e908947be6d16
+=======
 guid: 3d2736d96b9144d0d89aa75186949bd4
+>>>>>>> main:Assets/Scripts/TurnBasedSystem.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

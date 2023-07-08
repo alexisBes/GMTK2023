@@ -10,32 +10,45 @@ public class Our_Terrain : MonoBehaviour
 {
     public GameObject tile_prefab;
 
+    public Material material;
+
     public int width = 8;
     public int height = 7;
-    
-    const float TILE_STEP = 2;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 position = new Vector3(0,0,0);
-        
-        for (int y = 0; y < height; y++) 
+        Vector3 position = new Vector3(0, 0, 0);
+        int centreW = (int)(Random.value * width);
+        int centreH = (int)(Random.value * height);
+        if (centreW == 0) centreW++;
+        if (centreH == 0) centreH++;
+        if (centreW == width) centreW--;
+        if (centreH == height) centreH--;
+        Debug.Log("X : " + centreW + ", Y : " + centreH);
+        for (int i = 0; i < width; i++)
         {
-            for(int x = 0; x < width; x++)
+            for (int j = 0; j < height; j++)
             {
-                GameObject tile = Instantiate(tile_prefab, position, tile_prefab.transform.rotation);
-                Tile tile_info = tile.GetComponent<Tile>();
-                tile_info.flags = 0;
-                
-                PlayerInput pi = tile.GetComponent<PlayerInput>();
+                int newFlags = 0x00;
+                if ((i >= centreW-1 && i <= centreW+1) && (j <= centreH +1  && j >= centreH -1))
+                    newFlags = Random.Range(1, 0x05);
+                if (i == centreW && j == centreH) { newFlags = State.SPAWN_TOWN; }
+                GameObject game = Instantiate(tile_prefab, position, tile_prefab.transform.rotation);
+                Tile terrain = game.GetComponent<Tile>();
+                terrain.flags = newFlags;
+
+                PlayerInput pi = game.GetComponent<PlayerInput>();
                 pi.camera = Camera.main;
-                
-                position.x += TILE_STEP;
+                if(newFlags != 0x00)
+                {
+                    game.SetActive(false);
+                }
+                objects.Add(game);
+                position.x += 1;
             }
-            
-            position.y += TILE_STEP;
-            position.x  = 0;
+            position.z += 1;
+            position.x = 0;
         }
         
         // Set the camera so that the whole terrain is in view. START
@@ -54,5 +67,21 @@ public class Our_Terrain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    public int GetIndex(int uid)
+    {
+        int index = 0;
+        foreach (GameObject obj in objects)
+        {
+            if (obj.GetInstanceID() == uid)
+            {
+                return index;
+            }
+            index++;
+        }
+        Assert.AreEqual(1, 0);
+        return -1;
     }
 }

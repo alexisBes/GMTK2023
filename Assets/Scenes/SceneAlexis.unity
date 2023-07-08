@@ -350,11 +350,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1524327759}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af537e541afcd5f4eb9b6b0ff309c235, type: 3}
+  m_Script: {fileID: 11500000, guid: bb69f5172b105714eb5e908947be6d16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objects: []
-  main: {fileID: 7966041069247471970, guid: 49b4c9e936a2c7241b3028767cff9833, type: 3}
-  addterain: {fileID: 0}
+  tile_prefab: {fileID: 7966041069247471970, guid: 49b4c9e936a2c7241b3028767cff9833, type: 3}
   width: 8
   height: 7
