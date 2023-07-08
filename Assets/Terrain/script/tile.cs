@@ -30,8 +30,11 @@ public class Tile : MonoBehaviour
 
     public List<GameObject> prefabs;
     public GameObject tempestPrefab;
-    public GameObject camp_prefab_to_instanciate_from;
+    public GameObject camp_prefab_to_instantiate_from;
     public GameObject camp_prefab = null;
+    
+    public GameObject ui_disk_to_instantiate_from;
+    public GameObject ui_disk;
 
     private GameObject currentPrefab;
 
@@ -40,11 +43,38 @@ public class Tile : MonoBehaviour
     void Start()
     {
         SetPrefab();
+        
+        Transform t = GetComponent<Transform>();
+        
+        Vector3 spawn_position = t.position;
+        spawn_position.y += 0.3f;
+        
+        Quaternion orientation = new Quaternion();
+        orientation.eulerAngles = new Vector3(-90, 0, 0);
+        ui_disk = Instantiate(ui_disk_to_instantiate_from, spawn_position, orientation);
+        
+        Renderer renderer = ui_disk.GetComponent<Renderer>();
+        renderer.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Camera camera = Camera.main;
+        Vector3 mouse_position = Input.mousePosition;
+        
+        if((flags & TOWN_TILE) == 0)
+        {
+            Renderer renderer = ui_disk.GetComponent<Renderer>();
+            
+            Ray ray = camera.ScreenPointToRay(mouse_position);
+            RaycastHit hit;
+            if(Physics.Raycast(ray.origin, ray.direction, out hit, 500))
+            {
+                if (hit.collider.GetInstanceID() == this.GetComponent<Collider>().GetInstanceID()) renderer.enabled = true;
+                else                                                                               renderer.enabled = false;
+            }
+        }
     }
 
     void SetPrefab()
@@ -72,7 +102,7 @@ public class Tile : MonoBehaviour
         {
             if(camp_prefab) Destroy(camp_prefab);
             
-            camp_prefab = Instantiate(camp_prefab_to_instanciate_from, transform.position, Quaternion.Euler(0, 0, 0));
+            camp_prefab = Instantiate(camp_prefab_to_instantiate_from, transform.position, Quaternion.Euler(0, 0, 0));
             camp_prefab.transform.parent = transform;
         }
         else if(camp_prefab) Destroy(camp_prefab);
