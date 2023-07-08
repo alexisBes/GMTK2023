@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 
 public struct Map_Coords
 {
@@ -71,12 +72,56 @@ public class TurnBasedSystem : MonoBehaviour
         // Retrieve all colonisable tiles. START
         List<Tile> colonisable_tiles = new List<Tile>();
         
+        List<bool> added_table = new List<bool>(Our_Terrain.width * Our_Terrain.height);
+        for(int i = 0; i < added_table.Count; i++) added_table.Add(false);
+        
         for(int y = 0; y < Our_Terrain.height; y++)
         {
             for(int x = 0; x < Our_Terrain.width; x++)
             {
                 Tile tile = Our_Terrain.get_tile(x, y);
-                if(tile.flags == 0 || (tile.flags & (Tile.SUBURG_TILE | Tile.TOWN_TILE)) != 0) continue;
+                
+                if((tile.flags & Tile.TOWN_TILE) != 0)
+                {
+                    if(x > 0)
+                    {
+                        
+                        
+                        Tile adjacent = Our_Terrain.get_tile(x - 1, y);
+                        if(added_table[y * Our_Terrain.width + x - 1] == false && adjacent.flags != 0 && (adjacent.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
+                        {
+                            added_table[y * Our_Terrain.width + x - 1] = true;
+                            colonisable_tiles.Add(adjacent);
+                        }
+                    }
+                    if(x + 1 < Our_Terrain.width)
+                    {
+                        Tile adjacent = Our_Terrain.get_tile(x + 1, y);
+                        if(added_table[y * Our_Terrain.width + x + 1] == false && adjacent.flags != 0 && (adjacent.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
+                        {
+                            added_table[y * Our_Terrain.width + x + 1] = true;
+                            colonisable_tiles.Add(adjacent);
+                        }
+                    }
+                    if(y > 0)
+                    {
+                        Tile adjacent = Our_Terrain.get_tile(x, y - 1);
+                        if(added_table[(y - 1) * Our_Terrain.width + x] == false && adjacent.flags != 0 && (adjacent.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
+                        {
+                            added_table[(y - 1) * Our_Terrain.width + x] = true;
+                            colonisable_tiles.Add(adjacent);
+                        }
+                    }
+                    if(y + 1 < Our_Terrain.height)
+                    {
+                        Tile adjacent = Our_Terrain.get_tile(x, y + 1);
+                        if(added_table[(y + 1) * Our_Terrain.width + x] == false && adjacent.flags != 0 && (adjacent.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
+                        {
+                            added_table[(y + 1) * Our_Terrain.width + x] = true;
+                            colonisable_tiles.Add(adjacent);
+                        }
+                    }
+                }
                 
                 colonisable_tiles.Add(tile);
             }
