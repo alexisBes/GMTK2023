@@ -8,11 +8,7 @@ public class State
     public static int SPAWN_TOWN= 0x04;
 
     // action
-    public static int SPAWN_TEMPEST  = 0x01;
-    
-    // MIX
-    public static int MIX_WITH_SAND  = 0x02;
-    public static int MIX_WITH_WATER  = 0x04;
+    public static int SPAWN_TEMPEST  = 0x05;
 
 
     private State()

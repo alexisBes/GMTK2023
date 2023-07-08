@@ -50,7 +50,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 5b88c892ace20474f82d3317db771887, type: 3}
   m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -135,8 +134,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10, y: 0.01, z: 10}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 10, y: 0.33056825, z: 10.000001}
+  m_Center: {x: -0, y: -0.16028418, z: -6.5226026e-16}
 --- !u!114 &2187330991637952937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,8 +149,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flags: 0
+  mix_flags: 0
+  x: 0
+  y: 0
+  our_terrain: {fileID: 0}
   prefabs:
+  - {fileID: 1994693040836722, guid: cc0b6d4b15530d942bffb81f838c93fc, type: 3}
   - {fileID: 1520068213326888, guid: d8deb0d5cca03814e8f5cd71fb9e7a1e, type: 3}
   - {fileID: 1712155488500880, guid: faf4b4ec0cbbb3840a5ba44685c18d99, type: 3}
   - {fileID: 1591559679761318, guid: 6aa6d57464e3a7742b51561c98bf11c8, type: 3}
   - {fileID: 1048076980211604, guid: acf51e39f8505084796481991b891ff9, type: 3}
+  - {fileID: 100000, guid: 0164b949b56b05642992be3ce4f5a9c7, type: 3}
+  - {fileID: 1408386809328536, guid: 0c9cd282647074244950d07c3846fa0c, type: 3}
+  - {fileID: 1558740971366590, guid: 1c1d07a4036f32e4db71385ea172b294, type: 3}
+  - {fileID: 1743851423142728, guid: 845f30f44a7d6914c8bc17b0221ab5fd, type: 3}
