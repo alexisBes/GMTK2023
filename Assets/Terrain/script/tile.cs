@@ -22,14 +22,16 @@ public class Tile : MonoBehaviour
     public const int SUBURB_TILE = 0x80;
 
     public AudioSource audioSource;
-
+    
+    public int flags_from_last_time_we_set_the_prefab = -1;
     public int flags = 0;
     public int mix_flags = 0;
     public int x, y;
-    //public Our_Terrain our_terrain;
 
     public List<GameObject> prefabs;
     public GameObject tempestPrefab;
+    public GameObject camp_prefab_to_instanciate_from;
+    public GameObject camp_prefab = null;
 
     private GameObject currentPrefab;
 
@@ -47,12 +49,15 @@ public class Tile : MonoBehaviour
 
     void SetPrefab()
     {
+        if(flags == flags_from_last_time_we_set_the_prefab) return;
+        
+        
         Destroy(currentPrefab);
 
         int prefab_index = 0;
 
         if ((flags & TOWN_TILE)           != 0) prefab_index = 4;
-        else if ((flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
+        //else if ((flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
         else if ((flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
         else if ((flags & SWAMP_TILE)     != 0) prefab_index = 4 + 1;
         else if ((flags & DUNE_TILE)      != 0) prefab_index = 4 + 3;
@@ -60,19 +65,23 @@ public class Tile : MonoBehaviour
         else if ((flags & SAND_TILE)      != 0) prefab_index = 3;
         else if ((flags & LAND_TILE)      != 0) prefab_index = 2;
 
-        currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(0f, 0f, 0f));
+        currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(0, 0, 0));
         currentPrefab.transform.parent = transform;
+        
+        if((flags & SUBURB_TILE) != 0)
+        {
+            if(camp_prefab) Destroy(camp_prefab);
+            
+            camp_prefab = Instantiate(camp_prefab_to_instanciate_from, transform.position, Quaternion.Euler(0, 0, 0));
+            camp_prefab.transform.parent = transform;
+        }
+        else if(camp_prefab) Destroy(camp_prefab);
+        
+        flags_from_last_time_we_set_the_prefab = flags;
     }
 
     void OnClickedTerrain()
     {
-        if(State.do_not_raytrace_this_frame == true)
-        {
-            State.do_not_raytrace_this_frame = false;
-            return;
-        }
-        
-        
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
@@ -103,9 +112,6 @@ public class Tile : MonoBehaviour
                     
                     // Unleash a storm. START
                     Debug.Log("Target acquired");
-                    
-                    Vector3 vector = State.originTile.gameObject.transform.position;
-                    vector.z += 6;
                     
                     int step_x = 0;
                     int step_y = 0;
@@ -156,9 +162,16 @@ public class Tile : MonoBehaviour
                     
                     
                     // Spawn an object for visual effects.
-                    GameObject saracePrefab = Instantiate(tempestPrefab, vector, Quaternion.Euler(90f, 0f, 0f));
+                    Transform origin_transform = State.originTile.GetComponent<Transform>();
+                    Vector3 storm_spawn_site = origin_transform.position;
+                    
+                    Transform end_transform = end_tile.GetComponent<Transform>();
+                    
+                    GameObject saracePrefab = Instantiate(tempestPrefab, storm_spawn_site, Quaternion.Euler(0, 0, 0));
                     Tempest tempest = saracePrefab.GetComponentInChildren<Tempest>();
-                    tempest.target  = end_tile.gameObject.transform;
+                    tempest.target  = end_transform.position;
+                    
+                    Debug.Log("MLKSFMKL " + tempest.target); // @ DEBUG.
                     //////////////////////////////////////
                     // Unleash a storm. END
                 }
@@ -176,9 +189,9 @@ public class Tile : MonoBehaviour
                 State.state = State.EMPTY;
                 
                 // Check for a game over state. START
-                ///////////////////////////////////////////////////////////////////
-                // NOTE: we consider the game to be over when all tiles are filled.
-                ///////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////
+                // NOTE: we consider the game is over when all tiles are filled.
+                ////////////////////////////////////////////////////////////////
                 
                 int player_score = 0;
                 int bot_score    = 0;
@@ -204,7 +217,7 @@ public class Tile : MonoBehaviour
                 
                 if(all_tiles_are_filled)
                 {
-                    // @ Transition to a game over screen.
+                    // Transition to a game over screen. START
                     if(player_score >= bot_score)
                     {
                         SceneManager.LoadScene("Win");
@@ -213,6 +226,7 @@ public class Tile : MonoBehaviour
                     {
                         SceneManager.LoadScene("Lost");
                     }
+                    // Transition to a game over screen. END
                 }
                 // Check for a game over state. END
             }

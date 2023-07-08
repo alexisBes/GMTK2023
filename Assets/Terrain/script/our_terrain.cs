@@ -12,10 +12,11 @@ using UnityEngine.InputSystem;
 public class Our_Terrain : MonoBehaviour
 {
     public GameObject tile_prefab;
+    public GameObject camp_prefab;
 
 
-    public static int width  = 16;
-    public static int height = 16;
+    public static int width  = 8;
+    public static int height = 8;
     const float TILE_STEP = 1;
     
     public static float default_camera_zoom  = 7.2f;
@@ -54,10 +55,10 @@ public class Our_Terrain : MonoBehaviour
                 
                 GameObject tile = Instantiate(tile_prefab, position, tile_prefab.transform.rotation);
                 Tile terrain = tile.GetComponent<Tile>();
-                terrain.flags       = newFlags;
-                //terrain.our_terrain = this;
-                terrain.x           = x;
-                terrain.y           = y;
+                terrain.flags = newFlags;
+                terrain.camp_prefab_to_instanciate_from = camp_prefab;
+                terrain.x     = x;
+                terrain.y     = y;
 
                 PlayerInput pi = tile.GetComponent<PlayerInput>();
                 pi.camera = Camera.main;
@@ -193,7 +194,7 @@ public class Our_Terrain : MonoBehaviour
         
         const int BASIC_FLAGS = Tile.WATER_TILE | Tile.SAND_TILE | Tile.LAND_TILE;
         
-        if((a.flags & b.flags & BASIC_FLAGS) != 0) return true;
+        if((a.flags & b.flags & BASIC_FLAGS) != 0) return false; // We do not want people to abuse two consecutive tiles of the same type.
         
         if((a.flags & Tile.WATER_TILE) != 0)
         {
