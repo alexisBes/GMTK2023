@@ -11,15 +11,15 @@ using UnityEngine.UIElements;
 public class Tile : MonoBehaviour
 {
     public const int WATER_TILE = 0x01;
-    public const int LAND_TILE  = 0x02;
-    public const int SAND_TILE  = 0x04;
-    public const int TOWN_TILE  = 0x08;
+    public const int LAND_TILE = 0x02;
+    public const int SAND_TILE = 0x04;
+    public const int TOWN_TILE = 0x08;
 
-    public const int NO_MIX_TILE    = 0x00;
-    public const int SWAMP_TILE     = 0x10;
+    public const int NO_MIX_TILE = 0x00;
+    public const int SWAMP_TILE = 0x10;
     public const int QUICKSAND_TILE = 0x20;
-    public const int DUNE_TILE      = 0x40;
-    public const int SUBURB_TILE    = 0x80;
+    public const int DUNE_TILE = 0x40;
+    public const int SUBURB_TILE = 0x80;
 
 
     public int flags = 0;
@@ -36,7 +36,6 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Asset type :" + flags);
         SetPrefab(flags);
     }
 
@@ -48,17 +47,17 @@ public class Tile : MonoBehaviour
     void SetPrefab(int prefab_flags)
     {
         Destroy(currentPrefab);
-        
+
         int prefab_index = 0;
-        
-        if     ((prefab_flags & TOWN_TILE)      != 0) prefab_index = 4;
-        else if((prefab_flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
-        else if((prefab_flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
-        else if((prefab_flags & SWAMP_TILE)     != 0) prefab_index = 4 + 1;
-        else if((prefab_flags & DUNE_TILE)      != 0) prefab_index = 4 + 3;
-        else if((prefab_flags & WATER_TILE)     != 0) prefab_index = 1;
-        else if((prefab_flags & SAND_TILE)      != 0) prefab_index = 3;
-        else if((prefab_flags & LAND_TILE)      != 0) prefab_index = 2;
+
+        if ((prefab_flags & TOWN_TILE) != 0) prefab_index = 4;
+        else if ((prefab_flags & SUBURB_TILE) != 0) prefab_index = 4 + 4;
+        else if ((prefab_flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
+        else if ((prefab_flags & SWAMP_TILE) != 0) prefab_index = 4 + 1;
+        else if ((prefab_flags & DUNE_TILE) != 0) prefab_index = 4 + 3;
+        else if ((prefab_flags & WATER_TILE) != 0) prefab_index = 1;
+        else if ((prefab_flags & SAND_TILE) != 0) prefab_index = 3;
+        else if ((prefab_flags & LAND_TILE) != 0) prefab_index = 2;
 
         currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(75f, 0f, 0f));
         currentPrefab.transform.parent = transform;
@@ -71,16 +70,16 @@ public class Tile : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             if (hit.collider.GetInstanceID() != this.GetComponent<Collider>().GetInstanceID()) return;
-            
+
             bool play_enemy_turn = true;
-            
+
             if (this.flags != 0 && State.state == State.SPAWN_TEMPEST)
             {
                 if ((this.flags & (TOWN_TILE | SUBURB_TILE)) == 0)
                 {
                     Debug.Log("Setting target");
                     State.originTile = this;
-                    
+
                     play_enemy_turn = false;
                 }
                 else
@@ -92,8 +91,8 @@ public class Tile : MonoBehaviour
             else
             {
                 if (!Our_Terrain.isACaseValid(x, y)) return;
-                
-                if(!MixTile(State.state)) return; // This action did nothing so we do not want to run a turn.
+
+                if (!MixTile(State.state)) return; // This action did nothing so we do not want to run a turn.
             }
 
 
@@ -112,18 +111,18 @@ public class Tile : MonoBehaviour
         ///////////////////////////////////////////////////////
         // NOTE: when this action does nothing we return false.
         ///////////////////////////////////////////////////////
-        
-        Debug.Log("Mixing from " + state);
-        
+
+        Debug.Log("Mixing from " + state + " case X:" + x + " y : " + y);
+
         bool result = true;
-        
-        if(flags == 0)
+
+        if (flags == 0)
         {
-            if     (state == State.SPAWN_WATER)   flags = WATER_TILE;
-            else if(state == State.SPAWN_SAND)    flags = SAND_TILE;
-            else if(state == State.SPAWN_LAND)    flags = LAND_TILE;
-            else if(state == State.SPAWN_TOWN)    flags = TOWN_TILE;
-            else if(state == State.SPAWN_TEMPEST) result = false;
+            if (state == State.SPAWN_WATER) flags = WATER_TILE;
+            else if (state == State.SPAWN_SAND) flags = SAND_TILE;
+            else if (state == State.SPAWN_LAND) flags = LAND_TILE;
+            else if (state == State.SPAWN_TOWN) flags = TOWN_TILE;
+            else if (state == State.SPAWN_TEMPEST) result = false;
             else Debug.LogError("INVALID STATE " + state);
         }
         else if ((flags & WATER_TILE) != 0 && state == State.SPAWN_LAND || (flags & LAND_TILE) != 0 && state == State.SPAWN_WATER)
@@ -143,12 +142,12 @@ public class Tile : MonoBehaviour
             if ((flags & SUBURB_TILE) != 0)
             {
                 flags &= ~SUBURB_TILE;
-                flags |=  TOWN_TILE;
+                flags |= TOWN_TILE;
             }
             else flags |= SUBURB_TILE;
         }
         else result = false;
-        
+
         SetPrefab(flags);
         return result;
     }
@@ -158,9 +157,21 @@ public class Tile : MonoBehaviour
         Debug.Log("FULL PAWAR");
         Vector3 vector = State.originTile.gameObject.transform.position;
         vector.z += 6;
-        currentPrefab = Instantiate(tempestPrefab, vector, Quaternion.Euler(90f, 0f, 0f));
-        Tempest tempest =  currentPrefab.GetComponentInChildren<Tempest>();
+        GameObject saracePrefab = Instantiate(tempestPrefab, vector, Quaternion.Euler(90f, 0f, 0f));
+        Tempest tempest = saracePrefab.GetComponentInChildren<Tempest>();
         tempest.target = gameObject.transform;
+        if ((this.flags & Tile.SUBURB_TILE) != 0)
+        {
+            // Si c'est en cours de transformation.
+            Debug.Log("dead goblin");
+            this.flags &= ~Tile.SUBURB_TILE;
+            this.SetPrefab(flags);
+        }
+        else if ((this.flags & Tile.TOWN_TILE) != 0)
+        {
+            Debug.Log("Dead catto");
+            // Si c'est une ville.
+        }
     }
 
 }
