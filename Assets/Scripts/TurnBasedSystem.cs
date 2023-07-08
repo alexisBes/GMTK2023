@@ -52,7 +52,7 @@ public class TurnBasedSystem : MonoBehaviour
 
     static public void PerformEnemyAction()
     {
-        turnText.text = "Ennemies Turn";
+        turnText.text = "Enemy's Turn";
         
         if(coords_of_the_tile_that_is_being_colonised.x >= 0 && coords_of_the_tile_that_is_being_colonised.y >= 0)
         {
@@ -60,6 +60,7 @@ public class TurnBasedSystem : MonoBehaviour
             Tile tile_we_are_colonising = Our_Terrain.get_tile(coords_of_the_tile_that_is_being_colonised.x, coords_of_the_tile_that_is_being_colonised.y);
             if((tile_we_are_colonising.flags & Tile.SUBURG_TILE) != 0)
             {
+                Assert.IsTrue((tile_we_are_colonising.flags & Tile.TOWN_TILE) == 0);
                 tile_we_are_colonising.MixTile(State.SPAWN_TOWN);
             }
             
@@ -72,58 +73,42 @@ public class TurnBasedSystem : MonoBehaviour
         // Retrieve all colonisable tiles. START
         List<Tile> colonisable_tiles = new List<Tile>();
         
-        List<bool> added_table = new List<bool>(Our_Terrain.width * Our_Terrain.height);
-        for(int i = 0; i < added_table.Count; i++) added_table.Add(false);
-        
         for(int y = 0; y < Our_Terrain.height; y++)
         {
             for(int x = 0; x < Our_Terrain.width; x++)
             {
                 Tile tile = Our_Terrain.get_tile(x, y);
                 
-                if((tile.flags & Tile.TOWN_TILE) != 0)
+                if((tile.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
                 {
+                    int nearby_flags = 0;
+                    
                     if(x > 0)
                     {
-                        
-                        
                         Tile adjacent = Our_Terrain.get_tile(x - 1, y);
-                        if(added_table[y * Our_Terrain.width + x - 1] == false && adjacent.flags != 0 && (adjacent.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
-                        {
-                            added_table[y * Our_Terrain.width + x - 1] = true;
-                            colonisable_tiles.Add(adjacent);
-                        }
+                        nearby_flags |= adjacent.flags;
                     }
                     if(x + 1 < Our_Terrain.width)
                     {
                         Tile adjacent = Our_Terrain.get_tile(x + 1, y);
-                        if(added_table[y * Our_Terrain.width + x + 1] == false && adjacent.flags != 0 && (adjacent.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
-                        {
-                            added_table[y * Our_Terrain.width + x + 1] = true;
-                            colonisable_tiles.Add(adjacent);
-                        }
+                        nearby_flags |= adjacent.flags;
                     }
                     if(y > 0)
                     {
                         Tile adjacent = Our_Terrain.get_tile(x, y - 1);
-                        if(added_table[(y - 1) * Our_Terrain.width + x] == false && adjacent.flags != 0 && (adjacent.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
-                        {
-                            added_table[(y - 1) * Our_Terrain.width + x] = true;
-                            colonisable_tiles.Add(adjacent);
-                        }
+                        nearby_flags |= adjacent.flags;
                     }
                     if(y + 1 < Our_Terrain.height)
                     {
                         Tile adjacent = Our_Terrain.get_tile(x, y + 1);
-                        if(added_table[(y + 1) * Our_Terrain.width + x] == false && adjacent.flags != 0 && (adjacent.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
-                        {
-                            added_table[(y + 1) * Our_Terrain.width + x] = true;
-                            colonisable_tiles.Add(adjacent);
-                        }
+                        nearby_flags |= adjacent.flags;
+                    }
+                    
+                    if((nearby_flags & Tile.TOWN_TILE) != 0)
+                    {
+                        colonisable_tiles.Add(tile);
                     }
                 }
-                
-                colonisable_tiles.Add(tile);
             }
         }
         // Retrieve all colonisable tiles. END
@@ -132,10 +117,14 @@ public class TurnBasedSystem : MonoBehaviour
         // Choose a tile to colonise at random and start working on it. START
         if(colonisable_tiles.Count != 0)
         {
+            Debug.Log("COUNT: " + colonisable_tiles.Count);
+            
             int index_to_choose_from = Random.Range(0, colonisable_tiles.Count);
             
             Tile tile_to_colonise = colonisable_tiles[index_to_choose_from];
-            tile_to_colonise.MixTile(State.SPAWN_TOWN);
+            
+            bool status = tile_to_colonise.MixTile(State.SPAWN_TOWN);
+            Assert.IsTrue(status);
             
             coords_of_the_tile_that_is_being_colonised.x = tile_to_colonise.x;
             coords_of_the_tile_that_is_being_colonised.y = tile_to_colonise.y;

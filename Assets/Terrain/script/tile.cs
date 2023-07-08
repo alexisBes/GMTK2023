@@ -16,7 +16,7 @@ public class Tile : MonoBehaviour
     public const int TOWN_TILE  = 0x08;
 
     public const int NO_MIX_TILE    = 0x00;
-    public const int SWAMP_TILE     = 0x01;
+    public const int SWAMP_TILE     = 0x10;
     public const int QUICKSAND_TILE = 0x20;
     public const int DUNE_TILE      = 0x40;
     public const int SUBURG_TILE    = 0x80;
@@ -76,7 +76,7 @@ public class Tile : MonoBehaviour
             
             if (this.flags != 0)
             {
-                if ((this.flags & TOWN_TILE) == 0)
+                if ((this.flags & (TOWN_TILE | SUBURG_TILE) == 0)
                 {
                     Debug.Log("Setting target");
                     State.originTile = this;
@@ -114,10 +114,11 @@ public class Tile : MonoBehaviour
         
         if(flags == 0)
         {
-            if     (state == State.SPAWN_WATER) flags = WATER_TILE;
-            else if(state == State.SPAWN_SAND)  flags = SAND_TILE;
-            else if(state == State.SPAWN_LAND)  flags = LAND_TILE;
-            else if(state == State.SPAWN_TOWN)  flags = TOWN_TILE;
+            if     (state == State.SPAWN_WATER)   flags = WATER_TILE;
+            else if(state == State.SPAWN_SAND)    flags = SAND_TILE;
+            else if(state == State.SPAWN_LAND)    flags = LAND_TILE;
+            else if(state == State.SPAWN_TOWN)    flags = TOWN_TILE;
+            else if(state == State.SPAWN_TEMPEST) result = false;
             else Debug.LogError("INVALID STATE " + state);
         }
         else if ((flags & WATER_TILE) != 0 && state == State.SPAWN_LAND || (flags & LAND_TILE) != 0 && state == State.SPAWN_WATER)
