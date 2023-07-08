@@ -93,15 +93,45 @@ public class Tile : MonoBehaviour
 
                 if (!MixTile(State.state)) return; // This action did nothing so we do not want to run a turn.
             }
-
-
-            // Play enemy's turn.
-            if (play_enemy_turn)
+            
+            if(play_enemy_turn)
             {
-                TurnBasedSystem.PerformEnemyAction();
+                TurnBasedSystem.PerformEnemyAction(); // Play enemy's turn.
                 State.state = State.EMPTY;
+                
+                // Check for a game over state. START
+                ///////////////////////////////////////////////////////////////////
+                // NOTE: we consider the game to be over when all tiles are filled.
+                ///////////////////////////////////////////////////////////////////
+                
+                int player_score = 0;
+                int bot_score    = 0;
+                
+                bool all_tiles_are_filled = true;
+                
+                for(int y = 0; y < Our_Terrain.height; y++)
+                {
+                    if(all_tiles_are_filled == false) break;
+                    
+                    for(int x = 0; x < Our_Terrain.width; x++)
+                    {
+                        if(all_tiles_are_filled == false) break;
+                        
+                        Tile tile = Our_Terrain.get_tile(x, y);
+                        if(tile.flags == 0) all_tiles_are_filled = false;
+                        
+                        if((tile.flags & (TOWN_TILE | SUBURB_TILE)) != 0) bot_score++;
+                        else                                              player_score++;
+                    }
+                }
+                
+                
+                if(all_tiles_are_filled)
+                {
+                    // @ Transition to a game over screen.
+                }
+                // Check for a game over state. END
             }
-            /////////////////////
         }
     }
 

@@ -14,9 +14,15 @@ public class Our_Terrain : MonoBehaviour
     public GameObject tile_prefab;
 
 
-    public static int width = 16;
+    public static int width  = 16;
     public static int height = 16;
     const float TILE_STEP = 1;
+    
+    public static float default_camera_zoom  = 7.2f;
+    public static float furthest_camera_zoom = 10.0f;
+    public static float closest_camera_zoom  = 2.0f;
+    
+    Vector3 camera_look_at_direction;
 
     static public List<Tile> tiles = new List<Tile>();
     
@@ -95,12 +101,15 @@ public class Our_Terrain : MonoBehaviour
         );
         
         Vector3 direction_to_look_at = where_to_look_at - camera_transform.position;
+        camera_look_at_direction = direction_to_look_at.normalized;
         
-        Quaternion orientation = Quaternion.LookRotation(direction_to_look_at.normalized, new Vector3(0, 1, 0));
+        camera_transform.position = camera_transform.position - camera_look_at_direction * 100.0f;
+        
+        Quaternion orientation = Quaternion.LookRotation(camera_look_at_direction, new Vector3(0, 1, 0));
         
         camera_transform.rotation = orientation;
         
-        Camera.main.orthographicSize = 7.2f;
+        Camera.main.orthographicSize = default_camera_zoom;
         #endif
         // Set the camera so that the whole terrain is in view. END
     }
@@ -108,7 +117,34 @@ public class Our_Terrain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Camera camera = Camera.main;
+        
+        // Handle camera zoom. START
+        float camera_zoom = camera.orthographicSize;
+        
+        camera_zoom -= Input.mouseScrollDelta.y;
+        camera_zoom  = Mathf.Clamp(camera_zoom, closest_camera_zoom, furthest_camera_zoom);
+        
+        camera.orthographicSize = camera_zoom;
+        // Handle camera zoom. END
+        
+        
+        // Handle camera panning. START
+        float horizontal_pan = Input.GetAxisRaw("Horizontal");
+        float vertical_pan   = Input.GetAxisRaw("Vertical");
+        
+        float horizontal_pan_speed = Time.deltaTime * 10.0f; // @ Hardcoded.
+        float vertical_pan_speed   = horizontal_pan_speed * 2.0f;
+        
+        float zoom_extent = furthest_camera_zoom - closest_camera_zoom;
+        float zoom_factor = Mathf.Lerp(0.5f, 1, camera.orthographicSize / zoom_extent);
+        
+        Vector3 camera_right   = Vector3.Cross(new Vector3(0, 1, 0), camera_look_at_direction).normalized;
+        Vector3 camera_forward = Vector3.Cross(camera_right, new Vector3(0, 1, 0)).normalized;
+        
+        // @ RIght now we are not preventing the camera from going too far!!!
+        camera.transform.position = camera.transform.position + (camera_right * horizontal_pan * horizontal_pan_speed + camera_forward * vertical_pan * vertical_pan_speed) * zoom_factor;
+        // Handle camera panning. END
     }
     
     static public Tile get_tile(int x, int y)
