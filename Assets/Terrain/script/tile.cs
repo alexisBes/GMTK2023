@@ -19,7 +19,7 @@ public class Tile : MonoBehaviour
     public const int SWAMP_TILE     = 0x10;
     public const int QUICKSAND_TILE = 0x20;
     public const int DUNE_TILE      = 0x40;
-    public const int SUBURG_TILE    = 0x80;
+    public const int SUBURB_TILE    = 0x80;
 
 
     public int flags = 0;
@@ -52,7 +52,7 @@ public class Tile : MonoBehaviour
         int prefab_index = 0;
         
         if     ((prefab_flags & TOWN_TILE)      != 0) prefab_index = 4;
-        else if((prefab_flags & SUBURG_TILE)    != 0) prefab_index = 4 + 4;
+        else if((prefab_flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
         else if((prefab_flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
         else if((prefab_flags & SWAMP_TILE)     != 0) prefab_index = 4 + 1;
         else if((prefab_flags & DUNE_TILE)      != 0) prefab_index = 4 + 3;
@@ -76,7 +76,7 @@ public class Tile : MonoBehaviour
             
             if (this.flags != 0)
             {
-                if ((this.flags & (TOWN_TILE | SUBURG_TILE) == 0)
+                if ((this.flags & (TOWN_TILE | SUBURB_TILE)) == 0)
                 {
                     Debug.Log("Setting target");
                     State.originTile = this;
@@ -135,12 +135,12 @@ public class Tile : MonoBehaviour
         }
         else if (state == State.SPAWN_TOWN)
         {
-            if ((flags & TOWN_TILE) != 0)
+            if ((flags & SUBURB_TILE) != 0)
             {
-                flags &= ~SUBURG_TILE;
+                flags &= ~SUBURB_TILE;
                 flags |=  TOWN_TILE;
             }
-            else flags |= SUBURG_TILE;
+            else flags |= SUBURB_TILE;
         }
         else result = false;
         

@@ -58,11 +58,14 @@ public class TurnBasedSystem : MonoBehaviour
         {
             // Finish colonising a tile we started colonising during the previous turn. START
             Tile tile_we_are_colonising = Our_Terrain.get_tile(coords_of_the_tile_that_is_being_colonised.x, coords_of_the_tile_that_is_being_colonised.y);
-            if((tile_we_are_colonising.flags & Tile.SUBURG_TILE) != 0)
+            if((tile_we_are_colonising.flags & Tile.SUBURB_TILE) != 0)
             {
-                Assert.IsTrue((tile_we_are_colonising.flags & Tile.TOWN_TILE) == 0);
+                Debug.Assert((tile_we_are_colonising.flags & Tile.TOWN_TILE) == 0);
                 tile_we_are_colonising.MixTile(State.SPAWN_TOWN);
+                
+                Debug.Assert((tile_we_are_colonising.flags & Tile.TOWN_TILE) != 0);
             }
+            else Debug.LogError("qdfg");
             
             coords_of_the_tile_that_is_being_colonised.x = -1;
             coords_of_the_tile_that_is_being_colonised.y = -1;
@@ -79,7 +82,7 @@ public class TurnBasedSystem : MonoBehaviour
             {
                 Tile tile = Our_Terrain.get_tile(x, y);
                 
-                if((tile.flags & (Tile.TOWN_TILE | Tile.SUBURG_TILE)) == 0)
+                if((tile.flags & (Tile.TOWN_TILE | Tile.SUBURB_TILE)) == 0)
                 {
                     int nearby_flags = 0;
                     
@@ -124,7 +127,7 @@ public class TurnBasedSystem : MonoBehaviour
             Tile tile_to_colonise = colonisable_tiles[index_to_choose_from];
             
             bool status = tile_to_colonise.MixTile(State.SPAWN_TOWN);
-            Assert.IsTrue(status);
+            Debug.Assert(status);
             
             coords_of_the_tile_that_is_being_colonised.x = tile_to_colonise.x;
             coords_of_the_tile_that_is_being_colonised.y = tile_to_colonise.y;
