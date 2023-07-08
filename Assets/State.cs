@@ -1,4 +1,3 @@
-
 public class State
 {
     // RAZ
@@ -19,5 +18,4 @@ public class State
     { }
     public State getInsance { get; private set; }
     public static int state;
-
 }

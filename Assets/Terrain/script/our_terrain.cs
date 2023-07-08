@@ -182,4 +182,38 @@ public class Our_Terrain : MonoBehaviour
         
         return true;
     }
+    
+    static public bool get_priority_between_tiles(Tile a, Tile b)
+    {
+        ////////////////////////////////////////////////////////////
+        // NOTE: this returns true if a's priority is less than b's.
+        ////////////////////////////////////////////////////////////
+        
+        // WATER < LAND < SAND < WATER
+        
+        const int BASIC_FLAGS = Tile.WATER_TILE | Tile.SAND_TILE | Tile.LAND_TILE;
+        
+        if((a.flags & b.flags & BASIC_FLAGS) != 0) return true;
+        
+        if((a.flags & Tile.WATER_TILE) != 0)
+        {
+            if((b.flags & Tile.LAND_TILE) != 0) return true;
+            return false;
+        }
+        
+        if((a.flags & Tile.LAND_TILE) != 0)
+        {
+            if((b.flags & Tile.SAND_TILE) != 0) return true;
+            return false;
+        }
+        
+        if((a.flags & Tile.SAND_TILE) != 0)
+        {
+            if((b.flags & Tile.WATER_TILE) != 0) return true;
+            return false;
+        }
+        
+        Debug.Assert(false);
+        return false;
+    }
 }

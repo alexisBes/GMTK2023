@@ -35,7 +35,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetPrefab(flags);
+        SetPrefab();
     }
 
     // Update is called once per frame
@@ -43,20 +43,20 @@ public class Tile : MonoBehaviour
     {
     }
 
-    void SetPrefab(int prefab_flags)
+    void SetPrefab()
     {
         Destroy(currentPrefab);
 
         int prefab_index = 0;
 
-        if ((prefab_flags & TOWN_TILE)           != 0) prefab_index = 4;
-        else if ((prefab_flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
-        else if ((prefab_flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
-        else if ((prefab_flags & SWAMP_TILE)     != 0) prefab_index = 4 + 1;
-        else if ((prefab_flags & DUNE_TILE)      != 0) prefab_index = 4 + 3;
-        else if ((prefab_flags & WATER_TILE)     != 0) prefab_index = 1;
-        else if ((prefab_flags & SAND_TILE)      != 0) prefab_index = 3;
-        else if ((prefab_flags & LAND_TILE)      != 0) prefab_index = 2;
+        if ((flags & TOWN_TILE)           != 0) prefab_index = 4;
+        else if ((flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
+        else if ((flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
+        else if ((flags & SWAMP_TILE)     != 0) prefab_index = 4 + 1;
+        else if ((flags & DUNE_TILE)      != 0) prefab_index = 4 + 3;
+        else if ((flags & WATER_TILE)     != 0) prefab_index = 1;
+        else if ((flags & SAND_TILE)      != 0) prefab_index = 3;
+        else if ((flags & LAND_TILE)      != 0) prefab_index = 2;
 
         currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(0f, 0f, 0f));
         currentPrefab.transform.parent = transform;
@@ -88,10 +88,75 @@ public class Tile : MonoBehaviour
 
                     play_enemy_turn = false;
                 }
-                else
+                else if(State.originTile != null && (this.x == State.originTile.x) != (this.y == State.originTile.y))
                 {
+                    if((this.flags & Tile.SUBURB_TILE) == 0)
+                    {
+                        Debug.Log("This target is not a suburb.");
+                        return; // We did not target a suburb so no need to proceed.
+                    }
+                    
+                    
+                    // Unleash a storm. START
                     Debug.Log("Target acquired");
-                    LaunchTempest();
+                    
+                    Vector3 vector = State.originTile.gameObject.transform.position;
+                    vector.z += 6;
+                    
+                    int step_x = 0;
+                    int step_y = 0;
+                    
+                    if(this.x == State.originTile.x) step_y = State.originTile.y < this.y ? 1 : -1;
+                    else                             step_x = State.originTile.x < this.x ? 1 : -1;
+                    
+                    
+                    Tile last_tile = State.originTile;
+                    
+                    int x_coord = State.originTile.x + step_x;
+                    int y_coord = State.originTile.y + step_y;
+                    
+                    Tile end_tile = last_tile;
+                    
+                    while(true)
+                    {
+                        Tile tile = Our_Terrain.get_tile(x_coord, y_coord);
+                        end_tile = tile;
+                        
+                        bool it_works = Our_Terrain.get_priority_between_tiles(last_tile, tile);
+                        if(!it_works)
+                        {
+                            Debug.Log("You lost at rock-paper-scissors.");
+                            break; // These two tile types are incompatible so we stop there.
+                        }
+                        
+                        
+                        if((tile.flags & SUBURB_TILE) != 0)
+                        { // We found a target.
+                            Debug.Log("Found a target.");
+                            
+                            tile.flags &= ~SUBURB_TILE;
+                            tile.SetPrefab();
+                            break;
+                        }
+                        
+                        if(x_coord == this.x && y_coord == this.y)
+                        {
+                            Debug.Log("We reached the last tile.");
+                            break; // We reached the last tile.
+                        }
+                        
+                        last_tile = tile;
+                        x_coord += step_x;
+                        y_coord += step_y;
+                    }
+                    
+                    
+                    // Spawn an object for visual effects.
+                    GameObject saracePrefab = Instantiate(tempestPrefab, vector, Quaternion.Euler(90f, 0f, 0f));
+                    Tempest tempest = saracePrefab.GetComponentInChildren<Tempest>();
+                    tempest.target  = end_tile.gameObject.transform;
+                    //////////////////////////////////////
+                    // Unleash a storm. END
                 }
             }
             else
@@ -154,9 +219,9 @@ public class Tile : MonoBehaviour
 
         if (flags == 0)
         {
-            if (state == State.SPAWN_WATER)     flags = WATER_TILE;
-            else if (state == State.SPAWN_SAND) flags = SAND_TILE;
-            else if (state == State.SPAWN_LAND) flags = LAND_TILE;
+            if (state == State.SPAWN_WATER)        flags  = Tile.WATER_TILE;
+            else if (state == State.SPAWN_SAND)    flags  = Tile.SAND_TILE;
+            else if (state == State.SPAWN_LAND)    flags  = Tile.LAND_TILE;
             else if (state == State.SPAWN_TEMPEST) result = false;
             else Debug.LogError("INVALID STATE " + state);
         }
@@ -187,30 +252,7 @@ public class Tile : MonoBehaviour
         }
         else result = false;
 
-        SetPrefab(flags);
+        SetPrefab();
         return result;
     }
-
-    public void LaunchTempest()
-    {
-        Debug.Log("FULL PAWAR");
-        Vector3 vector = State.originTile.gameObject.transform.position;
-        vector.z += 6;
-        GameObject saracePrefab = Instantiate(tempestPrefab, vector, Quaternion.Euler(90f, 0f, 0f));
-        Tempest tempest = saracePrefab.GetComponentInChildren<Tempest>();
-        tempest.target = gameObject.transform;
-        if ((this.flags & Tile.SUBURB_TILE) != 0)
-        {
-            // Si c'est en cours de transformation.
-            Debug.Log("dead goblin");
-            this.flags &= ~Tile.SUBURB_TILE;
-            this.SetPrefab(flags);
-        }
-        else if ((this.flags & Tile.TOWN_TILE) != 0)
-        {
-            Debug.Log("Dead catto");
-            // Si c'est une ville.
-        }
-    }
-
 }
