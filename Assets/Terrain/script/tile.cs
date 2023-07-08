@@ -21,6 +21,7 @@ public class Tile : MonoBehaviour
     public const int DUNE_TILE = 0x40;
     public const int SUBURB_TILE = 0x80;
 
+    public AudioSource audioSource;
 
     public int flags = 0;
     public int mix_flags = 0;
@@ -50,25 +51,34 @@ public class Tile : MonoBehaviour
 
         int prefab_index = 0;
 
-        if ((prefab_flags & TOWN_TILE) != 0) prefab_index = 4;
-        else if ((prefab_flags & SUBURB_TILE) != 0) prefab_index = 4 + 4;
+        if ((prefab_flags & TOWN_TILE)           != 0) prefab_index = 4;
+        else if ((prefab_flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
         else if ((prefab_flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
-        else if ((prefab_flags & SWAMP_TILE) != 0) prefab_index = 4 + 1;
-        else if ((prefab_flags & DUNE_TILE) != 0) prefab_index = 4 + 3;
-        else if ((prefab_flags & WATER_TILE) != 0) prefab_index = 1;
-        else if ((prefab_flags & SAND_TILE) != 0) prefab_index = 3;
-        else if ((prefab_flags & LAND_TILE) != 0) prefab_index = 2;
+        else if ((prefab_flags & SWAMP_TILE)     != 0) prefab_index = 4 + 1;
+        else if ((prefab_flags & DUNE_TILE)      != 0) prefab_index = 4 + 3;
+        else if ((prefab_flags & WATER_TILE)     != 0) prefab_index = 1;
+        else if ((prefab_flags & SAND_TILE)      != 0) prefab_index = 3;
+        else if ((prefab_flags & LAND_TILE)      != 0) prefab_index = 2;
 
-        currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(75f, 0f, 0f));
+        currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(0f, 0f, 0f));
         currentPrefab.transform.parent = transform;
     }
 
     void OnClickedTerrain()
     {
+        if(State.do_not_raytrace_this_frame == true)
+        {
+            State.do_not_raytrace_this_frame = false;
+            return;
+        }
+        
+        
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
+            audioSource.Play();
+            
             if (hit.collider.GetInstanceID() != this.GetComponent<Collider>().GetInstanceID()) return;
 
             bool play_enemy_turn = true;
@@ -159,7 +169,7 @@ public class Tile : MonoBehaviour
             if (state == State.SPAWN_WATER) flags = WATER_TILE;
             else if (state == State.SPAWN_SAND) flags = SAND_TILE;
             else if (state == State.SPAWN_LAND) flags = LAND_TILE;
-            else if (state == State.SPAWN_TOWN) flags = TOWN_TILE;
+            //else if (state == State.SPAWN_TOWN) flags = TOWN_TILE;
             else if (state == State.SPAWN_TEMPEST) result = false;
             else Debug.LogError("INVALID STATE " + state);
         }
@@ -180,9 +190,13 @@ public class Tile : MonoBehaviour
             if ((flags & SUBURB_TILE) != 0)
             {
                 flags &= ~SUBURB_TILE;
-                flags |= TOWN_TILE;
+                flags |=  TOWN_TILE;
             }
-            else flags |= SUBURB_TILE;
+            else
+            {
+                flags |= SUBURB_TILE;
+                Debug.Assert((flags & TOWN_TILE) == 0);
+            }
         }
         else result = false;
 
