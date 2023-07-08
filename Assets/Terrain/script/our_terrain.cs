@@ -26,7 +26,7 @@ public class Our_Terrain : MonoBehaviour
     Vector3 map_centre;
     float   camera_rotation_circle_radius = 100.0f;
     float   camera_rotation_angle_degrees = 45.0f - 90.0f;
-
+    
     static public List<Tile> tiles = new List<Tile>();
     
     
@@ -121,6 +121,10 @@ public class Our_Terrain : MonoBehaviour
         Camera camera = Camera.main;
         
         // Handle camera zoom. START
+        Vector3 mouse_position = Input.mousePosition;
+        
+        Vector3 old_world_mouse_position = camera.ScreenToWorldPoint(mouse_position);
+        
         float camera_zoom = camera.orthographicSize;
         
         camera_zoom -= Input.mouseScrollDelta.y;
@@ -128,7 +132,11 @@ public class Our_Terrain : MonoBehaviour
         
         camera.orthographicSize = camera_zoom;
         
-        // @ Zoom around the mouse position.
+        Vector3 new_world_mouse_position = camera.ScreenToWorldPoint(mouse_position);
+        
+        Vector3 delta = old_world_mouse_position - new_world_mouse_position;
+        
+        camera.transform.position = camera.transform.position + new Vector3(delta.x, 0, delta.z);
         // Handle camera zoom. END
         
         
