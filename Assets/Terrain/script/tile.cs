@@ -27,11 +27,12 @@ public class Tile : MonoBehaviour
     void OnClickedTerrain()
     {
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        //Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
-        {
+        {            
             if (hit.collider.GetInstanceID() != this.GetComponent<Collider>().GetInstanceID()) return;
+            
+            Debug.Log("Oi!"); // @ DEBUG.
             
             int what_we_should_do_on_this_tile = State.state;
             
