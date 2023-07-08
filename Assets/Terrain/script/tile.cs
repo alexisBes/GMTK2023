@@ -22,7 +22,8 @@ public class Tile : MonoBehaviour
     public const int SUBURB_TILE = 0x80;
 
     public AudioSource audioSource;
-
+    
+    public int flags_from_last_time_we_set_the_prefab = -1;
     public int flags = 0;
     public int mix_flags = 0;
     public int x, y;
@@ -30,6 +31,8 @@ public class Tile : MonoBehaviour
 
     public List<GameObject> prefabs;
     public GameObject tempestPrefab;
+    public GameObject camp_prefab_to_instanciate_from;
+    public GameObject camp_prefab = null;
 
     private GameObject currentPrefab;
 
@@ -47,12 +50,15 @@ public class Tile : MonoBehaviour
 
     void SetPrefab()
     {
+        if(flags == flags_from_last_time_we_set_the_prefab) return;
+        
+        
         Destroy(currentPrefab);
 
         int prefab_index = 0;
 
         if ((flags & TOWN_TILE)           != 0) prefab_index = 4;
-        else if ((flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
+        //else if ((flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
         else if ((flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
         else if ((flags & SWAMP_TILE)     != 0) prefab_index = 4 + 1;
         else if ((flags & DUNE_TILE)      != 0) prefab_index = 4 + 3;
@@ -60,8 +66,19 @@ public class Tile : MonoBehaviour
         else if ((flags & SAND_TILE)      != 0) prefab_index = 3;
         else if ((flags & LAND_TILE)      != 0) prefab_index = 2;
 
-        currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(0f, 0f, 0f));
+        currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(0, 0, 0));
         currentPrefab.transform.parent = transform;
+        
+        if((flags & SUBURB_TILE) != 0)
+        {
+            if(camp_prefab) Destroy(camp_prefab);
+            
+            camp_prefab = Instantiate(camp_prefab_to_instanciate_from, transform.position, Quaternion.Euler(0, 0, 0));
+            camp_prefab.transform.parent = transform;
+        }
+        else if(camp_prefab) Destroy(camp_prefab);
+        
+        flags_from_last_time_we_set_the_prefab = flags;
     }
 
     void OnClickedTerrain()
