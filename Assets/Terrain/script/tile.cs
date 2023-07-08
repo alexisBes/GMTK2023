@@ -37,6 +37,8 @@ public class Tile : MonoBehaviour
     public GameObject ui_disk;
 
     private GameObject currentPrefab;
+    
+    Vector3 camp_target_position;
 
 
     // Start is called before the first frame update
@@ -63,6 +65,7 @@ public class Tile : MonoBehaviour
         Camera camera = Camera.main;
         Vector3 mouse_position = Input.mousePosition;
         
+        // Update the mouse over highlight thing. START
         Renderer renderer = ui_disk.GetComponent<Renderer>();
         
         if(TurnBasedSystem.check_if_enemy_turn_is_done() == true && (flags & TOWN_TILE) == 0)
@@ -76,6 +79,17 @@ public class Tile : MonoBehaviour
             }
         }
         else renderer.enabled = false;
+        // Update the mouse over highlight thing. END
+        
+        
+        if(camp_prefab)
+        {
+            // Update the camp. START
+            Transform t = camp_prefab.GetComponent<Transform>();
+            
+            t.position = Vector3.MoveTowards(t.position, camp_target_position, Time.deltaTime * 0.3f);
+            // Update the camp. END
+        }
     }
 
     void SetPrefab()
@@ -103,7 +117,10 @@ public class Tile : MonoBehaviour
         {
             if(camp_prefab) Destroy(camp_prefab);
             
-            camp_prefab = Instantiate(camp_prefab_to_instantiate_from, transform.position, Quaternion.Euler(0, 0, 0));
+            camp_target_position = transform.position;
+            Vector3 camp_start_position = camp_target_position - new Vector3(0, 1, 0);
+            
+            camp_prefab = Instantiate(camp_prefab_to_instantiate_from, camp_start_position, Quaternion.Euler(0, 0, 0));
             camp_prefab.transform.parent = transform;
         }
         else if(camp_prefab) Destroy(camp_prefab);
