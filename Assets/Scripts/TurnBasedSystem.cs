@@ -17,7 +17,7 @@ public class TurnBasedSystem : MonoBehaviour
     static Map_Coords coords_of_the_tile_that_is_being_colonised;
     
     static public float enemy_turn_time_seconds = 5;
-    static public float enemy_turn_start        = 0; // Uses Time.realtimeSinceStartup
+    static public float enemy_turn_start        = -1000; // Uses Time.realtimeSinceStartup
     
     
     private void Start()

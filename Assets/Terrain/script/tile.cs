@@ -63,10 +63,10 @@ public class Tile : MonoBehaviour
         Camera camera = Camera.main;
         Vector3 mouse_position = Input.mousePosition;
         
-        if((flags & TOWN_TILE) == 0)
+        Renderer renderer = ui_disk.GetComponent<Renderer>();
+        
+        if(TurnBasedSystem.check_if_enemy_turn_is_done() == true && (flags & TOWN_TILE) == 0)
         {
-            Renderer renderer = ui_disk.GetComponent<Renderer>();
-            
             Ray ray = camera.ScreenPointToRay(mouse_position);
             RaycastHit hit;
             if(Physics.Raycast(ray.origin, ray.direction, out hit, 500))
@@ -75,6 +75,7 @@ public class Tile : MonoBehaviour
                 else                                                                               renderer.enabled = false;
             }
         }
+        else renderer.enabled = false;
     }
 
     void SetPrefab()
