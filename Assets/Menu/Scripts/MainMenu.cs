@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
 
         root.Q<Button>("Start").clicked += StartButtonClicked;
         root.Q<Button>("Tuto").clicked += TutoButtonClicked;
+        root.Q<Button>("Credit").clicked += CreditButtonClicked;
         root.Q<Button>("Quit").clicked += QuitButtonClicked;
     }
 
@@ -25,6 +26,11 @@ public class MainMenu : MonoBehaviour
     public void TutoButtonClicked()
     {
         SceneManager.LoadScene("Tuto");
+    }
+
+    public void CreditButtonClicked()
+    {
+        SceneManager.LoadScene("Thanks");
     }
 
     void QuitButtonClicked()
