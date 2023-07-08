@@ -8,7 +8,7 @@ public class State
     public static int SPAWN_TOWN= 0x04;
 
     // action
-    public static int SPAWN_TEMPEST  = 0x01;
+    public static int SPAWN_TEMPEST  = 0x05;
 
 
     private State()
