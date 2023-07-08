@@ -1,0 +1,34 @@
+{
+    "name": "MenuInputAction",
+    "maps": [
+        {
+            "name": "IGMenu",
+            "id": "85cfb341-6ac3-4341-af4d-507e279a8bc6",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "192c6fb1-3858-4f0a-8f00-2214cd9517a5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e85dc379-cf61-491e-b225-c11b30e30279",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
