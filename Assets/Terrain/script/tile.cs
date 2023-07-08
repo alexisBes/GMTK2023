@@ -13,6 +13,8 @@ public class Tile : MonoBehaviour
     private const int TOWN_TILE = 0x04;
 
     public int flags = 0;
+    public int x, y;
+    public Our_Terrain our_terrain;
 
     public List<GameObject> prefabs;
 
@@ -21,6 +23,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Asset type :" + flags);
         SetPrefab();
     }
 
@@ -43,7 +46,15 @@ public class Tile : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.collider.GetInstanceID() != GetComponent<Collider>().GetInstanceID()) return;
+            if (hit.collider.GetInstanceID() != this.GetComponent<Collider>().GetInstanceID()) return;
+
+            if (this.flags != 0)
+            {
+                return;
+            }
+
+            if (!this.our_terrain.isACaseValid(x, y))
+                return;
 
             Debug.Log("Oi!"); // @ DEBUG.
 
