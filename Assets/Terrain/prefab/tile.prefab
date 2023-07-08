@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 5042776211676458897}
+  earthquake_audio_clip: {fileID: 8300000, guid: 6990736b6659b4142a7910bcc730c029, type: 3}
+  flags_from_last_time_we_set_the_prefab: -1
   flags: 0
   mix_flags: 0
   x: 0
@@ -114,6 +116,10 @@ MonoBehaviour:
   - {fileID: 1558740971366590, guid: 1c1d07a4036f32e4db71385ea172b294, type: 3}
   - {fileID: 1743851423142728, guid: 845f30f44a7d6914c8bc17b0221ab5fd, type: 3}
   tempestPrefab: {fileID: 5359887979148635358, guid: a535371cc7a7a9144b85d82a4cd8f5e1, type: 3}
+  camp_prefab_to_instantiate_from: {fileID: 0}
+  camp_prefab: {fileID: 0}
+  ui_disk_to_instantiate_from: {fileID: 0}
+  ui_disk: {fileID: 0}
 --- !u!82 &5042776211676458897
 AudioSource:
   m_ObjectHideFlags: 0

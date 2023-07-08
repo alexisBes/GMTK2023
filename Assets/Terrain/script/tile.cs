@@ -22,6 +22,8 @@ public class Tile : MonoBehaviour
     public const int SUBURB_TILE = 0x80;
 
     public AudioSource audioSource;
+    [NonSerialized] public AudioSource earthquake_audio_source;
+    public AudioClip earthquake_audio_clip;
     
     public int flags_from_last_time_we_set_the_prefab = -1;
     public int flags = 0;
@@ -57,6 +59,9 @@ public class Tile : MonoBehaviour
         
         Renderer renderer = ui_disk.GetComponent<Renderer>();
         renderer.enabled = false;
+        
+        earthquake_audio_source = gameObject.AddComponent(typeof(AudioSource)) as AudioSource;
+        earthquake_audio_source.clip = earthquake_audio_clip;
     }
 
     // Update is called once per frame
@@ -117,11 +122,14 @@ public class Tile : MonoBehaviour
         {
             if(camp_prefab) Destroy(camp_prefab);
             
+            
             camp_target_position = transform.position;
             Vector3 camp_start_position = camp_target_position - new Vector3(0, 1, 0);
             
             camp_prefab = Instantiate(camp_prefab_to_instantiate_from, camp_start_position, Quaternion.Euler(0, 0, 0));
             camp_prefab.transform.parent = transform;
+            
+            earthquake_audio_source.Play();
         }
         else if(camp_prefab) Destroy(camp_prefab);
         
