@@ -13,11 +13,12 @@ public class Our_Terrain : MonoBehaviour
 {
     public GameObject tile_prefab;
     public GameObject camp_prefab;
+    public GameObject ui_disk;
 
 
     public static int width  = 8;
     public static int height = 8;
-    const float TILE_STEP = 1;
+    public const float TILE_STEP = 1;
     
     public static float default_camera_zoom  = 7.2f;
     public static float furthest_camera_zoom = 10.0f;
@@ -55,10 +56,11 @@ public class Our_Terrain : MonoBehaviour
                 
                 GameObject tile = Instantiate(tile_prefab, position, tile_prefab.transform.rotation);
                 Tile terrain = tile.GetComponent<Tile>();
-                terrain.flags = newFlags;
-                terrain.camp_prefab_to_instanciate_from = camp_prefab;
-                terrain.x     = x;
-                terrain.y     = y;
+                terrain.flags   = newFlags;
+                terrain.camp_prefab_to_instantiate_from = camp_prefab;
+                terrain.ui_disk_to_instantiate_from     = ui_disk;
+                terrain.x       = x;
+                terrain.y       = y;
 
                 PlayerInput pi = tile.GetComponent<PlayerInput>();
                 pi.camera = Camera.main;
