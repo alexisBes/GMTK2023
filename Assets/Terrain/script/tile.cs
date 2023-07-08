@@ -9,8 +9,8 @@ public class Tile : MonoBehaviour
 {
     private const int WATER_TILE = 0x01;
     private const int LAND_TITLE = 0x02;
-    private const int SAND_TILE = 0x04;
-    private const int TOWN_TILE= 0x08;
+    private const int SAND_TILE  = 0x04;
+    private const int TOWN_TILE  = 0x08;
 
     public int flags = 0;
     
@@ -29,23 +29,26 @@ public class Tile : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
-        {
+        {            
             if (hit.collider.GetInstanceID() != this.GetComponent<Collider>().GetInstanceID()) return;
             
-            int newState = State.state;
-            if (newState == State.SPAWN_WATER)
+            Debug.Log("Oi!"); // @ DEBUG.
+            
+            int what_we_should_do_on_this_tile = State.state;
+            
+            if (what_we_should_do_on_this_tile == State.SPAWN_WATER)
             {
                 flags = WATER_TILE;
             }
-            else if (newState == State.SPAWN_SAND)
+            else if (what_we_should_do_on_this_tile == State.SPAWN_SAND)
             {
                 flags = SAND_TILE;
             }
-            else if (newState == State.SPAWN_LAND)
+            else if (what_we_should_do_on_this_tile == State.SPAWN_LAND)
             {
                 flags = LAND_TITLE;
             }
-            else if (newState == State.SPAWN_TOWN)
+            else if (what_we_should_do_on_this_tile == State.SPAWN_TOWN)
             {
                 flags = TOWN_TILE;
             }
