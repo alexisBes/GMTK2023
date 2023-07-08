@@ -113,9 +113,6 @@ public class Tile : MonoBehaviour
                     // Unleash a storm. START
                     Debug.Log("Target acquired");
                     
-                    Vector3 vector = State.originTile.gameObject.transform.position;
-                    vector.z += 6;
-                    
                     int step_x = 0;
                     int step_y = 0;
                     
@@ -165,9 +162,16 @@ public class Tile : MonoBehaviour
                     
                     
                     // Spawn an object for visual effects.
-                    GameObject saracePrefab = Instantiate(tempestPrefab, vector, Quaternion.Euler(90f, 0f, 0f));
+                    Transform origin_transform = State.originTile.GetComponent<Transform>();
+                    Vector3 storm_spawn_site = origin_transform.position;
+                    
+                    Transform end_transform = end_tile.GetComponent<Transform>();
+                    
+                    GameObject saracePrefab = Instantiate(tempestPrefab, storm_spawn_site, Quaternion.Euler(0, 0, 0));
                     Tempest tempest = saracePrefab.GetComponentInChildren<Tempest>();
-                    tempest.target  = end_tile.gameObject.transform;
+                    tempest.target  = end_transform.position;
+                    
+                    Debug.Log("MLKSFMKL " + tempest.target); // @ DEBUG.
                     //////////////////////////////////////
                     // Unleash a storm. END
                 }
@@ -185,9 +189,9 @@ public class Tile : MonoBehaviour
                 State.state = State.EMPTY;
                 
                 // Check for a game over state. START
-                ///////////////////////////////////////////////////////////////////
-                // NOTE: we consider the game to be over when all tiles are filled.
-                ///////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////
+                // NOTE: we consider the game is over when all tiles are filled.
+                ////////////////////////////////////////////////////////////////
                 
                 int player_score = 0;
                 int bot_score    = 0;
@@ -213,7 +217,7 @@ public class Tile : MonoBehaviour
                 
                 if(all_tiles_are_filled)
                 {
-                    // @ Transition to a game over screen.
+                    // Transition to a game over screen. START
                     if(player_score >= bot_score)
                     {
                         SceneManager.LoadScene("Win");
@@ -222,6 +226,7 @@ public class Tile : MonoBehaviour
                     {
                         SceneManager.LoadScene("Lost");
                     }
+                    // Transition to a game over screen. END
                 }
                 // Check for a game over state. END
             }
