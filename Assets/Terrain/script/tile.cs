@@ -20,6 +20,7 @@ public class Tile : MonoBehaviour
     public const int DUNE_TILE = 0x40;
     public const int SUBURB_TILE = 0x80;
 
+    public AudioSource audioSource;
 
     public int flags = 0;
     public int mix_flags = 0;
@@ -68,6 +69,8 @@ public class Tile : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
+            audioSource.Play();
+            
             if (hit.collider.GetInstanceID() != this.GetComponent<Collider>().GetInstanceID()) return;
 
             bool play_enemy_turn = true;
