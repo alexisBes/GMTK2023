@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class Tile : MonoBehaviour
@@ -20,6 +21,7 @@ public class Tile : MonoBehaviour
     public const int DUNE_TILE = 0x40;
     public const int SUBURB_TILE = 0x80;
 
+    public AudioSource audioSource;
 
     public int flags = 0;
     public int mix_flags = 0;
@@ -75,6 +77,8 @@ public class Tile : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
+            audioSource.Play();
+            
             if (hit.collider.GetInstanceID() != this.GetComponent<Collider>().GetInstanceID()) return;
 
             bool play_enemy_turn = true;
@@ -201,6 +205,14 @@ public class Tile : MonoBehaviour
                 if(all_tiles_are_filled)
                 {
                     // @ Transition to a game over screen.
+                    if(player_score >= bot_score)
+                    {
+                        SceneManager.LoadScene("Win");
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene("Lost");
+                    }
                 }
                 // Check for a game over state. END
             }

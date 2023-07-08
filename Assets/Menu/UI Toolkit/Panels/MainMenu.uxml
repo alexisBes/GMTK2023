@@ -6,6 +6,7 @@
             <ui:Label tabindex="-1" text="Reverse City Builder" display-tooltip-when-elided="true" name="Label" class="label-main-title" style="text-overflow: clip; white-space: nowrap; -unity-text-align: lower-center; font-size: 32px; padding-bottom: 28px; background-color: rgba(56, 56, 56, 0); color: rgb(255, 255, 255); -unity-font-style: bold;" />
             <ui:Button text="Start" display-tooltip-when-elided="true" name="Start" class="button-main-title" />
             <ui:Button text="Tuto" display-tooltip-when-elided="true" name="Tuto" class="button-main-title" />
+            <ui:Button text="Credit" display-tooltip-when-elided="true" name="Credit" class="button-main-title" />
             <ui:Button text="Quit" display-tooltip-when-elided="true" name="Quit" class="button-main-title" />
         </ui:VisualElement>
     </ui:VisualElement>

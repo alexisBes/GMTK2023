@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!82 &420352908 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2176897502446238304, guid: a212219fb76cc46489ac8b3d1acfce69, type: 3}
+  m_PrefabInstance: {fileID: 548550589}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &548550589
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -195,6 +200,7 @@ GameObject:
   - component: {fileID: 921499322}
   - component: {fileID: 921499321}
   - component: {fileID: 921499320}
+  - component: {fileID: 921499323}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -214,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c0a5fe5bcb80449b834aab2a5d51bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 420352908}
 --- !u!114 &921499321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,3 +252,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &921499323
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 921499319}
+  m_Enabled: 1
