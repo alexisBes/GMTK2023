@@ -1,10 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Menu/UI%20Toolkit/Styles/BtnEnv.uss?fileID=7433441132597879392&amp;guid=d736e6ece144b490d90ddcf88c23fb4c&amp;type=3#BtnEnv" />
     <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="label" style="-unity-text-align: lower-center; height: 25px; font-size: 25px; -unity-font-style: bold;" />
-    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: flex-start; justify-content: center; align-self: stretch; top: 40%;">
-        <ui:Button text="WATTER" display-tooltip-when-elided="true" name="Watter" class="btn" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column; align-items: flex-end; justify-content: space-around; align-self: flex-start; top: 5%; height: 419px; flex-wrap: nowrap;">
+        <ui:Button text="WATER" display-tooltip-when-elided="true" name="Watter" class="btn" />
         <ui:Button text="LAND" display-tooltip-when-elided="true" name="Land" class="btn" />
-        <ui:Button text="AIR" display-tooltip-when-elided="true" name="Air" class="btn" />
+        <ui:Button text="SAND" display-tooltip-when-elided="false" name="Air" class="btn" />
         <ui:Button text="TEMPEST" display-tooltip-when-elided="true" name="Tempest" class="btn" />
     </ui:VisualElement>
 </ui:UXML>

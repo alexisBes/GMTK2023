@@ -16,7 +16,7 @@ public class Tile : MonoBehaviour
     public const int TOWN_TILE  = 0x08;
 
     public const int NO_MIX_TILE    = 0x00;
-    public const int SWAMP_TILE     = 0x01;
+    public const int SWAMP_TILE     = 0x10;
     public const int QUICKSAND_TILE = 0x20;
     public const int DUNE_TILE      = 0x40;
     public const int SUBURG_TILE    = 0x80;
@@ -74,9 +74,9 @@ public class Tile : MonoBehaviour
             
             bool play_enemy_turn = true;
             
-            if (this.flags != 0)
+            if (this.flags != 0 && State.state == State.SPAWN_TEMPEST)
             {
-                if ((this.flags & TOWN_TILE) == 0)
+                if ((this.flags & (SUBURG_TILE | TOWN_TILE)) == 0 )
                 {
                     Debug.Log("Setting target");
                     State.originTile = this;
@@ -85,6 +85,7 @@ public class Tile : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log("Target acquired");
                     LaunchTempest();
                 }
             }
@@ -94,10 +95,14 @@ public class Tile : MonoBehaviour
                 
                 if(!MixTile(State.state)) return; // This action did nothing so we do not want to run a turn.
             }
-            
-            
+
+
             // Play enemy's turn.
-            if(play_enemy_turn) TurnBasedSystem.PerformEnemyAction();
+            if (play_enemy_turn)
+            {
+                TurnBasedSystem.PerformEnemyAction();
+                State.state = State.EMPTY;
+            }
             /////////////////////
         }
     }
@@ -143,7 +148,6 @@ public class Tile : MonoBehaviour
         else result = false;
         
         SetPrefab(flags);
-        
         return result;
     }
 
