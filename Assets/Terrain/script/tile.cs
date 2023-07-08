@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class Tile : MonoBehaviour
@@ -139,6 +140,14 @@ public class Tile : MonoBehaviour
                 if(all_tiles_are_filled)
                 {
                     // @ Transition to a game over screen.
+                    if(player_score >= bot_score)
+                    {
+                        SceneManager.LoadScene("Win");
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene("Lost");
+                    }
                 }
                 // Check for a game over state. END
             }

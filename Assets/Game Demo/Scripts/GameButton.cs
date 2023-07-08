@@ -19,6 +19,7 @@ public class GameButton : MonoBehaviour
         root.Q<Button>("Watter").clicked += WaterButtonClicked;
         root.Q<Button>("Air").clicked += AirButtonClicked;
         root.Q<Button>("Land").clicked += LandButtonClicked;
+        root.Q<Button>("Exit").clicked += ExitButtonClicked;
     }
 
     public void DisableButtons()
@@ -28,6 +29,7 @@ public class GameButton : MonoBehaviour
         root.Q<Button>("Watter").clicked -= WaterButtonClicked;
         root.Q<Button>("Air").clicked -= AirButtonClicked;
         root.Q<Button>("Land").clicked -= LandButtonClicked;
+        root.Q<Button>("Exit").clicked -= ExitButtonClicked;
     }
 
     public void WaterButtonClicked()
@@ -50,6 +52,16 @@ public class GameButton : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioSource.Play();
         Debug.Log("Land Clicked");
+    }
+
+    public void ExitButtonClicked()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    public void OnEscape()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
 

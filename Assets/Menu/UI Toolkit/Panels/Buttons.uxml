@@ -6,5 +6,6 @@
         <ui:Button text="LAND" display-tooltip-when-elided="true" name="Land" class="btn" style="width: 40%;" />
         <ui:Button text="SAND" display-tooltip-when-elided="false" name="Air" class="btn" style="width: 40%;" />
         <ui:Button text="TEMPEST" display-tooltip-when-elided="true" name="Tempest" class="btn" style="width: 40%;" />
+        <ui:Button text="EXIT" display-tooltip-when-elided="true" name="Exit" class="btn" style="width: 40%;" />
     </ui:VisualElement>
 </ui:UXML>
