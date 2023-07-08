@@ -16,6 +16,9 @@ public class TurnBasedSystem : MonoBehaviour
     
     static Map_Coords coords_of_the_tile_that_is_being_colonised;
     
+    static public float enemy_turn_time_seconds = 5;
+    static public float enemy_turn_start        = 0; // Uses Time.realtimeSinceStartup
+    
     
     private void Start()
     {
@@ -50,9 +53,22 @@ public class TurnBasedSystem : MonoBehaviour
     }
     
     
+    static public bool check_if_enemy_turn_is_done()
+    {
+        if(Time.realtimeSinceStartup - enemy_turn_start > enemy_turn_time_seconds) return true;
+        
+        return false;
+    }
+    
+    
     static public void PerformEnemyAction()
     {
         turnText.text = "Enemy's Turn";
+        
+        if(check_if_enemy_turn_is_done() == false) return;
+        
+        
+        enemy_turn_start = Time.realtimeSinceStartup;
         
         if(coords_of_the_tile_that_is_being_colonised.x >= 0 && coords_of_the_tile_that_is_being_colonised.y >= 0)
         {

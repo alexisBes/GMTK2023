@@ -112,6 +112,9 @@ public class Tile : MonoBehaviour
 
     void OnClickedTerrain()
     {
+        if(TurnBasedSystem.check_if_enemy_turn_is_done() == false) return; // The bot is "still" playing its turn.
+        
+        
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
