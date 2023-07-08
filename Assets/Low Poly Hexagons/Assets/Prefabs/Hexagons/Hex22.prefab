@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33463630837650638}
   - component: {fileID: 23499171416897196}
   - component: {fileID: 64591148080394960}
+  - component: {fileID: 4833600391207773761}
   m_Layer: 0
   m_Name: Hex22
   m_TagString: Untagged
@@ -107,6 +108,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 66a66b512f78d3d4f81ed74fd8e3963a, type: 3}
+--- !u!111 &4833600391207773761
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994693040836722}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: a1456429a66c4441593175b877838b17, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1001 &6433846962289201478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,7 +150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4260965007044548, guid: 2a506530c723d3a429773b86bf8ab9ca, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.004
       objectReference: {fileID: 0}
     - target: {fileID: 4260965007044548, guid: 2a506530c723d3a429773b86bf8ab9ca, type: 3}
       propertyPath: m_LocalRotation.w
