@@ -2,13 +2,13 @@
 public class State
 {
     // new tile
-    public static int SPAWN_WATER = 0x01;
-    public static int SPAWN_SAND= 0x02;
-    public static int SPAWN_LAND= 0x03;
-    public static int SPAWN_TOWN= 0x04;
+    public static int SPAWN_WATER = 1;
+    public static int SPAWN_SAND  = 2;
+    public static int SPAWN_LAND  = 3;
+    public static int SPAWN_TOWN  = 4;
 
     // action
-    public static int SPAWN_TEMPEST  = 0x05;
+    public static int SPAWN_TEMPEST  = 5;
 
     public static Tile originTile;
     private State()

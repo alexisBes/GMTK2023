@@ -24,16 +24,16 @@ public class Tempest : MonoBehaviour
         Tile targetTile = other.gameObject.GetComponent<Tile>();
         if (targetTile != null)
         {
-            if (targetTile.mix_flags == 0x04)
+            if ((targetTile.flags & Tile.SUBURG_TILE) != 0)
             {
-                // si c'est en cours de transformation
+                // Si c'est en cours de transformation.
                 Debug.Log("dead goblin");
-                targetTile.AddNewTile(targetTile.flags);
+                targetTile.flags &= ~Tile.SUBURG_TILE;
             }
-            else if (targetTile.flags == 0x04)
+            else if ((targetTile.flags & Tile.TOWN_TILE) != 0)
             {
                 Debug.Log("Dead catto");
-                // si c'est une ville
+                // Si c'est une ville.
                 Destroy(gameObject);
             }
 

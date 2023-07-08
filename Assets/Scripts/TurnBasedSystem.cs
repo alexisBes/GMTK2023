@@ -1,86 +1,103 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections.Generic;
+
+public struct Map_Coords
+{
+    public int x;
+    public int y;
+}
 
 public class TurnBasedSystem : MonoBehaviour
 {
-    public Label turnText;
-    public VisualElement root;
-    private bool playerTurn = true;
-    private int enemyTurnCount = 0;
-    private int maxEnemyTurns = 12;
-    private float enemyTurnDelay = 5f;
+    static public Label turnText;
+    static public VisualElement root;
+    
+    static Map_Coords coords_of_the_tile_that_is_being_colonised;
 
 
 
     private void Start()
     {
+        coords_of_the_tile_that_is_being_colonised.x = -1;
+        coords_of_the_tile_that_is_being_colonised.y = -1;
+        
         turnText = GetComponent<UIDocument>().rootVisualElement.Q<Label>("label");
         turnText.text = "Player's Turn";
 
         root = GetComponent<UIDocument>().rootVisualElement;
-        root.Q<Button>("Watter").clicked += PlayerButtonWaterClicked;
-        root.Q<Button>("Air").clicked += PlayerButtonSandClicked;
-        root.Q<Button>("Land").clicked += PlayerButtonLandClicked;
+        root.Q<Button>("Watter").clicked  += PlayerButtonWaterClicked;
+        root.Q<Button>("Air").clicked     += PlayerButtonSandClicked;
+        root.Q<Button>("Land").clicked    += PlayerButtonLandClicked;
         root.Q<Button>("Tempest").clicked += PlayerButtonTempestClicked;
     }
 
     private void PlayerButtonWaterClicked()
     {
-        PlayerButtonClicked(State.SPAWN_WATER);
+        State.state = State.SPAWN_WATER;
     }
     private void PlayerButtonLandClicked()
     {
-        PlayerButtonClicked(State.SPAWN_LAND);
+        State.state = State.SPAWN_LAND;
     }
     private void PlayerButtonSandClicked()
     {
-        PlayerButtonClicked(State.SPAWN_SAND);
+        State.state = State.SPAWN_SAND;
     }
     private void PlayerButtonTempestClicked()
     {
-        PlayerButtonClicked(State.SPAWN_TEMPEST);
+        State.state = State.SPAWN_TEMPEST;
     }
 
-    private void PlayerButtonClicked(int type)
-    {
-        if (playerTurn)
-        {
-            DisableButtons();
-            PerformPlayerAction(type);
-            StartCoroutine(EnemyTurnDelay());
-        }
-    }
-
-    private void PerformPlayerAction(int state)
-    {
-        Debug.Log("Player action performed");
-        State.state = state;
-    }
-
-    private System.Collections.IEnumerator EnemyTurnDelay()
-    {
-        turnText = GetComponent<UIDocument>().rootVisualElement.Q<Label>("label");
-        yield return new WaitForSeconds(enemyTurnDelay);
-        if (enemyTurnCount < maxEnemyTurns)
-        {
-            PerformEnemyAction();
-            enemyTurnCount++;
-            if (enemyTurnCount == maxEnemyTurns)
-            {
-                turnText.text = "GG WP ! :D";
-            }
-            else
-            {
-                playerTurn = true;
-                EnableButtons();
-                turnText.text = "Player's Turn";
-            }
-        }
-    }
-
-    private void PerformEnemyAction()
+    static public void PerformEnemyAction()
     {
         turnText.text = "Ennemies Turn";
+        
+        if(coords_of_the_tile_that_is_being_colonised.x >= 0 && coords_of_the_tile_that_is_being_colonised.y >= 0)
+        {
+            // Finish colonising a tile we started colonising during the previous turn. START
+            Tile tile_we_are_colonising = Our_Terrain.get_tile(coords_of_the_tile_that_is_being_colonised.x, coords_of_the_tile_that_is_being_colonised.y);
+            if((tile_we_are_colonising.flags & Tile.SUBURG_TILE) != 0)
+            {
+                tile_we_are_colonising.MixTile(State.SPAWN_TOWN);
+            }
+            
+            coords_of_the_tile_that_is_being_colonised.x = -1;
+            coords_of_the_tile_that_is_being_colonised.y = -1;
+            // Finish colonising a tile we started colonising during the previous turn. END
+        }
+        
+        
+        // Retrieve all colonisable tiles. START
+        List<Tile> colonisable_tiles = new List<Tile>();
+        
+        for(int y = 0; y < Our_Terrain.height; y++)
+        {
+            for(int x = 0; x < Our_Terrain.width; x++)
+            {
+                Tile tile = Our_Terrain.get_tile(x, y);
+                if(tile.flags == 0 || (tile.flags & (Tile.SUBURG_TILE | Tile.TOWN_TILE)) != 0) continue;
+                
+                colonisable_tiles.Add(tile);
+            }
+        }
+        // Retrieve all colonisable tiles. END
+        
+        
+        // Choose a tile to colonise at random and start working on it. START
+        if(colonisable_tiles.Count != 0)
+        {
+            int index_to_choose_from = Random.Range(0, colonisable_tiles.Count);
+            
+            Tile tile_to_colonise = colonisable_tiles[index_to_choose_from];
+            tile_to_colonise.MixTile(State.SPAWN_TOWN);
+            
+            coords_of_the_tile_that_is_being_colonised.x = tile_to_colonise.x;
+            coords_of_the_tile_that_is_being_colonised.y = tile_to_colonise.y;
+        }
+        // Choose a tile to colonise at random and start working on it. END
+        
+        
         Debug.Log("Enemy action performed");
     }
 
