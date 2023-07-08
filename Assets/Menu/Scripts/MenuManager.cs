@@ -16,7 +16,7 @@ public class MenuManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioSource.Play();
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
 
         SceneManager.LoadScene("Menu");
     }

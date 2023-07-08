@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioSource.Play();
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
 
         SceneManager.LoadScene("Annimation");
     }
@@ -38,7 +38,7 @@ public class MainMenu : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioSource.Play();
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
 
         SceneManager.LoadScene("Tuto");
     }
