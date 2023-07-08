@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 public class GameButton : MonoBehaviour
 {
+    public AudioSource audioSource;
+
     private void Awake()
     {
         EnableButtons();
@@ -30,16 +32,23 @@ public class GameButton : MonoBehaviour
 
     public void WaterButtonClicked()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
         Debug.Log("Water Clicked");
+        
     }
 
     public void AirButtonClicked()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
         Debug.Log("Air Clicked");
     }
 
     public void LandButtonClicked()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
         Debug.Log("Land Clicked");
     }
 }

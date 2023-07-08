@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     VisualElement root;
+    public AudioSource audioSource;
     
     private void Awake() {
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -15,20 +16,41 @@ public class MainMenu : MonoBehaviour
         root.Q<Button>("Tuto").clicked += TutoButtonClicked;
         root.Q<Button>("Quit").clicked += QuitButtonClicked;
     }
-
-
+    
     public void StartButtonClicked()
     {
+        StartCoroutine(PlaySoundAndWait());
+    }
+
+    private IEnumerator PlaySoundAndWait()
+    {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
+
+        yield return new WaitForSeconds(2f);
+
         SceneManager.LoadScene("Annimation");
     }
     
+    private IEnumerator PlaySoundAndWaitTuto()
+    {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
+
+        yield return new WaitForSeconds(2f);
+
+        SceneManager.LoadScene("Tuto");
+    }
+
     public void TutoButtonClicked()
     {
-        SceneManager.LoadScene("Tuto");
+        StartCoroutine(PlaySoundAndWaitTuto());
     }
 
     void QuitButtonClicked()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
         #if UNITY_STANDALONE
             Application.Quit();
         #endif
