@@ -20,12 +20,8 @@ public class Tempest : MonoBehaviour
         // Check if the position of the cube and sphere are approximately equal.
         if (Vector3.Distance(transform.position, target.position) < 0.001f)
         {
-            // on casse tout
+            // On casse tout.
             Destroy(gameObject);
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
     }
 }
