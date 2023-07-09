@@ -10,6 +10,8 @@ using static State;
 public class TurnBasedSystem : MonoBehaviour
 {
     static public Label turnText;
+    static public Label player_score_text;
+    static public Label bot_score_text;
     static public VisualElement root;
     
     static public bool  there_is_an_active_tornado = false;
@@ -38,7 +40,9 @@ public class TurnBasedSystem : MonoBehaviour
     {
         turnText = GetComponent<UIDocument>().rootVisualElement.Q<Label>("label");
         turnText.text = "Player's Turn";
-
+        
+        // @ Set score labels.
+                
         root = GetComponent<UIDocument>().rootVisualElement;
         root.Q<Button>("Watter").clicked  += PlayerButtonWaterClicked;
         root.Q<Button>("Air").clicked     += PlayerButtonSandClicked;
@@ -48,6 +52,9 @@ public class TurnBasedSystem : MonoBehaviour
     
     void Update()
     {
+        if(bot_must_play) turnText = "Enemy's turn";
+        else              turnText = "Player's turn";
+        
         float time = Time.realtimeSinceStartup;
         
         if(bot_must_play == true && (time - bot_turn_delay_start) > bot_turn_delay_seconds && there_is_an_active_tornado == false)
@@ -59,8 +66,6 @@ public class TurnBasedSystem : MonoBehaviour
             ////////////////////////////////////////////////////////////////
             // NOTE: we consider the game is over when all tiles are filled.
             ////////////////////////////////////////////////////////////////
-            
-            
             
             bool all_tiles_are_filled = true;
             
@@ -77,18 +82,8 @@ public class TurnBasedSystem : MonoBehaviour
                 else                                              player_score++;
             }
             
-            //UIDocument uiDocument;
-            //Debug.Log("bot score ==> " + bot_score);
-            //Debug.Log("player_score ==> " + player_score);
-            //uiDocument = GameObject.Find("Buttons")?.GetComponent<UIDocument>();
-            //if (uiDocument == null)
-            //{
-            //    Debug.LogError("UI document not found!");
-            //    return;
-            //}
+            // @ Set score labels.
             
-            //slider = uiDocument.rootVisualElement.Q<Slider>("slider");
-            //slider.value = bot_score;
             if(all_tiles_are_filled)
             {
                 // Transition to a game over screen. START
@@ -125,20 +120,8 @@ public class TurnBasedSystem : MonoBehaviour
         action_to_perform = SPAWN_TEMPEST;
     }
     
-    /*
-    static public bool check_if_enemy_turn_is_done()
-    {
-        if(Time.realtimeSinceStartup - enemy_turn_start > enemy_turn_time_seconds) return true;
-        
-        return false;
-    }
-    */
-    
     static public void PerformEnemyAction(bool only_do_the_automatic_stuff)
     {
-        turnText.text = "Enemy's Turn : " + CountTurn;
-        
-        //if(check_if_enemy_turn_is_done() == false) return;
         Debug.Assert(bot_must_play == true);
         
         if(tile_to_colonise != null && mixed_tile_to_colonise == null)
