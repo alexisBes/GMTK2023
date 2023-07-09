@@ -19,6 +19,7 @@ public class TurnBasedSystem : MonoBehaviour
     static public float enemy_turn_time_seconds = 5;
     static public float enemy_turn_start        = -1000; // Uses Time.realtimeSinceStartup
     
+    private static int CountTurn = 0;
     
     private void Start()
     {
@@ -63,7 +64,7 @@ public class TurnBasedSystem : MonoBehaviour
     
     static public void PerformEnemyAction()
     {
-        turnText.text = "Enemy's Turn";
+        turnText.text = "Enemy's Turn : " + CountTurn + "/12";
         
         if(check_if_enemy_turn_is_done() == false) return;
         
