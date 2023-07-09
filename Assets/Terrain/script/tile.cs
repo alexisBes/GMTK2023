@@ -191,6 +191,7 @@ public class Tile : MonoBehaviour
                     int y_coord = State.originTile.y + step_y;
                     
                     Tile end_tile = last_tile;
+                    bool gameplay_wise_we_cannot_go_further = false;
                     
                     while(true)
                     {
@@ -201,17 +202,22 @@ public class Tile : MonoBehaviour
                         if(!it_works)
                         {
                             Debug.Log("You lost at rock-paper-scissors.");
-                            break; // These two tile types are incompatible so we stop there.
+                            gameplay_wise_we_cannot_go_further = true;
                         }
                         
                         
-                        if((tile.flags & SUBURB_TILE) != 0)
+                        if(gameplay_wise_we_cannot_go_further == false && (tile.flags & SUBURB_TILE) != 0)
                         { // We found a target.
                             Debug.Log("Found a target.");
                             
                             tile.flags &= ~SUBURB_TILE;
                             tile.SetPrefab();
-                            break;
+                            gameplay_wise_we_cannot_go_further = true;
+                        }
+                        
+                        if((tile.flags & TOWN_TILE) != 0)
+                        {
+                            break; // Cities block storms.
                         }
                         
                         if(x_coord == this.x && y_coord == this.y)
@@ -235,8 +241,6 @@ public class Tile : MonoBehaviour
                     GameObject saracePrefab = Instantiate(tempestPrefab, storm_spawn_site, Quaternion.Euler(0, 0, 0));
                     Tempest tempest = saracePrefab.GetComponentInChildren<Tempest>();
                     tempest.target  = end_transform.position;
-                    
-                    Debug.Log("MLKSFMKL " + tempest.target); // @ DEBUG.
                     //////////////////////////////////////
                     // Unleash a storm. END
                 }
