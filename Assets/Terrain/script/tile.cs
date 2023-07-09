@@ -225,7 +225,6 @@ public class Tile : MonoBehaviour
                     int y_coord = storm_start_tile.y + step_y;
                     
                     Tile end_tile = last_tile;
-                    bool gameplay_wise_we_cannot_go_further = false;
                     
                     while(true)
                     {
@@ -237,11 +236,11 @@ public class Tile : MonoBehaviour
                         {
                             audioSourceDenied.Play();
                             Debug.Log("You lost at rock-paper-scissors.");
-                            gameplay_wise_we_cannot_go_further = true;
+                           break;
                         }
                         
                         
-                        if(gameplay_wise_we_cannot_go_further == false && (tile.flags & SUBURB_TILE) != 0)
+                        if((tile.flags & SUBURB_TILE) != 0)
                         { // We found a target.
                             Debug.Log("Found a target.");
                             
@@ -252,7 +251,7 @@ public class Tile : MonoBehaviour
                                 tile.num_turns_left_until_usable = Our_Terrain.num_turns_a_tile_is_denied_when_the_bot_gets_its_castle_destroyed;
                             }
                             
-                            gameplay_wise_we_cannot_go_further = true;
+                            break;
                         }
                         
                         if((tile.flags & TOWN_TILE) != 0)
