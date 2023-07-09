@@ -39,7 +39,7 @@ public class Tile : MonoBehaviour
     public GameObject ui_disk_to_instantiate_from;
     public GameObject ui_disk;
 
-    private GameObject currentPrefab;
+    public GameObject currentPrefab { get; private set; }
     
     Vector3 camp_target_position;
     
@@ -109,7 +109,7 @@ public class Tile : MonoBehaviour
             // Update the camp. END
         }
 
-        //notClickedThrough = EventSystem.current.IsPointerOverGameObject(); // @ Uncomment this when input works!!!!!
+        notClickedThrough = EventSystem.current.IsPointerOverGameObject();
     }
 
     void SetPrefab()
@@ -151,7 +151,7 @@ public class Tile : MonoBehaviour
             }
             else playing_earthquake_sound = false;
         }
-        else if(camp_prefab) Destroy(camp_prefab);
+        else if(camp_prefab ) Destroy(camp_prefab);
         
         flags_from_last_time_we_set_the_prefab = flags;
     }
@@ -243,7 +243,21 @@ public class Tile : MonoBehaviour
                             Debug.Log("We reached the last tile.");
                             break; // We reached the last tile.
                         }
-                        
+
+                        Animation[] animations = tile.currentPrefab.gameObject.GetComponentsInChildren<Animation>();
+                        for(int i = 0;i < animations.Length; i++)
+                        {
+                            Animation animation = animations[i];
+                            if(animation != null)
+                            {
+                                String name = animation.clip.name;
+                                if (animation.clip.name.IndexOf('-') == -1)
+                                    name += "-Tempest";
+                                bool isPLay = animation.Play(name, PlayMode.StopAll);
+                                Debug.Log("Trying play " + name + " return " + isPLay);
+                            }
+                        }
+
                         last_tile = tile;
                         x_coord += step_x;
                         y_coord += step_y;
