@@ -10,8 +10,7 @@ using static State;
 public class TurnBasedSystem : MonoBehaviour
 {
     static public Label turnText;
-    static public Label player_score_text;
-    static public Label bot_score_text;
+    static public Label score_text;
     static public VisualElement root;
     
     static public bool  there_is_an_active_tornado = false;
@@ -38,11 +37,12 @@ public class TurnBasedSystem : MonoBehaviour
     
     private void Start()
     {
-        turnText = GetComponent<UIDocument>().rootVisualElement.Q<Label>("label");
+        turnText = GetComponent<UIDocument>().rootVisualElement.Q<Label>("turn_text");
         turnText.text = "Player's Turn";
         
-        // @ Set score labels.
-                
+        score_text = GetComponent<UIDocument>().rootVisualElement.Q<Label>("score_text");
+        score_text.text = "Score: Player 0 | Bot 0";
+        
         root = GetComponent<UIDocument>().rootVisualElement;
         root.Q<Button>("Watter").clicked  += PlayerButtonWaterClicked;
         root.Q<Button>("Air").clicked     += PlayerButtonSandClicked;
@@ -52,8 +52,8 @@ public class TurnBasedSystem : MonoBehaviour
     
     void Update()
     {
-        if(bot_must_play) turnText = "Enemy's turn";
-        else              turnText = "Player's turn";
+        if(bot_must_play) turnText.text = "Enemy's turn";
+        else              turnText.text = "Player's turn";
         
         float time = Time.realtimeSinceStartup;
         
@@ -82,7 +82,7 @@ public class TurnBasedSystem : MonoBehaviour
                 else                                              player_score++;
             }
             
-            // @ Set score labels.
+            score_text.text = "Score: Player " + player_score + " | Bot " + bot_score;
             
             if(all_tiles_are_filled)
             {
