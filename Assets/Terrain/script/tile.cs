@@ -338,17 +338,17 @@ public class Tile : MonoBehaviour
                 }
                 
                 //UIDocument uiDocument;
-                Debug.Log("bot score ==> " + bot_score);
-                Debug.Log("player_score ==> " + player_score);
-                uiDocument = GameObject.Find(uiDocumentName)?.GetComponent<UIDocument>();
-                if (uiDocument == null)
-                {
-                    Debug.LogError("UI document not found!");
-                    return;
-                }
+                //Debug.Log("bot score ==> " + bot_score);
+                //Debug.Log("player_score ==> " + player_score);
+                //uiDocument = GameObject.Find("Buttons")?.GetComponent<UIDocument>();
+                //if (uiDocument == null)
+                //{
+                //    Debug.LogError("UI document not found!");
+                //    return;
+                //}
 
-                slider = uiDocument.rootVisualElement.Q<Slider>("slider");
-                slider.value = bot_score;
+                //slider = uiDocument.rootVisualElement.Q<Slider>("slider");
+                //slider.value = bot_score;
                 if(all_tiles_are_filled)
                 {
                     // Transition to a game over screen. START
@@ -384,6 +384,7 @@ public class Tile : MonoBehaviour
     }
 
     public int getPlayer_score() {
+        Debug.Log("getPlayer_score -> " + player_score);
         return player_score;
     }
 
