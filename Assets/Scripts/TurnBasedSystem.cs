@@ -148,6 +148,7 @@ public class TurnBasedSystem : MonoBehaviour
                 int index_to_choose_from = Random.Range(0, colonisable_tiles.Count);
                 
                 tile_to_colonise = colonisable_tiles[index_to_choose_from];
+                Debug.Assert(tile_to_colonise.flags != 0x00);
             }
         }
         else
@@ -166,7 +167,6 @@ public class TurnBasedSystem : MonoBehaviour
                 tile_to_colonise.flags &= ~(BASIC_TERRAIN | QUICKSAND_TILE | SWAMP_TILE | DUNE_TILE);
                 tile_to_colonise.flags |=  tile_to_colonise.original_terrain;
                 tile_to_colonise.SetPrefab();
-                Debug.Assert(tile_to_colonise.flags != 0x00);
                 mixed_tile_to_colonise = tile_to_colonise;
             }
             else

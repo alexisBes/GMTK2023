@@ -400,6 +400,8 @@ public class Tile : MonoBehaviour
             else if (action_to_perform == SPAWN_LAND)    flags  = LAND_TILE;
             else if (action_to_perform == SPAWN_TEMPEST) result = false;
             else Debug.LogError("INVALID STATE " + action_to_perform);
+            
+            original_terrain = flags;
         }
         else if ((flags & WATER_TILE) != 0 && action_to_perform == SPAWN_LAND || (flags & LAND_TILE) != 0 && action_to_perform == SPAWN_WATER)
         {
