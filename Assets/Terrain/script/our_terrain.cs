@@ -7,7 +7,9 @@ using System.Dynamic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class Our_Terrain : MonoBehaviour
 {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -138,9 +139,10 @@ public class Tile : MonoBehaviour
 
     void OnClickedTerrain()
     {
-        if(TurnBasedSystem.check_if_enemy_turn_is_done() == false) return; // The bot is "still" playing its turn.
-        
-        
+        if(TurnBasedSystem.check_if_enemy_turn_is_done() == false) return; // The bot is "still" playing its turn
+
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
