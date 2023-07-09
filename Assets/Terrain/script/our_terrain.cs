@@ -223,7 +223,7 @@ public class Our_Terrain : MonoBehaviour
         
         const int BASIC_FLAGS = WATER_TILE | SAND_TILE | LAND_TILE;
         
-        if((a.flags & b.flags & BASIC_FLAGS) != 0) return false;
+        if((a.flags & b.flags & BASIC_FLAGS) != 0) return true;
         
         if((a.flags & WATER_TILE) != 0)
         {
@@ -249,6 +249,6 @@ public class Our_Terrain : MonoBehaviour
             return false;
         }
         
-        return false;
+        return false;b 
     }
 }
