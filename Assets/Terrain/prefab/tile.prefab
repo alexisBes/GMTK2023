@@ -122,9 +122,7 @@ MonoBehaviour:
   camp_prefab_to_instantiate_from: {fileID: 0}
   camp_prefab: {fileID: 0}
   ui_disk_to_instantiate_from: {fileID: 0}
-  ui_disk: {fileID: 0}
-  player_score: 0
-  bot_score: 0
+  ui_disk: {fileID: 919132149155446097, guid: e3832419329b165499d1bd1f588ee257, type: 3}
 --- !u!82 &5042776211676458897
 AudioSource:
   m_ObjectHideFlags: 0

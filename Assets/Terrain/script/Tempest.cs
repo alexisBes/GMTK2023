@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static TurnBasedSystem;
+
 public class Tempest : MonoBehaviour
 {
     public Vector3 target;
@@ -21,7 +23,7 @@ public class Tempest : MonoBehaviour
         // Check if the position of the cube and sphere are approximately equal.
         if (Vector3.Distance(t.position, target) < 0.001f)
         {
-            TurnBasedSystem.there_is_an_active_tornado = false;
+            there_is_an_active_tornado = false;
             
             CameraShaker.Invoke();
             // On casse tout.

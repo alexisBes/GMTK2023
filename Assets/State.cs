@@ -11,9 +11,10 @@ public class State
     // action
     public const int SPAWN_TEMPEST  = 5;
     
-    public static Tile originTile;
+    public static Tile storm_start_tile;
+    public static int action_to_perform;
+    
     private State()
     { }
     public State getInsance { get; private set; }
-    public static int state;
 }

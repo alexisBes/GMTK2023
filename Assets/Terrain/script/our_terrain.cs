@@ -12,6 +12,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UIElements;
 
+using static Tile;
+
 public class Our_Terrain : MonoBehaviour
 {
     public GameObject tile_prefab;
@@ -60,16 +62,17 @@ public class Our_Terrain : MonoBehaviour
                 
                 // Set the goblins colony.
                 if ((x >= centreW - 1 && x <= centreW + 1) && (y <= centreH + 1 && y >= centreH - 1)) newFlags = 1 << UnityEngine.Random.Range(0, 3);
-                if (y == centreH && x == centreW)                                                     newFlags = Tile.TOWN_TILE;
+                if (y == centreH && x == centreW)                                                     newFlags = TOWN_TILE;
                 //////////////////////////
                 
                 GameObject tile = Instantiate(tile_prefab, position, tile_prefab.transform.rotation);
                 Tile terrain = tile.GetComponent<Tile>();
-                terrain.flags   = newFlags;
+                terrain.flags            = newFlags;
+                terrain.original_terrain = newFlags;
                 terrain.camp_prefab_to_instantiate_from = camp_prefab;
                 terrain.ui_disk_to_instantiate_from     = ui_disk;
-                terrain.x       = x;
-                terrain.y       = y;
+                terrain.x                = x;
+                terrain.y                = y;
 
                 PlayerInput pi = tile.GetComponent<PlayerInput>();
                 pi.camera = Camera.main;
@@ -211,25 +214,25 @@ public class Our_Terrain : MonoBehaviour
         
         // WATER < LAND < SAND < WATER
         
-        const int BASIC_FLAGS = Tile.WATER_TILE | Tile.SAND_TILE | Tile.LAND_TILE;
+        const int BASIC_FLAGS = WATER_TILE | SAND_TILE | LAND_TILE;
         
         if((a.flags & b.flags & BASIC_FLAGS) != 0) return true;
         
-        if((a.flags & Tile.WATER_TILE) != 0)
+        if((a.flags & WATER_TILE) != 0)
         {
-            if((b.flags & Tile.LAND_TILE) != 0) return true;
+            if((b.flags & LAND_TILE) != 0) return true;
             return false;
         }
         
-        if((a.flags & Tile.LAND_TILE) != 0)
+        if((a.flags & LAND_TILE) != 0)
         {
-            if((b.flags & Tile.SAND_TILE) != 0) return true;
+            if((b.flags & SAND_TILE) != 0) return true;
             return false;
         }
         
-        if((a.flags & Tile.SAND_TILE) != 0)
+        if((a.flags & SAND_TILE) != 0)
         {
-            if((b.flags & Tile.WATER_TILE) != 0) return true;
+            if((b.flags & WATER_TILE) != 0) return true;
             return false;
         }
         

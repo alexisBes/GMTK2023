@@ -9,18 +9,23 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
+using static TurnBasedSystem;
+using static State;
+
 public class Tile : MonoBehaviour
 {
     public const int WATER_TILE = 0x01;
-    public const int LAND_TILE = 0x02;
-    public const int SAND_TILE = 0x04;
-    public const int TOWN_TILE = 0x08;
+    public const int LAND_TILE  = 0x02;
+    public const int SAND_TILE  = 0x04;
+    public const int TOWN_TILE  = 0x08;
 
-    public const int NO_MIX_TILE = 0x00;
-    public const int SWAMP_TILE = 0x10;
+    public const int NO_MIX_TILE    = 0x00;
+    public const int SWAMP_TILE     = 0x10;
     public const int QUICKSAND_TILE = 0x20;
-    public const int DUNE_TILE = 0x40;
-    public const int SUBURB_TILE = 0x80;
+    public const int DUNE_TILE      = 0x40;
+    public const int SUBURB_TILE    = 0x80;
+    
+    public const int BASIC_TERRAIN = WATER_TILE | LAND_TILE | SAND_TILE;
 
     public AudioSource audioSource;
 
@@ -34,7 +39,7 @@ public class Tile : MonoBehaviour
     
     public int flags_from_last_time_we_set_the_prefab = -1;
     public int flags = 0;
-    public int mix_flags = 0;
+    public int original_terrain = 0;
     public int x, y;
 
     public List<GameObject> prefabs;
@@ -45,7 +50,7 @@ public class Tile : MonoBehaviour
     public GameObject ui_disk_to_instantiate_from;
     public GameObject ui_disk;
 
-    private GameObject currentPrefab;
+    public GameObject currentPrefab { get; private set; }
     
     Vector3 camp_target_position;
     
@@ -87,7 +92,7 @@ public class Tile : MonoBehaviour
         // Update the mouse over highlight thing. START
         Renderer renderer = ui_disk.GetComponent<Renderer>();
         
-        if(TurnBasedSystem.check_if_enemy_turn_is_done() == true && (flags & TOWN_TILE) == 0 && TurnBasedSystem.there_is_an_active_tornado == false)
+        if(check_if_enemy_turn_is_done() == true && (flags & TOWN_TILE) == 0 && there_is_an_active_tornado == false)
         {
             Ray ray = camera.ScreenPointToRay(mouse_position);
             RaycastHit hit;
@@ -104,7 +109,7 @@ public class Tile : MonoBehaviour
         if(camp_prefab)
         {
             // Update the camp. START
-            if(TurnBasedSystem.there_is_an_active_tornado == true) return; // We do not want to make castles appear out of the blue when there is a tornado about.
+            if(there_is_an_active_tornado == true) return; // We do not want to make castles appear out of the blue when there is a tornado about.
             
             if(playing_earthquake_sound == false)
             {
@@ -118,10 +123,10 @@ public class Tile : MonoBehaviour
             // Update the camp. END
         }
 
-        //notClickedThrough = EventSystem.current.IsPointerOverGameObject(); // @ Uncomment this when input works!!!!!
+        notClickedThrough = EventSystem.current.IsPointerOverGameObject();
     }
 
-    void SetPrefab()
+    public void SetPrefab()
     {
         if(flags == flags_from_last_time_we_set_the_prefab) return;
         
@@ -153,27 +158,22 @@ public class Tile : MonoBehaviour
             camp_prefab = Instantiate(camp_prefab_to_instantiate_from, camp_start_position, Quaternion.Euler(0, 0, 0));
             camp_prefab.transform.parent = transform;
             
-            if(TurnBasedSystem.there_is_an_active_tornado == false)
+            if(there_is_an_active_tornado == false)
             {
                 playing_earthquake_sound = true;
                 earthquake_audio_source.Play();
             }
             else playing_earthquake_sound = false;
         }
-        else if(camp_prefab) Destroy(camp_prefab);
+        else if(camp_prefab ) Destroy(camp_prefab);
         
         flags_from_last_time_we_set_the_prefab = flags;
     }
 
     void OnClickedTerrain()
     {
-        if(TurnBasedSystem.check_if_enemy_turn_is_done() == false) {
-            return;
-        } // The bot is "still" playing its turn
-        if(TurnBasedSystem.there_is_an_active_tornado == true) { 
-            //audioSourceDenied.Play();
-            return;
-        }  // We do not want to play while there is an active tornado about.
+        if(check_if_enemy_turn_is_done() == false) return; // The bot is "still" playing its turn
+        if(there_is_an_active_tornado == true)     return; // We do not want to play while there is an active tornado about.
 
         if (notClickedThrough) return;
 
@@ -187,18 +187,18 @@ public class Tile : MonoBehaviour
 
             bool play_enemy_turn = true;
 
-            if (this.flags != 0 && State.state == State.SPAWN_TEMPEST)
+            if (this.flags != 0 && action_to_perform == SPAWN_TEMPEST)
             {
                 if ((this.flags & (TOWN_TILE | SUBURB_TILE)) == 0)
                 {
                     Debug.Log("Setting target");
-                    State.originTile = this;
+                    storm_start_tile = this;
 
                     play_enemy_turn = false;
                 }
-                else if(State.originTile != null && (this.x == State.originTile.x) != (this.y == State.originTile.y))
+                else if(storm_start_tile != null && (this.x == storm_start_tile.x) != (this.y == storm_start_tile.y))
                 {
-                    if((this.flags & Tile.SUBURB_TILE) == 0)
+                    if((this.flags & SUBURB_TILE) == 0)
                     {
                         audioSourceDenied.Play();
                         Debug.Log("This target is not a suburb.");
@@ -209,19 +209,19 @@ public class Tile : MonoBehaviour
                     // Unleash a storm. START
                     Debug.Log("Target acquired");
                     
-                    TurnBasedSystem.there_is_an_active_tornado = true;
+                    there_is_an_active_tornado = true;
                     
                     int step_x = 0;
                     int step_y = 0;
                     
-                    if(this.x == State.originTile.x) step_y = State.originTile.y < this.y ? 1 : -1;
-                    else                             step_x = State.originTile.x < this.x ? 1 : -1;
+                    if(this.x == storm_start_tile.x) step_y = storm_start_tile.y < this.y ? 1 : -1;
+                    else                             step_x = storm_start_tile.x < this.x ? 1 : -1;
                     
                     
-                    Tile last_tile = State.originTile;
+                    Tile last_tile = storm_start_tile;
                     
-                    int x_coord = State.originTile.x + step_x;
-                    int y_coord = State.originTile.y + step_y;
+                    int x_coord = storm_start_tile.x + step_x;
+                    int y_coord = storm_start_tile.y + step_y;
                     
                     Tile end_tile = last_tile;
                     bool gameplay_wise_we_cannot_go_further = false;
@@ -259,7 +259,21 @@ public class Tile : MonoBehaviour
                             Debug.Log("We reached the last tile.");
                             break; // We reached the last tile.
                         }
-                        
+
+                        Animation[] animations = tile.currentPrefab.gameObject.GetComponentsInChildren<Animation>();
+                        for(int i = 0;i < animations.Length; i++)
+                        {
+                            Animation animation = animations[i];
+                            if(animation != null)
+                            {
+                                String name = animation.clip.name;
+                                if (animation.clip.name.IndexOf('-') == -1)
+                                    name += "-Tempest";
+                                bool isPLay = animation.Play(name, PlayMode.StopAll);
+                                Debug.Log("Trying play " + name + " return " + isPLay);
+                            }
+                        }
+
                         last_tile = tile;
                         x_coord += step_x;
                         y_coord += step_y;
@@ -267,7 +281,7 @@ public class Tile : MonoBehaviour
                     
                     
                     // Spawn an object for visual effects.
-                    Transform origin_transform = State.originTile.GetComponent<Transform>();
+                    Transform origin_transform = storm_start_tile.GetComponent<Transform>();
                     Vector3 storm_spawn_site = origin_transform.position;
                     
                     Transform end_transform = end_tile.GetComponent<Transform>();
@@ -283,13 +297,13 @@ public class Tile : MonoBehaviour
             {
                 if (!Our_Terrain.isACaseValid(x, y)) return;
 
-                if (!MixTile(State.state)) return; // This action did nothing so we do not want to run a turn.
+                if (!MixTile(action_to_perform)) return; // This action did nothing so we do not want to run a turn.
             }
             
             if(play_enemy_turn)
             {
-                TurnBasedSystem.PerformEnemyAction(); // Play enemy's turn.
-                State.state = State.EMPTY;
+                PerformEnemyAction(); // Play enemy's turn.
+                action_to_perform = EMPTY;
                 
                 // Check for a game over state. START
                 ////////////////////////////////////////////////////////////////
@@ -344,6 +358,18 @@ public class Tile : MonoBehaviour
             }
         }
     }
+    
+    static public int action_to_tile_type(int action)
+    {
+        switch(action)
+        {
+            case SPAWN_SAND:  return SAND_TILE;
+            case SPAWN_WATER: return WATER_TILE;
+            case SPAWN_LAND:  return LAND_TILE;
+        }
+        
+        return 0;
+    }
 
     public int getBot_score() {
         return bot_score;
@@ -353,38 +379,40 @@ public class Tile : MonoBehaviour
         return player_score;
     }
 
-    public bool MixTile(int state)
+    public bool MixTile(int action_to_perform)
     {
         ///////////////////////////////////////////////////////
         // NOTE: when this action does nothing we return false.
         ///////////////////////////////////////////////////////
 
-        Debug.Log("Mixing from " + state + " case X:" + x + " y : " + y);
+        //Debug.Log("Mixing from " + action_to_perform + " case X:" + x + " y : " + y);
 
         bool result = true;
 
         if (flags == 0)
         {
-            if (state == State.SPAWN_WATER)        flags  = Tile.WATER_TILE;
-            else if (state == State.SPAWN_SAND)    flags  = Tile.SAND_TILE;
-            else if (state == State.SPAWN_LAND)    flags  = Tile.LAND_TILE;
-            else if (state == State.SPAWN_TEMPEST) result = false;
-            else Debug.LogError("INVALID STATE " + state);
+            if (action_to_perform == SPAWN_WATER)        flags  = WATER_TILE;
+            else if (action_to_perform == SPAWN_SAND)    flags  = SAND_TILE;
+            else if (action_to_perform == SPAWN_LAND)    flags  = LAND_TILE;
+            else if (action_to_perform == SPAWN_TEMPEST) result = false;
+            else Debug.LogError("INVALID STATE " + action_to_perform);
         }
-        else if ((flags & WATER_TILE) != 0 && state == State.SPAWN_LAND || (flags & LAND_TILE) != 0 && state == State.SPAWN_WATER)
+        else if ((flags & WATER_TILE) != 0 && action_to_perform == SPAWN_LAND || (flags & LAND_TILE) != 0 && action_to_perform == SPAWN_WATER)
         {
-            flags |= SWAMP_TILE;
+            flags |= SWAMP_TILE | action_to_tile_type(action_to_perform);
         }
-        else if ((flags & WATER_TILE) != 0 && state == State.SPAWN_SAND || (flags & SAND_TILE) != 0 && state == State.SPAWN_WATER)
+        else if ((flags & WATER_TILE) != 0 && action_to_perform == SPAWN_SAND || (flags & SAND_TILE) != 0 && action_to_perform == SPAWN_WATER)
         {
-            flags |= QUICKSAND_TILE;
+            flags |= QUICKSAND_TILE | action_to_tile_type(action_to_perform);
         }
-        else if ((flags & LAND_TILE) != 0 && state == State.SPAWN_SAND || (flags & SAND_TILE) != 0 && state == State.SPAWN_LAND)
+        else if ((flags & LAND_TILE) != 0 && action_to_perform == SPAWN_SAND || (flags & SAND_TILE) != 0 && action_to_perform == SPAWN_LAND)
         {
-            flags |= DUNE_TILE;
+            flags |= DUNE_TILE | action_to_tile_type(action_to_perform);
         }
-        else if (state == State.SPAWN_TOWN)
+        else if (action_to_perform == SPAWN_TOWN)
         {
+            Debug.Assert(pop_count(flags & BASIC_TERRAIN) == 1);
+            
             if ((flags & SUBURB_TILE) != 0)
             {
                 flags &= ~SUBURB_TILE;
