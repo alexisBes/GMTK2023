@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1925,6 +1925,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: game_buttons
       objectReference: {fileID: 0}
+    - target: {fileID: 7531314966090492426, guid: a3fe59f45a6d6fc40abe5948c6b8b2f3, type: 3}
+      propertyPath: terrain
+      value: 
+      objectReference: {fileID: 941929679}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
