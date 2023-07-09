@@ -42,6 +42,8 @@ public class Tile : MonoBehaviour
     private GameObject currentPrefab;
     
     Vector3 camp_target_position;
+    
+    bool playing_earthquake_sound = true;
 
     private bool notClickedThrough = false;
 
@@ -76,7 +78,7 @@ public class Tile : MonoBehaviour
         // Update the mouse over highlight thing. START
         Renderer renderer = ui_disk.GetComponent<Renderer>();
         
-        if(TurnBasedSystem.check_if_enemy_turn_is_done() == true && (flags & TOWN_TILE) == 0)
+        if(TurnBasedSystem.check_if_enemy_turn_is_done() == true && (flags & TOWN_TILE) == 0 && TurnBasedSystem.there_is_an_active_tornado == false)
         {
             Ray ray = camera.ScreenPointToRay(mouse_position);
             RaycastHit hit;
@@ -93,13 +95,21 @@ public class Tile : MonoBehaviour
         if(camp_prefab)
         {
             // Update the camp. START
+            if(TurnBasedSystem.there_is_an_active_tornado == true) return; // We do not want to make castles appear out of the blue when there is a tornado about.
+            
+            if(playing_earthquake_sound == false)
+            {
+                earthquake_audio_source.Play();
+                playing_earthquake_sound = true;
+            }
+            
             Transform t = camp_prefab.GetComponent<Transform>();
             
             t.position = Vector3.MoveTowards(t.position, camp_target_position, Time.deltaTime * 0.3f);
             // Update the camp. END
         }
 
-        notClickedThrough = EventSystem.current.IsPointerOverGameObject();
+        //notClickedThrough = EventSystem.current.IsPointerOverGameObject(); // @ Uncomment this when input works!!!!!
     }
 
     void SetPrefab()
@@ -134,7 +144,12 @@ public class Tile : MonoBehaviour
             camp_prefab = Instantiate(camp_prefab_to_instantiate_from, camp_start_position, Quaternion.Euler(0, 0, 0));
             camp_prefab.transform.parent = transform;
             
-            earthquake_audio_source.Play();
+            if(TurnBasedSystem.there_is_an_active_tornado == false)
+            {
+                playing_earthquake_sound = true;
+                earthquake_audio_source.Play();
+            }
+            else playing_earthquake_sound = false;
         }
         else if(camp_prefab) Destroy(camp_prefab);
         
@@ -144,6 +159,7 @@ public class Tile : MonoBehaviour
     void OnClickedTerrain()
     {
         if(TurnBasedSystem.check_if_enemy_turn_is_done() == false) return; // The bot is "still" playing its turn
+        if(TurnBasedSystem.there_is_an_active_tornado == true)     return; // We do not want to play while there is an active tornado about.
 
         if (notClickedThrough) return;
 
@@ -178,6 +194,8 @@ public class Tile : MonoBehaviour
                     // Unleash a storm. START
                     Debug.Log("Target acquired");
                     
+                    TurnBasedSystem.there_is_an_active_tornado = true;
+                    
                     int step_x = 0;
                     int step_y = 0;
                     
@@ -191,6 +209,7 @@ public class Tile : MonoBehaviour
                     int y_coord = State.originTile.y + step_y;
                     
                     Tile end_tile = last_tile;
+                    bool gameplay_wise_we_cannot_go_further = false;
                     
                     while(true)
                     {
@@ -201,17 +220,22 @@ public class Tile : MonoBehaviour
                         if(!it_works)
                         {
                             Debug.Log("You lost at rock-paper-scissors.");
-                            break; // These two tile types are incompatible so we stop there.
+                            gameplay_wise_we_cannot_go_further = true;
                         }
                         
                         
-                        if((tile.flags & SUBURB_TILE) != 0)
+                        if(gameplay_wise_we_cannot_go_further == false && (tile.flags & SUBURB_TILE) != 0)
                         { // We found a target.
                             Debug.Log("Found a target.");
                             
                             tile.flags &= ~SUBURB_TILE;
                             tile.SetPrefab();
-                            break;
+                            gameplay_wise_we_cannot_go_further = true;
+                        }
+                        
+                        if((tile.flags & TOWN_TILE) != 0)
+                        {
+                            break; // Cities block storms.
                         }
                         
                         if(x_coord == this.x && y_coord == this.y)
@@ -235,8 +259,6 @@ public class Tile : MonoBehaviour
                     GameObject saracePrefab = Instantiate(tempestPrefab, storm_spawn_site, Quaternion.Euler(0, 0, 0));
                     Tempest tempest = saracePrefab.GetComponentInChildren<Tempest>();
                     tempest.target  = end_transform.position;
-                    
-                    Debug.Log("MLKSFMKL " + tempest.target); // @ DEBUG.
                     //////////////////////////////////////
                     // Unleash a storm. END
                 }

@@ -198,7 +198,7 @@ public class Our_Terrain : MonoBehaviour
         
         const int BASIC_FLAGS = Tile.WATER_TILE | Tile.SAND_TILE | Tile.LAND_TILE;
         
-        if((a.flags & b.flags & BASIC_FLAGS) != 0) return false; // We do not want people to abuse two consecutive tiles of the same type.
+        if((a.flags & b.flags & BASIC_FLAGS) != 0) return true;
         
         if((a.flags & Tile.WATER_TILE) != 0)
         {
@@ -218,7 +218,6 @@ public class Our_Terrain : MonoBehaviour
             return false;
         }
         
-        Debug.Assert(false);
         return false;
     }
 }

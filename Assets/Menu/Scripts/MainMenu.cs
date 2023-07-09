@@ -30,7 +30,7 @@ public class MainMenu : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        SceneManager.LoadScene("Annimation");
+        SceneManager.LoadScene("Game");
     }
     
     private IEnumerator PlaySoundAndWaitTuto()
