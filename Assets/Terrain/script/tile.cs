@@ -43,6 +43,7 @@ public class Tile : MonoBehaviour
     
     Vector3 camp_target_position;
 
+    private bool notClickedThrough = false;
 
     // Start is called before the first frame update
     void Start()
@@ -70,7 +71,8 @@ public class Tile : MonoBehaviour
     {
         Camera camera = Camera.main;
         Vector3 mouse_position = Input.mousePosition;
-        
+
+
         // Update the mouse over highlight thing. START
         Renderer renderer = ui_disk.GetComponent<Renderer>();
         
@@ -96,6 +98,8 @@ public class Tile : MonoBehaviour
             t.position = Vector3.MoveTowards(t.position, camp_target_position, Time.deltaTime * 0.3f);
             // Update the camp. END
         }
+
+        notClickedThrough = EventSystem.current.IsPointerOverGameObject();
     }
 
     void SetPrefab()
@@ -141,7 +145,7 @@ public class Tile : MonoBehaviour
     {
         if(TurnBasedSystem.check_if_enemy_turn_is_done() == false) return; // The bot is "still" playing its turn
 
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (notClickedThrough) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
