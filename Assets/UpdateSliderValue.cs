@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class UpdateSliderValue : MonoBehaviour
 {
@@ -11,18 +12,28 @@ public class UpdateSliderValue : MonoBehaviour
 
     private Slider slider;  // Reference to the Slider component
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        slider = uiDocument.rootVisualElement.Q<Slider>("slider");   
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        Debug.Log("here");
-        Tile tile = terrain.GetComponent<Tile>();
-        slider.value += (tile.player_score + 20);
+        if (slider.value == 100) {
+            SceneManager.LoadScene("Lost");
+        }
+    }
+
+    public float increaseAmount = 0.1f;
+    public float increaseInterval = 1f;
+
+    private void Start()
+    {
+        slider = uiDocument.rootVisualElement.Q<Slider>("slider");
+        StartCoroutine(IncreaseSliderValue());
+    }
+
+    private System.Collections.IEnumerator IncreaseSliderValue()
+    {
+        while (true)
+        {
+            slider.value += increaseAmount;
+            yield return new WaitForSeconds(increaseInterval);
+        }
     }
 }

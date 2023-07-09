@@ -78,7 +78,9 @@ public class Our_Terrain : MonoBehaviour
                 pi.camera = Camera.main;
                 position.x += TILE_STEP;
 
-                score = terrain.player_score;
+                score = terrain.getPlayer_score();
+
+                Debug.Log("getScore -> " + terrain.player_score);
                 tiles.Add(terrain);
             }
 
@@ -175,10 +177,14 @@ public class Our_Terrain : MonoBehaviour
         // @ Right now we are not preventing the camera from going too far!!!
         camera.transform.position = camera.transform.position + (camera_right * horizontal_pan * horizontal_pan_speed + camera_forward * vertical_pan * vertical_pan_speed) * zoom_factor;
         // Handle camera panning. END   
+        
+    }
+
+    public int getScore() {
         Tile terrain = tile_prefab.GetComponent<Tile>();
         
-        slider.value += (terrain.bot_score);
-        Debug.Log("slider.value = " + slider.value);
+        //slider.value += (terrain.bot_score);
+        return score;
     }
     
     static public Tile get_tile(int x, int y)

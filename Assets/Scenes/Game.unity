@@ -1967,6 +1967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 783297767}
+  terrain: {fileID: 941929679}
 --- !u!114 &783297764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2232,6 +2233,7 @@ GameObject:
   - component: {fileID: 941929681}
   - component: {fileID: 941929680}
   - component: {fileID: 941929679}
+  - component: {fileID: 941929682}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -2254,6 +2256,7 @@ MonoBehaviour:
   tile_prefab: {fileID: 2582282415645502144, guid: 8d6e6faa7c70a9a4f83f1ee6d40e8b8b, type: 3}
   camp_prefab: {fileID: 1690466091820418, guid: fadb9dd6254f1d14a9b77307bf133e1b, type: 3}
   ui_disk: {fileID: 919132149155446097, guid: e3832419329b165499d1bd1f588ee257, type: 3}
+  uiDocument: {fileID: 783297765}
 --- !u!114 &941929680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2281,6 +2284,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -29.261, y: -87.344, z: 0.687}
+--- !u!114 &941929682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941929678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ece01d5ed7042ecb052604a62dacaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrain: {fileID: 941929679}
+  uiDocument: {fileID: 783297765}
+  increaseAmount: 0.1
+  increaseInterval: 1
 --- !u!1 &961249887
 GameObject:
   m_ObjectHideFlags: 0
