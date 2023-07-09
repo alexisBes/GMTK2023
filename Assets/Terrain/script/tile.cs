@@ -233,7 +233,7 @@ public class Tile : MonoBehaviour
                         end_tile = tile;
                         
                         bool it_works = Our_Terrain.get_priority_between_tiles(last_tile, tile);
-                        if(!it_works && last_tile.flags == tile.flags)
+                        if(!it_works)
                         {
                             audioSourceDenied.Play();
                             Debug.Log("You lost at rock-paper-scissors.");

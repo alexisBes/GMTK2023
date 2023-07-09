@@ -85,7 +85,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.1066203, y: 1.1713467, z: 3.2145894}
+  m_Size: {x: 5.1066203, y: 1.1713467, z: 0.19}
   m_Center: {x: 0.43985617, y: -0.02791822, z: -0.51913387}
 --- !u!114 &2187330991637952937
 MonoBehaviour:
@@ -108,6 +108,7 @@ MonoBehaviour:
   original_terrain: 0
   x: 0
   y: 0
+  num_turns_left_until_usable: 0
   prefabs:
   - {fileID: 1994693040836722, guid: cc0b6d4b15530d942bffb81f838c93fc, type: 3}
   - {fileID: 1520068213326888, guid: d8deb0d5cca03814e8f5cd71fb9e7a1e, type: 3}

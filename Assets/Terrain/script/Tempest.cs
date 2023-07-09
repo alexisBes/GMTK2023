@@ -12,7 +12,8 @@ public class Tempest : MonoBehaviour
     
     void Start()
     {
-        
+        AudioSource audio_source = GetComponent<AudioSource>();
+        audio_source.Play();
     }
 
     void Update()

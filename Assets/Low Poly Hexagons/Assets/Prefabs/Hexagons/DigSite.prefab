@@ -104,7 +104,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -163,6 +163,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4190374889171312, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 65356083075971528, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1442978162663213881, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
@@ -260,6 +264,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 65356083075971528, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1442978162663213881, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
       propertyPath: anim
       value: 
@@ -353,6 +361,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4190374889171312, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 65356083075971528, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1442978162663213881, guid: 8346eaba119a746469efae8bae2110c6, type: 3}

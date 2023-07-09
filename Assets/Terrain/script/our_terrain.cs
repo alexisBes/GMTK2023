@@ -25,8 +25,8 @@ public class Our_Terrain : MonoBehaviour
     private Slider slider;  // Reference to the Slider component
 
 
-    public static int width  = 8;
-    public static int height = 8;
+    public static int width  = 6;
+    public static int height = 6;
     public const float TILE_STEP = 1;
     
     public static float default_camera_zoom  = 7.2f;
@@ -227,18 +227,24 @@ public class Our_Terrain : MonoBehaviour
         
         if((a.flags & WATER_TILE) != 0)
         {
+            Debug.Log("CASE 1");
+            
             if((b.flags & LAND_TILE) != 0) return true;
             return false;
         }
         
         if((a.flags & LAND_TILE) != 0)
         {
+            Debug.Log("CASE 2");
+            
             if((b.flags & SAND_TILE) != 0) return true;
             return false;
         }
         
         if((a.flags & SAND_TILE) != 0)
         {
+            Debug.Log("CASE 3");
+            
             if((b.flags & WATER_TILE) != 0) return true;
             return false;
         }
