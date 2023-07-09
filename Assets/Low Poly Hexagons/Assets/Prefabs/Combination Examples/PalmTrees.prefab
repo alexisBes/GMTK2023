@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4759176502936714}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 360, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &33206916697092100
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -317,6 +317,7 @@ Animation:
   m_Animation: {fileID: 7400000, guid: 20a80ef421b2a4214867b76cd590335a, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: 20a80ef421b2a4214867b76cd590335a, type: 2}
+  - {fileID: 7400000, guid: 14213c5ea1c6e43c889cb30a136a6584, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
