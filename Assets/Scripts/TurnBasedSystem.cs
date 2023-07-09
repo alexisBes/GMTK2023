@@ -1,7 +1,8 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 using static Tile;
 using static State;
@@ -11,10 +12,10 @@ public class TurnBasedSystem : MonoBehaviour
     static public Label turnText;
     static public VisualElement root;
     
-    static public float enemy_turn_time_seconds = 5;
-    static public float enemy_turn_start        = -1000; // Uses Time.realtimeSinceStartup
-    
-    static public bool there_is_an_active_tornado = false;
+    static public bool  there_is_an_active_tornado = false;
+    static public bool  bot_must_play              = false;
+    static public float bot_turn_delay_start       = 0;
+    static public float bot_turn_delay_seconds     = 2;
     
     static Tile tile_to_colonise       = null;
     static Tile mixed_tile_to_colonise = null;
@@ -45,6 +46,68 @@ public class TurnBasedSystem : MonoBehaviour
         root.Q<Button>("Tempest").clicked += PlayerButtonTempestClicked;
     }
     
+    void Update()
+    {
+        float time = Time.realtimeSinceStartup;
+        
+        if(bot_must_play == true && (time - bot_turn_delay_start) > bot_turn_delay_seconds && there_is_an_active_tornado == false)
+        {
+            PerformEnemyAction(false);
+            action_to_perform = EMPTY;
+            
+            // Check for a game over state. START
+            ////////////////////////////////////////////////////////////////
+            // NOTE: we consider the game is over when all tiles are filled.
+            ////////////////////////////////////////////////////////////////
+            
+            
+            
+            bool all_tiles_are_filled = true;
+            
+            int player_score = 0;
+            int bot_score    = 0;
+            
+            for(int i = 0; i < Our_Terrain.tiles.Count; i++)
+            {
+                Tile tile = Our_Terrain.tiles[i];
+                
+                if(tile.flags == 0) all_tiles_are_filled = false;
+                
+                if((tile.flags & (TOWN_TILE | SUBURB_TILE)) != 0) bot_score++;
+                else                                              player_score++;
+            }
+            
+            //UIDocument uiDocument;
+            //Debug.Log("bot score ==> " + bot_score);
+            //Debug.Log("player_score ==> " + player_score);
+            //uiDocument = GameObject.Find("Buttons")?.GetComponent<UIDocument>();
+            //if (uiDocument == null)
+            //{
+            //    Debug.LogError("UI document not found!");
+            //    return;
+            //}
+            
+            //slider = uiDocument.rootVisualElement.Q<Slider>("slider");
+            //slider.value = bot_score;
+            if(all_tiles_are_filled)
+            {
+                // Transition to a game over screen. START
+                if(player_score >= bot_score)
+                {
+                    SceneManager.LoadScene("Win");
+                }
+                else
+                {
+                    SceneManager.LoadScene("Lost");
+                }
+                // Transition to a game over screen. END
+            }
+            // Check for a game over state. END
+            
+            bot_must_play = false;
+        }
+    }
+    
     private void PlayerButtonWaterClicked()
     {
         action_to_perform = SPAWN_WATER;
@@ -62,23 +125,21 @@ public class TurnBasedSystem : MonoBehaviour
         action_to_perform = SPAWN_TEMPEST;
     }
     
-    
+    /*
     static public bool check_if_enemy_turn_is_done()
     {
         if(Time.realtimeSinceStartup - enemy_turn_start > enemy_turn_time_seconds) return true;
         
         return false;
     }
+    */
     
-    
-    static public void PerformEnemyAction()
+    static public void PerformEnemyAction(bool only_do_the_automatic_stuff)
     {
         turnText.text = "Enemy's Turn : " + CountTurn;
         
-        if(check_if_enemy_turn_is_done() == false) return;
-        
-        
-        enemy_turn_start = Time.realtimeSinceStartup;
+        //if(check_if_enemy_turn_is_done() == false) return;
+        Debug.Assert(bot_must_play == true);
         
         if(tile_to_colonise != null && mixed_tile_to_colonise == null)
         {
@@ -93,6 +154,8 @@ public class TurnBasedSystem : MonoBehaviour
         }
         
         tile_to_colonise = null;
+        
+        if(only_do_the_automatic_stuff) return;
         
         
         if(mixed_tile_to_colonise == null)

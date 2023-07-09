@@ -93,7 +93,7 @@ public class Tile : MonoBehaviour
         // Update the mouse over highlight thing. START
         Renderer renderer = ui_disk.GetComponent<Renderer>();
         
-        if(check_if_enemy_turn_is_done() == true && (flags & TOWN_TILE) == 0 && there_is_an_active_tornado == false)
+        if(bot_must_play == false && (flags & TOWN_TILE) == 0 && there_is_an_active_tornado == false)
         {
             Ray ray = camera.ScreenPointToRay(mouse_position);
             RaycastHit hit;
@@ -173,8 +173,8 @@ public class Tile : MonoBehaviour
 
     void OnClickedTerrain()
     {
-        if(check_if_enemy_turn_is_done() == false) return; // The bot is "still" playing its turn
-        if(there_is_an_active_tornado == true)     return; // We do not want to play while there is an active tornado about.
+        if(bot_must_play == true)              return; // The bot is "still" playing its turn
+        if(there_is_an_active_tornado == true) return; // We do not want to play while there is an active tornado about.
 
         if (notClickedThrough) return;
 
@@ -314,55 +314,10 @@ public class Tile : MonoBehaviour
                     if(tile.num_turns_left_until_usable != 0) tile.num_turns_left_until_usable--;
                 }
                 
+                bot_must_play        = true;
+                bot_turn_delay_start = Time.realtimeSinceStartup;
                 
-                PerformEnemyAction(); // Play enemy's turn.
-                action_to_perform = EMPTY;
-                
-                // Check for a game over state. START
-                ////////////////////////////////////////////////////////////////
-                // NOTE: we consider the game is over when all tiles are filled.
-                ////////////////////////////////////////////////////////////////
-                
-                
-                
-                bool all_tiles_are_filled = true;
-                
-                for(int i = 0; i < Our_Terrain.tiles.Count; i++)
-                {
-                    Tile tile = Our_Terrain.tiles[i];
-                    
-                    if(tile.flags == 0) all_tiles_are_filled = false;
-                    
-                    if((tile.flags & (TOWN_TILE | SUBURB_TILE)) != 0) bot_score++;
-                    else                                              player_score++;
-                }
-                
-                //UIDocument uiDocument;
-                //Debug.Log("bot score ==> " + bot_score);
-                //Debug.Log("player_score ==> " + player_score);
-                //uiDocument = GameObject.Find("Buttons")?.GetComponent<UIDocument>();
-                //if (uiDocument == null)
-                //{
-                //    Debug.LogError("UI document not found!");
-                //    return;
-                //}
-
-                //slider = uiDocument.rootVisualElement.Q<Slider>("slider");
-                //slider.value = bot_score;
-                if(all_tiles_are_filled)
-                {
-                    // Transition to a game over screen. START
-                    if(player_score >= bot_score)
-                    {
-                        SceneManager.LoadScene("Win");
-                    }
-                    else
-                    {
-                        SceneManager.LoadScene("Lost");
-                    }
-                    // Transition to a game over screen. END
-                }
-                // Check for a game over state. END
+                PerformEnemyAction(true); // Do a light turn where only basic stuff happens (like basic castles becoming full castles, drains, etc).
             }
         }
     }
