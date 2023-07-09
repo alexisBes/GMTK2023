@@ -2680,7 +2680,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Dragons have come and all they care about is conquering the land.\nSelect
     a space of an element (Earth, Water, Sand) to prevent the expansion of dragons.
-    Use storms to destroy castles under construction. \nWater < Sand < Earth < Water"
+    Use tempest to destroy castles under construction. \nWater < Sand < Earth < Water"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
