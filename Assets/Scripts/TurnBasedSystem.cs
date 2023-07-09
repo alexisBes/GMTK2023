@@ -79,7 +79,7 @@ public class TurnBasedSystem : MonoBehaviour
                 if(tile.flags == 0) all_tiles_are_filled = false;
                 
                 if((tile.flags & (TOWN_TILE | SUBURB_TILE)) != 0) bot_score++;
-                else                                              player_score++;
+                else if(tile.flags != 0)                          player_score++;
             }
             
             score_text.text = "Score: Player " + player_score + " | Bot " + bot_score;
