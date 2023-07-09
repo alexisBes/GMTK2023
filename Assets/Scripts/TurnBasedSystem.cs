@@ -19,6 +19,8 @@ public class TurnBasedSystem : MonoBehaviour
     static public float enemy_turn_time_seconds = 5;
     static public float enemy_turn_start        = -1000; // Uses Time.realtimeSinceStartup
     
+    static public bool there_is_an_active_tornado = false;
+    
     private static int CountTurn = 0;
     
     private void Start()

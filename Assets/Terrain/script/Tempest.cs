@@ -21,7 +21,8 @@ public class Tempest : MonoBehaviour
         // Check if the position of the cube and sphere are approximately equal.
         if (Vector3.Distance(t.position, target) < 0.001f)
         {
-
+            TurnBasedSystem.there_is_an_active_tornado = false;
+            
             CameraShaker.Invoke();
             // On casse tout.
             Destroy(gameObject);

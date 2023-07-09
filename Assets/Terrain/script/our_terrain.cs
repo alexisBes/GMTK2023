@@ -218,7 +218,6 @@ public class Our_Terrain : MonoBehaviour
             return false;
         }
         
-        Debug.Assert(false);
         return false;
     }
 }
