@@ -192,9 +192,14 @@ public class Tile : MonoBehaviour
             {
                 if ((this.flags & (TOWN_TILE | SUBURB_TILE)) == 0)
                 {
+                    if(storm_start_tile != null)
+                    {
+                        Debug.Log("Erase old origin");
+                        storm_start_tile.GetComponentInChildren<Renderer>().enabled = false;
+                    }
                     Debug.Log("Setting target");
                     storm_start_tile = this;
-
+                    this.GetComponentInChildren<MeshRenderer>().enabled = true;
                     play_enemy_turn = false;
                 }
                 else if(storm_start_tile != null && (this.x == storm_start_tile.x) != (this.y == storm_start_tile.y))
@@ -225,14 +230,15 @@ public class Tile : MonoBehaviour
                     int y_coord = storm_start_tile.y + step_y;
                     
                     Tile end_tile = last_tile;
-                    
-                    while(true)
+
+                    last_tile.GetComponentInChildren<MeshRenderer>().enabled = false;
+                    while (true)
                     {
                         Tile tile = Our_Terrain.get_tile(x_coord, y_coord);
                         end_tile = tile;
                         
                         bool it_works = Our_Terrain.get_priority_between_tiles(last_tile, tile);
-                        if(!it_works)
+                        if (!it_works)
                         {
                             audioSourceDenied.Play();
                             Debug.Log("You lost at rock-paper-scissors.");
