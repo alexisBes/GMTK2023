@@ -28,6 +28,12 @@ public class Tile : MonoBehaviour
     public const int BASIC_TERRAIN = WATER_TILE | LAND_TILE | SAND_TILE;
 
     public AudioSource audioSource;
+
+    public AudioSource audioSourceDenied;
+    private Slider slider;
+    private UIDocument uiDocument;
+    public string uiDocumentName;
+
     [NonSerialized] public AudioSource earthquake_audio_source;
     public AudioClip earthquake_audio_clip;
     
@@ -51,6 +57,9 @@ public class Tile : MonoBehaviour
     bool playing_earthquake_sound = true;
 
     private bool notClickedThrough = false;
+
+    public int player_score = 0;
+    public int bot_score    = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -191,6 +200,7 @@ public class Tile : MonoBehaviour
                 {
                     if((this.flags & SUBURB_TILE) == 0)
                     {
+                        audioSourceDenied.Play();
                         Debug.Log("This target is not a suburb.");
                         return; // We did not target a suburb so no need to proceed.
                     }
@@ -224,6 +234,7 @@ public class Tile : MonoBehaviour
                         bool it_works = Our_Terrain.get_priority_between_tiles(last_tile, tile);
                         if(!it_works)
                         {
+                            audioSourceDenied.Play();
                             Debug.Log("You lost at rock-paper-scissors.");
                             gameplay_wise_we_cannot_go_further = true;
                         }
@@ -299,8 +310,7 @@ public class Tile : MonoBehaviour
                 // NOTE: we consider the game is over when all tiles are filled.
                 ////////////////////////////////////////////////////////////////
                 
-                int player_score = 0;
-                int bot_score    = 0;
+                
                 
                 bool all_tiles_are_filled = true;
                 
@@ -319,8 +329,18 @@ public class Tile : MonoBehaviour
                         else                                              player_score++;
                     }
                 }
-                
-                
+                //UIDocument uiDocument;
+                Debug.Log("bot score ==> " + bot_score);
+                Debug.Log("player_score ==> " + player_score);
+                uiDocument = GameObject.Find("Buttons")?.GetComponent<UIDocument>();
+                if (uiDocument == null)
+                {
+                    Debug.LogError("UI document not found!");
+                    return;
+                }
+
+                slider = uiDocument.rootVisualElement.Q<Slider>("slider");
+                slider.value = bot_score;
                 if(all_tiles_are_filled)
                 {
                     // Transition to a game over screen. START
@@ -349,6 +369,14 @@ public class Tile : MonoBehaviour
         }
         
         return 0;
+    }
+
+    public int getBot_score() {
+        return bot_score;
+    }
+
+    public int getPlayer_score() {
+        return player_score;
     }
 
     public bool MixTile(int action_to_perform)
