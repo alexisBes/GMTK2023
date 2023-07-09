@@ -101,11 +101,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 5042776211676458897}
   audioSourceDenied: {fileID: 5592873668823883364}
-  uiDocumentName: Buttons
+  uiDocumentName: game_buttons
   earthquake_audio_clip: {fileID: 8300000, guid: 6990736b6659b4142a7910bcc730c029, type: 3}
   flags_from_last_time_we_set_the_prefab: -1
   flags: 0
-  mix_flags: 0
+  original_terrain: 0
   x: 0
   y: 0
   prefabs:
@@ -123,6 +123,8 @@ MonoBehaviour:
   camp_prefab: {fileID: 0}
   ui_disk_to_instantiate_from: {fileID: 0}
   ui_disk: {fileID: 919132149155446097, guid: e3832419329b165499d1bd1f588ee257, type: 3}
+  player_score: 0
+  bot_score: 0
 --- !u!82 &5042776211676458897
 AudioSource:
   m_ObjectHideFlags: 0

@@ -901,6 +901,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &314253124 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5109257424656859772, guid: a3fe59f45a6d6fc40abe5948c6b8b2f3, type: 3}
+  m_PrefabInstance: {fileID: 736777893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &327555817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,7 +1324,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 513447349}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.6, y: -19.8, z: 8.7}
+  m_LocalPosition: {x: 2.6, y: -19.8, z: 3.5}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2132,7 +2143,7 @@ MonoBehaviour:
   tile_prefab: {fileID: 2582282415645502144, guid: 8d6e6faa7c70a9a4f83f1ee6d40e8b8b, type: 3}
   camp_prefab: {fileID: 1690466091820418, guid: fadb9dd6254f1d14a9b77307bf133e1b, type: 3}
   ui_disk: {fileID: 3772885523101478763, guid: 22747e02b3291bb4d8948b2e8f10eca9, type: 3}
-  uiDocument: {fileID: 783297765}
+  uiDocument: {fileID: 314253124}
 --- !u!114 &941929680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2269,7 +2280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrain: {fileID: 941929679}
-  uiDocument: {fileID: 783297765}
+  uiDocument: {fileID: 314253124}
 --- !u!1 &961249887
 GameObject:
   m_ObjectHideFlags: 0
