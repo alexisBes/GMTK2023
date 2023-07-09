@@ -90,9 +90,9 @@ public class TurnBasedSystem : MonoBehaviour
                 Debug.Assert((tile_to_colonise.flags & TOWN_TILE) != 0);
             }
             // Finish colonising a tile we started colonising during the previous turn. END
-            
-            tile_to_colonise = null;
         }
+        
+        tile_to_colonise = null;
         
         
         if(mixed_tile_to_colonise == null)
@@ -107,6 +107,7 @@ public class TurnBasedSystem : MonoBehaviour
                     Tile tile = Our_Terrain.get_tile(x, y);
                     
                     if(tile.flags == 0) continue;
+                    if(tile.num_turns_left_until_usable > 0) continue;
                     
                     if((tile.flags & (TOWN_TILE | SUBURB_TILE)) == 0)
                     {
@@ -141,23 +142,23 @@ public class TurnBasedSystem : MonoBehaviour
                 }
             }
             // Retrieve all colonisable tiles. END
-            
-            
             if(colonisable_tiles.Count != 0)
             { // Choose a tile to colonise at random.
                 int index_to_choose_from = Random.Range(0, colonisable_tiles.Count);
                 
                 tile_to_colonise = colonisable_tiles[index_to_choose_from];
+                Debug.Assert(tile_to_colonise.flags != 0x00);
             }
         }
         else
         { // We are already working on a tile to colonise.
             tile_to_colonise       = mixed_tile_to_colonise;
             mixed_tile_to_colonise = null;
+            Debug.Assert(tile_to_colonise.flags != 0x00);
         }
         
         
-        if(tile_to_colonise)
+        if(tile_to_colonise && tile_to_colonise.original_terrain != 0x00)
         {
             // Work on the tile to colonise. START
             if((tile_to_colonise.flags & BASIC_TERRAIN) != tile_to_colonise.original_terrain)
@@ -165,7 +166,6 @@ public class TurnBasedSystem : MonoBehaviour
                 tile_to_colonise.flags &= ~(BASIC_TERRAIN | QUICKSAND_TILE | SWAMP_TILE | DUNE_TILE);
                 tile_to_colonise.flags |=  tile_to_colonise.original_terrain;
                 tile_to_colonise.SetPrefab();
-                
                 mixed_tile_to_colonise = tile_to_colonise;
             }
             else

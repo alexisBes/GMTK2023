@@ -32,6 +32,7 @@ public class Our_Terrain : MonoBehaviour
     public static float default_camera_zoom  = 7.2f;
     public static float furthest_camera_zoom = 10.0f;
     public static float closest_camera_zoom  = 2.0f;
+    public static int   num_turns_a_tile_is_denied_when_the_bot_gets_its_castle_destroyed = 3;
     
     Vector3 camera_look_at_direction;
     Vector3 map_centre;
@@ -45,7 +46,7 @@ public class Our_Terrain : MonoBehaviour
     
     void Start()
     {
-        Vector3 position = new Vector3(0, 0, 0);
+        Vector3 position = new Vector3(0, -1.9f, 0);
         int centreW = (int)(UnityEngine.Random.value * width);
         int centreH = (int)(UnityEngine.Random.value * height);
         if (centreW == 0) centreW++;
@@ -182,7 +183,7 @@ public class Our_Terrain : MonoBehaviour
 
     public int getScore() {
         Tile terrain = tile_prefab.GetComponent<Tile>();
-        
+
         //slider.value += (terrain.bot_score);
         return score;
     }
@@ -222,7 +223,7 @@ public class Our_Terrain : MonoBehaviour
         
         const int BASIC_FLAGS = WATER_TILE | SAND_TILE | LAND_TILE;
         
-        if((a.flags & b.flags & BASIC_FLAGS) != 0) return true;
+        if((a.flags & b.flags & BASIC_FLAGS) != 0) return false;
         
         if((a.flags & WATER_TILE) != 0)
         {
