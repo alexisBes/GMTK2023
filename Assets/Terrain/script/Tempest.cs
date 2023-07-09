@@ -19,6 +19,7 @@ public class Tempest : MonoBehaviour
     void Start()
     {
         AudioSource audio_source = GetComponent<AudioSource>();
+        audio_source.volume = 0;
         audio_source.Play();
         
         Transform t = GetComponent<Transform>();
@@ -41,15 +42,22 @@ public class Tempest : MonoBehaviour
         Vector2 target_position_2d = new Vector2(target.x, target.z);
         
         float distance_done = Vector2.Distance(start_position, storm_position_2d);
-        float distance_ratio = distance_to_do / distance_done;
+        float distance_ratio = distance_done / distance_to_do;
         
-        const float POINT_AFTER_WHICH_WE_FADE_THE_VOLUME = 0.9f;
+        Debug.Log(distance_ratio);
         
+        const float POINT_BEFORE_WHICH_WE_FADE_THE_VOLUME = 0.3f;
+        const float POINT_AFTER_WHICH_WE_FADE_THE_VOLUME  = 0.9f;
         
-        if(distance_ratio > POINT_AFTER_WHICH_WE_FADE_THE_VOLUME)
+        AudioSource audio_source = GetComponent<AudioSource>();
+        
+        if(distance_ratio < POINT_BEFORE_WHICH_WE_FADE_THE_VOLUME)
+        {
+            audio_source.volume = distance_ratio / POINT_BEFORE_WHICH_WE_FADE_THE_VOLUME;
+        }
+        else if(distance_ratio > POINT_AFTER_WHICH_WE_FADE_THE_VOLUME)
         { // Fade the tornado sound out.
-            AudioSource audio_source = GetComponent<AudioSource>();
-            audio_source.volume = 1.0f - (distance_ratio - POINT_AFTER_WHICH_WE_FADE_THE_VOLUME);
+            audio_source.volume = 1.0f - (distance_ratio - POINT_AFTER_WHICH_WE_FADE_THE_VOLUME) / (1.0f - POINT_AFTER_WHICH_WE_FADE_THE_VOLUME);
         }
         
         

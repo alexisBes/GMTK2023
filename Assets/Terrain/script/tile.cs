@@ -284,7 +284,7 @@ public class Tile : MonoBehaviour
                             Animation animation = animations[i];
                             if(animation != null)
                             {
-                                String name = animation.clip.name;
+                                String name = animation.clip.name; // @ BUG: sometimes something goes wrong here.
                                 if (animation.clip.name.IndexOf('-') == -1)
                                     name += "-Tempest";
                                 bool isPLay = animation.Play(name, PlayMode.StopAll);

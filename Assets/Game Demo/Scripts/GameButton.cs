@@ -24,12 +24,12 @@ public class GameButton : MonoBehaviour
         Button button = root.Q<Button>("Watter");
         toolTexte(root.Q<Button>("Watter"), "Watter");
         root.Q<Button>("Watter").clicked += WaterButtonClicked;
-        toolTexte(root.Q<Button>("Air"), "Air");
-        root.Q<Button>("Air").clicked += AirButtonClicked;
+        toolTexte(root.Q<Button>("Air"), "Sand");
+        root.Q<Button>("Air").clicked    += AirButtonClicked;
         toolTexte(root.Q<Button>("Land"), "Land");
-        root.Q<Button>("Land").clicked += LandButtonClicked;
+        root.Q<Button>("Land").clicked   += LandButtonClicked;
         toolTexte(root.Q<Button>("Exit"), "Exit");
-        root.Q<Button>("Exit").clicked += ExitButtonClicked;
+        root.Q<Button>("Exit").clicked   += ExitButtonClicked;
         toolTexte(root.Q<Button>("Tempest"), "Tempest");
     }
 
@@ -38,9 +38,9 @@ public class GameButton : MonoBehaviour
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 
         root.Q<Button>("Watter").clicked -= WaterButtonClicked;
-        root.Q<Button>("Air").clicked -= AirButtonClicked;
-        root.Q<Button>("Land").clicked -= LandButtonClicked;
-        root.Q<Button>("Exit").clicked -= ExitButtonClicked;
+        root.Q<Button>("Air").clicked    -= AirButtonClicked;
+        root.Q<Button>("Land").clicked   -= LandButtonClicked;
+        root.Q<Button>("Exit").clicked   -= ExitButtonClicked;
         
     }
 
