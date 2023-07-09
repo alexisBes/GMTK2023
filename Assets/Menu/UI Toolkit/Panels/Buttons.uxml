@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Menu/UI%20Toolkit/Styles/BtnEnv.uss?fileID=7433441132597879392&amp;guid=d736e6ece144b490d90ddcf88c23fb4c&amp;type=3#BtnEnv" />
     <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-        <ui:Slider picking-mode="Ignore" value="50" high-value="100" style="border-left-width: 7px; border-right-width: 7px; border-top-width: 7px; border-bottom-width: 7px;" />
+        <ui:Slider picking-mode="Ignore" value="50" high-value="100" name="slider" style="border-left-width: 7px; border-right-width: 7px; border-top-width: 7px; border-bottom-width: 7px;" />
         <ui:Label tabindex="-1" text="WIN                                                                                                                      LOST" display-tooltip-when-elided="true" style="width: 81px; font-size: 41px; -unity-font-style: bold; color: rgb(255, 255, 255); -unity-background-image-tint-color: rgb(61, 61, 61); background-color: rgba(255, 203, 203, 0); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px;" />
     </ui:VisualElement>
     <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-wrap: nowrap; align-items: flex-start; align-self: flex-start;">
