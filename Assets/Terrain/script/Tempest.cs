@@ -8,13 +8,25 @@ using static TurnBasedSystem;
 public class Tempest : MonoBehaviour
 {
     public Vector3 target;
+    Vector2 start_position;
+    
+    float distance_to_do;
+    
     [SerializeField]
     private float speed = 0.8f;
     //public GameObject row;
+    
     void Start()
     {
         AudioSource audio_source = GetComponent<AudioSource>();
         audio_source.Play();
+        
+        Transform t = GetComponent<Transform>();
+        
+        start_position = new Vector2(t.position.x, t.position.z);
+        Vector2 target_position_2d = new Vector2(target.x, target.z);
+        
+        distance_to_do = Vector2.Distance(start_position, target_position_2d);
     }
 
     void Update()
@@ -27,6 +39,19 @@ public class Tempest : MonoBehaviour
         
         Vector2 storm_position_2d  = new Vector2(t.position.x, t.position.z);
         Vector2 target_position_2d = new Vector2(target.x, target.z);
+        
+        float distance_done = Vector2.Distance(start_position, storm_position_2d);
+        float distance_ratio = distance_to_do / distance_done;
+        
+        const float POINT_AFTER_WHICH_WE_FADE_THE_VOLUME = 0.9f;
+        
+        
+        if(distance_ratio > POINT_AFTER_WHICH_WE_FADE_THE_VOLUME)
+        { // Fade the tornado sound out.
+            AudioSource audio_source = GetComponent<AudioSource>();
+            audio_source.volume = 1.0f - (distance_ratio - POINT_AFTER_WHICH_WE_FADE_THE_VOLUME);
+        }
+        
         
         if (Vector2.Distance(storm_position_2d, target_position_2d) < 0.001f)
         {

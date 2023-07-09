@@ -211,7 +211,7 @@ public class TurnBasedSystem : MonoBehaviour
             { // This is a mixed tile so we need to unmix it first and then later we will build a castle on it.
                 tile_to_colonise.flags &= ~(BASIC_TERRAIN | QUICKSAND_TILE | SWAMP_TILE | DUNE_TILE);
                 tile_to_colonise.flags |=  tile_to_colonise.original_terrain;
-                tile_to_colonise.SetPrefab();
+                
                 mixed_tile_to_colonise = tile_to_colonise;
             }
             else

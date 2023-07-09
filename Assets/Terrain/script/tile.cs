@@ -25,6 +25,8 @@ public class Tile : MonoBehaviour
     public const int DUNE_TILE      = 0x40;
     public const int SUBURB_TILE    = 0x80;
     
+    public const int TILE_IS_UNUSABLE = 0x100;
+    
     public const int BASIC_TERRAIN = WATER_TILE | LAND_TILE | SAND_TILE;
 
     public AudioSource audioSource;
@@ -47,6 +49,7 @@ public class Tile : MonoBehaviour
     public GameObject tempestPrefab;
     public GameObject camp_prefab_to_instantiate_from;
     public GameObject camp_prefab = null;
+    public GameObject unusable_tile_prefab;
     
     public GameObject ui_disk_to_instantiate_from;
     public GameObject ui_disk;
@@ -65,8 +68,6 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetPrefab();
-        
         Transform t = GetComponent<Transform>();
         
         Vector3 spawn_position = t.position;
@@ -88,12 +89,14 @@ public class Tile : MonoBehaviour
     {
         Camera camera = Camera.main;
         Vector3 mouse_position = Input.mousePosition;
-
-
+        
+        bool we_can_do_something_on_this_tile = Our_Terrain.isACaseValid(this.x, this.y);
+        
+        
         // Update the mouse over highlight thing. START
         Renderer renderer = ui_disk.GetComponent<Renderer>();
         
-        if(bot_must_play == false && (flags & TOWN_TILE) == 0 && there_is_an_active_tornado == false)
+        if(bot_must_play == false && (flags & TOWN_TILE) == 0 && there_is_an_active_tornado == false && we_can_do_something_on_this_tile)
         {
             Ray ray = camera.ScreenPointToRay(mouse_position);
             RaycastHit hit;
@@ -123,53 +126,64 @@ public class Tile : MonoBehaviour
             t.position = Vector3.MoveTowards(t.position, camp_target_position, Time.deltaTime * 0.3f);
             // Update the camp. END
         }
-
+        
+        // Update usability flag. START
+        if(we_can_do_something_on_this_tile == true) flags &= ~TILE_IS_UNUSABLE;
+        else if(flags == 0)                          flags |=  TILE_IS_UNUSABLE;
+        // Update usability flag. END
+        
+        
+        if(flags != flags_from_last_time_we_set_the_prefab)
+        {
+            // Update prefab. START
+            Destroy(currentPrefab);
+            
+            int prefab_index = 0;
+            
+            if ((flags & TOWN_TILE)           != 0) prefab_index = 4;
+            //else if ((flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
+            else if ((flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
+            else if ((flags & SWAMP_TILE)     != 0) prefab_index = 4 + 1;
+            else if ((flags & DUNE_TILE)      != 0) prefab_index = 4 + 3;
+            else if ((flags & WATER_TILE)     != 0) prefab_index = 1;
+            else if ((flags & SAND_TILE)      != 0) prefab_index = 3;
+            else if ((flags & LAND_TILE)      != 0) prefab_index = 2;
+            
+            GameObject prefab_to_instanciate = prefabs[prefab_index];
+            
+            if((flags & TILE_IS_UNUSABLE) != 0) prefab_to_instanciate = unusable_tile_prefab;
+            
+            currentPrefab = Instantiate(prefab_to_instanciate, transform.position, Quaternion.Euler(0, 0, 0));
+            currentPrefab.transform.parent = transform;
+            
+            if((flags & SUBURB_TILE) != 0)
+            {
+                if(camp_prefab) Destroy(camp_prefab);
+                
+                
+                camp_target_position = transform.position;
+                Vector3 camp_start_position = camp_target_position - new Vector3(0, 1, 0);
+                
+                camp_prefab = Instantiate(camp_prefab_to_instantiate_from, camp_start_position, Quaternion.Euler(0, 0, 0));
+                camp_prefab.transform.parent = transform;
+                
+                if(there_is_an_active_tornado == false)
+                {
+                    playing_earthquake_sound = true;
+                    earthquake_audio_source.Play();
+                }
+                else playing_earthquake_sound = false;
+            }
+            else if(camp_prefab ) Destroy(camp_prefab);
+            
+            flags_from_last_time_we_set_the_prefab = flags;
+            // Update prefab. END
+        }
+        
+        
         notClickedThrough = EventSystem.current.IsPointerOverGameObject();
     }
 
-    public void SetPrefab()
-    {
-        if(flags == flags_from_last_time_we_set_the_prefab) return;
-        
-        
-        Destroy(currentPrefab);
-
-        int prefab_index = 0;
-
-        if ((flags & TOWN_TILE)           != 0) prefab_index = 4;
-        //else if ((flags & SUBURB_TILE)    != 0) prefab_index = 4 + 4;
-        else if ((flags & QUICKSAND_TILE) != 0) prefab_index = 4 + 2;
-        else if ((flags & SWAMP_TILE)     != 0) prefab_index = 4 + 1;
-        else if ((flags & DUNE_TILE)      != 0) prefab_index = 4 + 3;
-        else if ((flags & WATER_TILE)     != 0) prefab_index = 1;
-        else if ((flags & SAND_TILE)      != 0) prefab_index = 3;
-        else if ((flags & LAND_TILE)      != 0) prefab_index = 2;
-
-        currentPrefab = Instantiate(prefabs[prefab_index], transform.position, Quaternion.Euler(0, 0, 0));
-        currentPrefab.transform.parent = transform;
-        
-        if((flags & SUBURB_TILE) != 0)
-        {
-            if(camp_prefab) Destroy(camp_prefab);
-            
-            
-            camp_target_position = transform.position;
-            Vector3 camp_start_position = camp_target_position - new Vector3(0, 1, 0);
-            
-            camp_prefab = Instantiate(camp_prefab_to_instantiate_from, camp_start_position, Quaternion.Euler(0, 0, 0));
-            camp_prefab.transform.parent = transform;
-            
-            if(there_is_an_active_tornado == false)
-            {
-                playing_earthquake_sound = true;
-                earthquake_audio_source.Play();
-            }
-            else playing_earthquake_sound = false;
-        }
-        else if(camp_prefab ) Destroy(camp_prefab);
-        
-        flags_from_last_time_we_set_the_prefab = flags;
-    }
 
     void OnClickedTerrain()
     {
@@ -247,7 +261,6 @@ public class Tile : MonoBehaviour
                             if((last_tile.flags & BASIC_TERRAIN) != (tile.flags & BASIC_TERRAIN))
                             {
                                 tile.flags &= ~SUBURB_TILE;
-                                tile.SetPrefab();
                                 tile.num_turns_left_until_usable = Our_Terrain.num_turns_a_tile_is_denied_when_the_bot_gets_its_castle_destroyed;
                             }
                             
@@ -392,7 +405,6 @@ public class Tile : MonoBehaviour
         }
         else result = false;
 
-        SetPrefab();
         return result;
     }
 }

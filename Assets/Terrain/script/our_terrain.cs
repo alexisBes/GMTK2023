@@ -195,8 +195,6 @@ public class Our_Terrain : MonoBehaviour
     
     static public bool isACaseValid(int x, int y)
     {
-        Debug.Log("X: " + x + ", Y:" + y);
-        
         int flags_from_surrounding_tiles = 0;
         
         if (x > 0)          flags_from_surrounding_tiles |= get_tile(x - 1, y).flags;
@@ -204,11 +202,9 @@ public class Our_Terrain : MonoBehaviour
         if (y > 0)          flags_from_surrounding_tiles |= get_tile(x, y - 1).flags;
         if (y + 1 < height) flags_from_surrounding_tiles |= get_tile(x, y + 1).flags;
         
-        if(flags_from_surrounding_tiles == 0)
-        {
-            Debug.Log("This tile cannot be used!");
-            return false;
-        }
+        flags_from_surrounding_tiles &= ~TILE_IS_UNUSABLE;
+        
+        if(flags_from_surrounding_tiles == 0) return false;
         
         return true;
     }
