@@ -165,6 +165,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1442978162663213881, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 5701239670865647821}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -256,6 +260,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1442978162663213881, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 2355329976722717576}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -347,36 +355,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1442978162663213881, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 4570438678835541473}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1038066931200580, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4570438678835541473}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
---- !u!1 &7279483974969168019 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1038066931200580, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
+--- !u!111 &4570438678835541473 stripped
+Animation:
+  m_CorrespondingSourceObject: {fileID: 6515347215382402870, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
   m_PrefabInstance: {fileID: 7279607031055540951}
   m_PrefabAsset: {fileID: 0}
---- !u!111 &4570438678835541473
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7279483974969168019}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 025ed5e195f8a450184ee455bec9898d, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 025ed5e195f8a450184ee455bec9898d, type: 2}
-  - {fileID: 7400000, guid: 0488df5b7d9b84ed2a2708fc84815c11, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!4 &7280278912683133863 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4190374889171312, guid: 8346eaba119a746469efae8bae2110c6, type: 3}
