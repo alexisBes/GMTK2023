@@ -5,8 +5,8 @@
         <ui:VisualElement name="SideBar" style="flex-grow: 1; background-color: rgba(56, 56, 56, 0.32); background-image: none; flex-direction: column; width: 30%; -unity-background-image-tint-color: rgb(102, 187, 239); align-self: stretch; justify-content: center; border-left-color: rgba(174, 174, 174, 0); border-right-color: rgba(174, 174, 174, 0); border-top-color: rgba(174, 174, 174, 0); border-bottom-color: rgba(174, 174, 174, 0); -unity-background-scale-mode: stretch-to-fill; align-items: stretch; left: 35%; right: 0; top: 0;">
             <ui:Label tabindex="-1" text="Dragon&apos;s construction simulator" display-tooltip-when-elided="true" name="Label" enable-rich-text="true" class="label-main-title" style="text-overflow: clip; white-space: nowrap; -unity-text-align: lower-center; font-size: 32px; padding-bottom: 28px; background-color: rgba(56, 56, 56, 0); color: rgb(255, 255, 255); -unity-font-style: bold;" />
             <ui:Button text="Start" display-tooltip-when-elided="true" name="Start" class="button-main-title" />
-            <ui:Button text="Tuto" display-tooltip-when-elided="true" name="Tuto" class="button-main-title" />
-            <ui:Button text="Credit" display-tooltip-when-elided="true" name="Credit" class="button-main-title" />
+            <ui:Button text="Tutorial" display-tooltip-when-elided="true" name="Tuto" class="button-main-title" />
+            <ui:Button text="Credits" display-tooltip-when-elided="true" name="Credit" class="button-main-title" />
             <ui:Button text="Quit" display-tooltip-when-elided="true" name="Quit" class="button-main-title" />
         </ui:VisualElement>
     </ui:VisualElement>
