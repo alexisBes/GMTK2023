@@ -12,10 +12,10 @@ public class MainMenu : MonoBehaviour
     private void Awake() {
         root = GetComponent<UIDocument>().rootVisualElement;
 
-        root.Q<Button>("Start").clicked += StartButtonClicked;
-        root.Q<Button>("Tuto").clicked += TutoButtonClicked;
-        root.Q<Button>("Credit").clicked += CreditButtonClicked;
-        root.Q<Button>("Quit").clicked += QuitButtonClicked;
+        root.Q<Button>("Start").clicked   += StartButtonClicked;
+        root.Q<Button>("Tutoial").clicked += TutoButtonClicked;
+        root.Q<Button>("Credits").clicked += CreditButtonClicked;
+        root.Q<Button>("Quit").clicked    += QuitButtonClicked;
     }
     
     public void StartButtonClicked()
