@@ -232,7 +232,7 @@ public class Tile : MonoBehaviour
                         end_tile = tile;
                         
                         bool it_works = Our_Terrain.get_priority_between_tiles(last_tile, tile);
-                        if(!it_works)
+                        if(!it_works && last_tile.flags == tile.flags)
                         {
                             audioSourceDenied.Play();
                             Debug.Log("You lost at rock-paper-scissors.");
@@ -336,7 +336,7 @@ public class Tile : MonoBehaviour
                 //UIDocument uiDocument;
                 Debug.Log("bot score ==> " + bot_score);
                 Debug.Log("player_score ==> " + player_score);
-                uiDocument = GameObject.Find("Buttons")?.GetComponent<UIDocument>();
+                uiDocument = GameObject.Find(uiDocumentName)?.GetComponent<UIDocument>();
                 if (uiDocument == null)
                 {
                     Debug.LogError("UI document not found!");
