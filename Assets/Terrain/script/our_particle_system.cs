@@ -65,6 +65,8 @@ public class Our_Particle_System : MonoBehaviour
         float life = Time.timeSinceLevelLoad - life_start;
         if(life > lifetime_seconds)
         {
+            for(int i = 0; i < num_particles; i++) Destroy(particles[i]);
+            
             Destroy(gameObject);
             return;
         }
