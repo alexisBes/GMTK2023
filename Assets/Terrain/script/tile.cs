@@ -244,8 +244,12 @@ public class Tile : MonoBehaviour
                         { // We found a target.
                             Debug.Log("Found a target.");
                             
-                            tile.flags &= ~SUBURB_TILE;
-                            tile.SetPrefab();
+                            if((last_tile.flags & BASIC_TERRAIN) != (tile.flags & BASIC_TERRAIN))
+                            {
+                                tile.flags &= ~SUBURB_TILE;
+                                tile.SetPrefab();
+                            }
+                            
                             gameplay_wise_we_cannot_go_further = true;
                         }
                         
