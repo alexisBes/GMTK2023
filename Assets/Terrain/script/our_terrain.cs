@@ -45,7 +45,7 @@ public class Our_Terrain : MonoBehaviour
     
     void Start()
     {
-        Vector3 position = new Vector3(0, 0, 0);
+        Vector3 position = new Vector3(0, -1.9f, 0);
         int centreW = (int)(UnityEngine.Random.value * width);
         int centreH = (int)(UnityEngine.Random.value * height);
         if (centreW == 0) centreW++;
@@ -178,7 +178,7 @@ public class Our_Terrain : MonoBehaviour
         Tile terrain = tile_prefab.GetComponent<Tile>();
         
         slider.value += (terrain.bot_score);
-        Debug.Log("slider.value = " + slider.value);
+        //Debug.Log("slider.value = " + slider.value);
     }
     
     static public Tile get_tile(int x, int y)
@@ -216,7 +216,7 @@ public class Our_Terrain : MonoBehaviour
         
         const int BASIC_FLAGS = WATER_TILE | SAND_TILE | LAND_TILE;
         
-        if((a.flags & b.flags & BASIC_FLAGS) != 0) return true;
+        if((a.flags & b.flags & BASIC_FLAGS) != 0) return false;
         
         if((a.flags & WATER_TILE) != 0)
         {

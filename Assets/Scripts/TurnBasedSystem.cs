@@ -141,7 +141,7 @@ public class TurnBasedSystem : MonoBehaviour
                 }
             }
             // Retrieve all colonisable tiles. END
-            
+            tile_to_colonise = null;
             
             if(colonisable_tiles.Count != 0)
             { // Choose a tile to colonise at random.
@@ -154,10 +154,11 @@ public class TurnBasedSystem : MonoBehaviour
         { // We are already working on a tile to colonise.
             tile_to_colonise       = mixed_tile_to_colonise;
             mixed_tile_to_colonise = null;
+            Debug.Assert(tile_to_colonise.flags != 0x00);
         }
         
         
-        if(tile_to_colonise)
+        if(tile_to_colonise && tile_to_colonise.original_terrain != 0x00)
         {
             // Work on the tile to colonise. START
             if((tile_to_colonise.flags & BASIC_TERRAIN) != tile_to_colonise.original_terrain)
@@ -165,7 +166,7 @@ public class TurnBasedSystem : MonoBehaviour
                 tile_to_colonise.flags &= ~(BASIC_TERRAIN | QUICKSAND_TILE | SWAMP_TILE | DUNE_TILE);
                 tile_to_colonise.flags |=  tile_to_colonise.original_terrain;
                 tile_to_colonise.SetPrefab();
-                
+                Debug.Assert(tile_to_colonise.flags != 0x00);
                 mixed_tile_to_colonise = tile_to_colonise;
             }
             else
