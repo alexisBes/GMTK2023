@@ -46,6 +46,7 @@ public class GameButton : MonoBehaviour
 
     public void WaterButtonClicked()
     {
+        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
         audioSource = GetComponent<AudioSource>();
         audioSource.Play();
         Debug.Log("Water Clicked");
