@@ -2253,7 +2253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile_prefab: {fileID: 2582282415645502144, guid: 8d6e6faa7c70a9a4f83f1ee6d40e8b8b, type: 3}
   camp_prefab: {fileID: 1690466091820418, guid: fadb9dd6254f1d14a9b77307bf133e1b, type: 3}
-  ui_disk: {fileID: 919132149155446097, guid: e3832419329b165499d1bd1f588ee257, type: 3}
+  ui_disk: {fileID: 3772885523101478763, guid: 22747e02b3291bb4d8948b2e8f10eca9, type: 3}
 --- !u!114 &941929680
 MonoBehaviour:
   m_ObjectHideFlags: 0
