@@ -10,12 +10,17 @@ using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.UIElements;
 
 public class Our_Terrain : MonoBehaviour
 {
     public GameObject tile_prefab;
     public GameObject camp_prefab;
     public GameObject ui_disk;
+
+    public UIDocument uiDocument;  // Reference to the UI document
+
+    private Slider slider;  // Reference to the Slider component
 
 
     public static int width  = 8;
@@ -32,6 +37,8 @@ public class Our_Terrain : MonoBehaviour
     float   camera_rotation_angle_degrees = 45.0f - 90.0f;
     
     static public List<Tile> tiles = new List<Tile>();
+
+    int score;
     
     
     void Start()
@@ -67,9 +74,12 @@ public class Our_Terrain : MonoBehaviour
                 PlayerInput pi = tile.GetComponent<PlayerInput>();
                 pi.camera = Camera.main;
                 position.x += TILE_STEP;
-                
+
+                score = terrain.player_score;
                 tiles.Add(terrain);
             }
+
+            
             
             #if DO_THE_3D_THING
             position.z += TILE_STEP;
@@ -117,6 +127,7 @@ public class Our_Terrain : MonoBehaviour
         
         Camera.main.orthographicSize = default_camera_zoom;
         #endif
+        slider = uiDocument.rootVisualElement.Q<Slider>("slider");
         // Set the camera so that the whole terrain is in view. END
     }
 
@@ -160,7 +171,11 @@ public class Our_Terrain : MonoBehaviour
         
         // @ Right now we are not preventing the camera from going too far!!!
         camera.transform.position = camera.transform.position + (camera_right * horizontal_pan * horizontal_pan_speed + camera_forward * vertical_pan * vertical_pan_speed) * zoom_factor;
-        // Handle camera panning. END
+        // Handle camera panning. END   
+        Tile terrain = tile_prefab.GetComponent<Tile>();
+        
+        slider.value += (terrain.bot_score);
+        Debug.Log("slider.value = " + slider.value);
     }
     
     static public Tile get_tile(int x, int y)

@@ -6,12 +6,17 @@ using UnityEngine.SceneManagement;
 public class GameButton : MonoBehaviour
 {
     public AudioSource audioSource;
+    
+    public Our_Terrain terrain;
 
     private void Awake()
     {
         EnableButtons();
     }
-
+    private void Update() {
+        //slider = uiDocument.rootVisualElement.Q<Slider>("slider");
+        //slider.value = tile.bot_score;
+    }
     public void EnableButtons()
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
@@ -30,6 +35,7 @@ public class GameButton : MonoBehaviour
         root.Q<Button>("Air").clicked -= AirButtonClicked;
         root.Q<Button>("Land").clicked -= LandButtonClicked;
         root.Q<Button>("Exit").clicked -= ExitButtonClicked;
+        
     }
 
     public void WaterButtonClicked()
