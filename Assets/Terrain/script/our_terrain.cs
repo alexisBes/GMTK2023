@@ -32,6 +32,7 @@ public class Our_Terrain : MonoBehaviour
     public static float default_camera_zoom  = 7.2f;
     public static float furthest_camera_zoom = 10.0f;
     public static float closest_camera_zoom  = 2.0f;
+    public static int   num_turns_a_tile_is_denied_when_the_bot_gets_its_castle_destroyed = 3;
     
     Vector3 camera_look_at_direction;
     Vector3 map_centre;

@@ -41,6 +41,7 @@ public class Tile : MonoBehaviour
     public int flags = 0;
     public int original_terrain = 0;
     public int x, y;
+    public int num_turns_left_until_usable = 0;
 
     public List<GameObject> prefabs;
     public GameObject tempestPrefab;
@@ -248,6 +249,7 @@ public class Tile : MonoBehaviour
                             {
                                 tile.flags &= ~SUBURB_TILE;
                                 tile.SetPrefab();
+                                tile.num_turns_left_until_usable = Our_Terrain.num_turns_a_tile_is_denied_when_the_bot_gets_its_castle_destroyed;
                             }
                             
                             gameplay_wise_we_cannot_go_further = true;
@@ -306,6 +308,13 @@ public class Tile : MonoBehaviour
             
             if(play_enemy_turn)
             {
+                for(int i = 0; i < Our_Terrain.tiles.Count; i++)
+                {
+                    Tile tile = Our_Terrain.tiles[i];
+                    if(tile.num_turns_left_until_usable != 0) tile.num_turns_left_until_usable--;
+                }
+                
+                
                 PerformEnemyAction(); // Play enemy's turn.
                 action_to_perform = EMPTY;
                 
@@ -318,21 +327,16 @@ public class Tile : MonoBehaviour
                 
                 bool all_tiles_are_filled = true;
                 
-                for(int y = 0; y < Our_Terrain.height; y++)
+                for(int i = 0; i < Our_Terrain.tiles.Count; i++)
                 {
-                    if(all_tiles_are_filled == false) break;
+                    Tile tile = Our_Terrain.tiles[i];
                     
-                    for(int x = 0; x < Our_Terrain.width; x++)
-                    {
-                        if(all_tiles_are_filled == false) break;
-                        
-                        Tile tile = Our_Terrain.get_tile(x, y);
-                        if(tile.flags == 0) all_tiles_are_filled = false;
-                        
-                        if((tile.flags & (TOWN_TILE | SUBURB_TILE)) != 0) bot_score++;
-                        else                                              player_score++;
-                    }
+                    if(tile.flags == 0) all_tiles_are_filled = false;
+                    
+                    if((tile.flags & (TOWN_TILE | SUBURB_TILE)) != 0) bot_score++;
+                    else                                              player_score++;
                 }
+                
                 //UIDocument uiDocument;
                 Debug.Log("bot score ==> " + bot_score);
                 Debug.Log("player_score ==> " + player_score);
